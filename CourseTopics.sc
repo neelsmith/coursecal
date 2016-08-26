@@ -46,11 +46,3 @@ class Syllabus (syllabusPath: FilePath ) {
     }
   }
 }
-/*
-//Create a syllabus and traverse its entries:
-
-val syllabus = new Syllabus(FilePath("testdata/syllabus1.txt"))
-for (oneDay <- syllabus.entryArray) {
-  println(oneDay)
-}
-*/
