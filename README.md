@@ -11,19 +11,17 @@ A scala scripting system to generate course calendars from simple text sources.
 
 ## Usage
 
-    amm cal.sc YR MO DA SCHEDULE FILEPATH
+    cal.sc SYLLABUSFILE
 
-`YR`, `MO` and `DA` are integers for a starting date.  The starting date can be any day in the week you want to begin your calendar.
+or
 
-`SCHEDULE` is one of `tt` or `mwf`.
+    cal.sc SYLLABUSFILE CONFIGFILE
 
-`FILEPATH` is a relative or absolute path to a plain-text file with your daily schedule.
-
-Example: `amm cal.sc 2016 8 24 MWF mysyllabus.txt` would read the file `mysyllabus.txt` and create a Monday, Wednesday, Friday schedule beginning the week of Aug. 24, 2016.
+If `CONFIGFILE` is not given, `cal.sc` will use `config.yaml`.
 
 
 
-## The file format
+## The syllabus file
 
 Content for the daily schedule is in a plain text file with the record for each day on a single line. The structure of the plain text file is as follows:
 
@@ -43,3 +41,14 @@ Leading and trailing white space is trimmed in all columns.
 
 
 *Additional notes* may include markdown formatting.
+
+
+## The config file
+
+`pageTitle`
+
+`yr`, `mo` and `da` are integers for a starting date falling anywhere int he first week you want to include in your calendar.  
+
+`schedule` is one of `tt` or `mwf`.
+
+`totalWeeks` is the number of weeks to include in your calendar.
