@@ -18,6 +18,10 @@ A scala scripting system to generate course calendars from simple text sources.
 
 `FILEPATH` is a relative or absolute path to a plain-text file with your daily schedule.
 
+Example: `amm cal.sc 2016 8 24 MWF mysyllabus.txt` would read the file `mysyllabus.txt` and create a Monday, Wednesday, Friday schedule beginning the week of Aug. 24, 2016.
+
+
+
 ## The file format
 
 Content for the daily schedule is in a plain text file with the record for each day on a single line. The structure of the plain text file is as follows:
