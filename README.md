@@ -6,6 +6,7 @@ A scala scripting system to generate course calendars from simple text sources.
 ## Prerequisites
 
 - [scala](http://www.scala-lang.org/)
+- [sbt](http://www.scala-sbt.org/)
 - [ammonite](http://www.lihaoyi.com/Ammonite/)
 
 ## Usage
