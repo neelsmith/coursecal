@@ -1,7 +1,12 @@
 # coursecal
 
-A scala scripting system (using the awesome [Ammonite](http://www.lihaoyi.com/Ammonite/)) to generate course calendars from simple text sources.
+A scala scripting system to generate course calendars from simple text sources.
 
+
+## Prerequisites
+
+- [scala](http://www.scala-lang.org/)
+- [ammonite](http://www.lihaoyi.com/Ammonite/))
 
 ## Usage
 
