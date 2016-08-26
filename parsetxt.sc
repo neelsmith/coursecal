@@ -3,13 +3,38 @@
 */
 
 import ammonite.ops._
+import java.time._
+import java.time.temporal._
 
+
+import $file.SemesterCal, SemesterCal._
 import $file.CourseTopics, CourseTopics._
 
+// length of semester at HC:
+val totalWeeks = 15
+
 @main
-def main(s: String) = {
-  val syllabus = new Syllabus(FilePath(s))
+def main(yr: Int, mo: Int, d: Int, syll: String) = {
+  val syllabus = new Syllabus(FilePath(syll))
+  val startDate = LocalDate.of(2016,8,29)
+  println ("For semester starting " + shortDisplayDay(startDate))
+  println("Map this content:")
   for (oneDay <- syllabus.entryArray) {
     println(oneDay)
+  }
+
+  val ttSemester = TuesThurs(startDate, totalWeeks)
+  val mwfSemester = MonWedFri(startDate, totalWeeks)
+
+
+  println("to one of these schedules:")
+
+  println("TTh schedule\n")
+  for (i <- 0 until ttSemester.wks.length) {
+    println (shortDisplayWeek(ttSemester.wks(i)))
+  }
+  println("\nMWF schedule\n")
+  for (i <- 0 until mwfSemester.wks.length) {
+    println (shortDisplayWeek(mwfSemester.wks(i)))
   }
 }
