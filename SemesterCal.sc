@@ -31,6 +31,16 @@ case class MonWedFri(startDate: LocalDate, totalWeeks: Int) extends Semester {
 }
 
 
+def shortDisplaySemester(cal: Semester) {
+  cal match {
+    case cal: TuesThurs =>  for (wk <- cal.wks) {
+      println (shortDisplayWeek(wk))
+    }
+    case cal: MonWedFri =>  for (wk <- cal.wks) {
+      println (shortDisplayWeek(wk))
+    }
+  }
+}
 
 def shortDisplayWeek(wk: CourseWeek) = {
   wk match {

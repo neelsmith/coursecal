@@ -13,8 +13,10 @@ import $file.CourseTopics, CourseTopics._
 // length of semester at HC:
 val totalWeeks = 15
 
+
+
 @main
-def main(yr: Int, mo: Int, d: Int, syll: String) = {
+def main(yr: Int, mo: Int, d: Int, sched: String, syll: String) = {
   val syllabus = new Syllabus(FilePath(syll))
   val startDate = LocalDate.of(2016,8,29)
   println ("For semester starting " + shortDisplayDay(startDate))
@@ -27,14 +29,11 @@ def main(yr: Int, mo: Int, d: Int, syll: String) = {
   val mwfSemester = MonWedFri(startDate, totalWeeks)
 
 
-  println("to one of these schedules:")
+  println("to the schedule for " + sched)
 
-  println("TTh schedule\n")
-  for (i <- 0 until ttSemester.wks.length) {
-    println (shortDisplayWeek(ttSemester.wks(i)))
+  sched.toLowerCase() match {
+    case "tt" => shortDisplaySemester(ttSemester)
+    case "mwf" => shortDisplaySemester( mwfSemester)
   }
-  println("\nMWF schedule\n")
-  for (i <- 0 until mwfSemester.wks.length) {
-    println (shortDisplayWeek(mwfSemester.wks(i)))
-  }
+
 }
