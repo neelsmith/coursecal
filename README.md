@@ -42,4 +42,4 @@ Leading and trailing white space is trimmed in all columns.
 - `@null` No class meeting on that date.
 
 
-*Additional notes* may include markdown formatting
+*Additional notes* may include markdown formatting.
