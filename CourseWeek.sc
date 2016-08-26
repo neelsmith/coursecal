@@ -7,8 +7,8 @@ import java.time.format._
 
 
 sealed abstract class CourseWeek
-// Given any day in a week, find the
-// Tues and Thurs dates
+
+// Given any day in a week, find the Tues and Thurs dates
 class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
   val tues = oneDay.`with`(DayOfWeek.TUESDAY)
   val thurs = oneDay.`with`(DayOfWeek.THURSDAY)

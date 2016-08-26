@@ -6,7 +6,9 @@ import ammonite.ops._
 import scala.collection.mutable.ArrayBuffer
 
 abstract class SyllabusEntry
+
 case class CourseDay(val title: String, val assignment: URL, val notes: String, val tags: Array[String] ) extends SyllabusEntry {}
+
 case class SectionTopic(level: Int,title: String) extends SyllabusEntry {}
 
 
@@ -21,13 +23,12 @@ def resolveFileRef(fp: FilePath) = {
     case fp: Path => fp
   }
 }
+
+
 class Syllabus (syllabusPath: FilePath ) {
 
   val syllabusFile = resolveFileRef(syllabusPath)
   val lns = read.lines!(syllabusFile)
-
-
-
 
   val hdrPattern = "^#+(.+)".r
   val emptyLine = "^$".r
@@ -45,4 +46,5 @@ class Syllabus (syllabusPath: FilePath ) {
 
     }
   }
+  def getEntryArray() = { entryArray}
 }

@@ -12,7 +12,7 @@ import $file.CourseWeek, CourseWeek._
 sealed abstract class Semester {
   def getWeeks(): ArrayBuffer[_ <: CourseWeek]
 }
-//trait Semester extends Product with Serializable
+
 case class TuesThurs(startDate: LocalDate, totalWeeks: Int) extends Semester {
   val wks = new ArrayBuffer[CourseWeek.TuThWeek]
   var i = 0

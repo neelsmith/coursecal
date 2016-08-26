@@ -11,7 +11,7 @@ mo: 8 # i.e., August 25, 2016
 da: 25
 
 # Pattern of class meetings: "mwf" or "tt"
-schedule : "mwf"
+schedule : "tt"
 
 # Number of weeks the calendar should run for
 totalWeeks : 15
