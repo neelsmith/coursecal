@@ -1,3 +1,5 @@
+#!/usr/bin/env amm
+
 /*
   Create a syllabus and traverse its entries:
 */
