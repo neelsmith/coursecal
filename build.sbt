@@ -6,3 +6,5 @@ libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.4"
 libraryDependencies += "org.yaml" % "snakeyaml" % "1.14"
 
 initialCommands in (Test, console) := """ammonite.Main().run()"""
+
+scalaVersion := "2.10.5"

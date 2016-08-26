@@ -5,13 +5,13 @@ pageTitle : "Calendar for course"
 
 # Date of a day in the first week of the calendar.
 # Any day of the week will do to idenify the week.
-firstWeek :
-  yr : 2016
-  mo : 8
-  da : 25
+# 4 digits for the year, 1-12 for month, 1-31 for day.
+yr : 2016
+mo: 8 # i.e., August 25, 2016
+da: 25
 
 # Pattern of class meetings: "mwf" or "tt"
 schedule : "mwf"
 
 # Number of weeks the calendar should run for
-totalweeks : 15
+totalWeeks : 15

@@ -9,7 +9,10 @@ import scala.collection.mutable.ArrayBuffer
 
 import $file.CourseWeek, CourseWeek._
 
-sealed abstract class Semester
+sealed abstract class Semester {
+  def getWeeks(): ArrayBuffer[_ <: CourseWeek]
+}
+//trait Semester extends Product with Serializable
 case class TuesThurs(startDate: LocalDate, totalWeeks: Int) extends Semester {
   val wks = new ArrayBuffer[CourseWeek.TuThWeek]
   var i = 0
@@ -18,6 +21,7 @@ case class TuesThurs(startDate: LocalDate, totalWeeks: Int) extends Semester {
     val wk = new CourseWeek.TuThWeek(currReferenceDate)
     wks += wk
   }
+  def getWeeks() = { wks }
 }
 
 case class MonWedFri(startDate: LocalDate, totalWeeks: Int) extends Semester {
@@ -28,10 +32,11 @@ case class MonWedFri(startDate: LocalDate, totalWeeks: Int) extends Semester {
     val wk = new CourseWeek.MonWedFriWeek(currReferenceDate)
     wks += wk
   }
+  def getWeeks() = { wks }
 }
 
 
-def shortDisplaySemester(cal: Semester) {
+def shortDisplaySemester(cal: Semester) = {
   cal match {
     case cal: TuesThurs =>  for (wk <- cal.wks) {
       println (shortDisplayWeek(wk))
