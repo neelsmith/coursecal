@@ -10,7 +10,7 @@ class CourseTopicsAccSpec extends Specification {
 
 This is a specification to check CourseTopics.
 
-The loaded test syllabus should contain 8 entries             $e1
+The loaded test syllabus should contain 15 entries             $e1
 The tested section topic labelled "Introduction" should be equal to
 "Section: Introduction"                                       $e2
 The toString function of tested course entry should yield
@@ -19,8 +19,8 @@ The toString function of tested course entry should yield
   def  e1 = {
     val rp = RelPath("testdata/syllabus1.txt")
     val sy = new Syllabus(rp)
-    val entries = sy.getEntryArray()
-    entries.pp must have size(7)
+    val entries = sy.entryArray
+    entries.pp must have size(15)
   }
   def e2 = {
     SectionTopic(1,"Introduction").toString() should beEqualTo("Section: Introduction")

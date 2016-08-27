@@ -48,6 +48,8 @@ def calendarForConfig(conf: CalendarConfig): Option[Semester] = {
   }
 }
 
+
+
 def shortDisplayWeek(wk: CourseWeek) = {
   wk match {
     case wk: TuThWeek =>  "Tues., " + shortDisplayDay(wk.tues) + "\tThurs., " + shortDisplayDay(wk.thurs)
@@ -60,18 +62,36 @@ def shortDisplayDay(d: LocalDate) =  {
   d.getMonth.getDisplayName(TextStyle.SHORT,Locale.US) + ". " + d.getDayOfMonth()
 }
 
+/** Creates a CourseDay object from one line of text
+* from a syllabus file.
+*
+* Lines should be formatted as three columns delimited by '#'.
+*
+* @param ln The line of text.
+* @return A CourseDay, or None.
+*/
 def courseDayForLine(ln: String ): Option[CourseDay] = {
   val cols = ln.split("#")
-
-  if (cols.size == 3 ) {
-    Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
-  } else {
-    println("Error: " + cols)
-    None
+  cols.size match {
+    case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
+    case 2 =>  Some(CourseDay(cols(0),cols(1),"",Array("")))
+    case 1 => Some(CourseDay(cols(0),"","",Array("")))
+    case _ => { println("Error for line '" + ln + "', found " + cols.size + " columns.")
+      None
+    }
   }
+
 }
 
-
+/** Creates an array of syllabus entries from a
+* syllabus file identified by Path.
+*
+* Syllabus entries may either be daily class entries,
+* or labelling headings for sections of the course.
+*
+* @param syll Absoute path to the syllabus file.
+* @return Array of syllabus etnries.
+*/
 def getEntriesForSyllabus(syll: Path): ArrayBuffer[SyllabusEntry] = {
   val lns = read.lines!(syll)
 
@@ -81,20 +101,24 @@ def getEntriesForSyllabus(syll: Path): ArrayBuffer[SyllabusEntry] = {
 
   var entryArray = new ArrayBuffer[SyllabusEntry]
   for (ln <- lns) {
+
     ln match  {
-    case emptyLine(ln) => None
+    case emptyLine(ln) => println("Line was empty")
     case hdrPattern(ln) => {entryArray += SectionTopic(0,ln)}
 
     case  nonEmpty(ln) => {
       val oneDay = courseDayForLine(ln)
       oneDay match {
         case Some(CourseDay(_,_,_,_)) => {
-          println("Add " + oneDay.get + " to entries array")
-          entryArray += oneDay.get}
-        case _ => None
+          //println("Add " + oneDay.get + " to entries array")
+          entryArray += oneDay.get
+        }
+        case _ => { println("Failed to get a CourseDay from line " + ln)
+          println ("Got " + oneDay)
+        }
       }
     }
-    case _ => None
+    case _ => //println("Line '" + ln + "' (length " + ln.size + ") matched no pattern!")
     }
   }
   entryArray
