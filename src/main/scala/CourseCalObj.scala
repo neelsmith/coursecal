@@ -7,6 +7,7 @@ This is a group of calendrical objects.
 
 package object coursecal {
 
+
 import ammonite.ops._
 import scala.collection.mutable.ArrayBuffer
 import java.time._
@@ -15,14 +16,27 @@ import java.util.Locale
 import java.time.format._
 
 
-
-def resolveFileRef(fp: FilePath) = {
+/** Resolves an Ammonite FilePath to an absolute Path.
+*
+* If fp is relative, it is assumed to be relative to
+* the ammonite working directory in cwd.
+*
+* @param fp FilePath object to resolve.
+* @return A Path object with absolute path.
+*/
+def resolveFileRef(fp: FilePath): Path = {
   fp match {
       case fp: RelPath => Path(fp, cwd)
       case fp: Path => fp
     }
 }
 
+/** Creates a semester calendar from the information in a
+* semester calendar configuration.
+*
+* @param conf Configuration of the calendar.
+* @return A semester calendar corresponding to the configuration.
+*/
 def calendarForConfig(conf: CalendarConfig): Option[Semester] = {
   conf.sched.toLowerCase() match {
     case "mwf" => Some(MonWedFriSemester(conf.firstDay, conf.totalWeeks))
@@ -58,7 +72,7 @@ def courseDayForLine(ln: String ): Option[CourseDay] = {
 }
 
 
-def getEntriesForSyllabus(syll: Path) = {
+def getEntriesForSyllabus(syll: Path): ArrayBuffer[SyllabusEntry] = {
   val lns = read.lines!(syll)
 
   val hdrPattern = "^#+(.+)".r
