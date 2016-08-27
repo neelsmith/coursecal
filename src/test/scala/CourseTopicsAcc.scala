@@ -3,23 +3,30 @@ package io.github.neelsmith
 package coursecal
 
 import org.specs2._
-
+import ammonite.ops._
 
 class CourseTopicsAccSpec extends Specification {
   def is = s2"""
 
- This is a specification to check CourseTopics.
+This is a specification to check CourseTopics.
 
- The name of the config file should contain 8 characters    $e1
- The text of the config file should begin,
- "# Configure a course calendar"                            $e2
- The short text for the first day should begin "Aug."       $e3
+The loaded test syllabus should contain 8 entries             $e1
+The tested section topic labelled "Introduction" should be equal to
+"Section: Introduction"                                       $e2
+The toString function of tested course entry should yield
+"Daily topic: Introduction to course"                        $e3
                                                                  """
-
-  def e1 = { val cal = new CalendarConfig("ica.yaml")
-   cal.fName  must have size(8)}
-  def e2 = { val cal = new CalendarConfig("ica.yaml")
-    cal.yamlText  must startWith("# Configure a course calendar")}
-  def e3 = { val cal = new CalendarConfig("ica.yaml")
-    shortDisplayDay(cal.firstDay) must startWith("Aug.")}
+  def  e1 = {
+    val rp = RelPath("testdata/syllabus1.txt")
+    val sy = new Syllabus(rp)
+    val entries = sy.getEntryArray()
+    entries.pp must have size(7)
+  }
+  def e2 = {
+    SectionTopic(1,"Introduction").toString() should beEqualTo("Section: Introduction")
+  }
+  def e3 = {
+    val ar = Array[String]()
+    CourseDay("Introduction to course","","",ar).toString() should beEqualTo("Daily topic: Introduction to course")
+  }
 }

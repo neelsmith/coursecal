@@ -26,10 +26,14 @@ trait SyllabusEntry {
 
 // content entry for one class meeting
 case class CourseDay(val title: String, val assignment: String, val notes: String, val tags: Array[String] ) extends SyllabusEntry {
-
+  override def toString() = {
+    "Daily topic: " + title
+  }
 }
 
 // section label
 case class SectionTopic(level: Int,title: String) extends SyllabusEntry {
-  
+  override def toString() = {
+    "Section: " + title
+  }
 }
