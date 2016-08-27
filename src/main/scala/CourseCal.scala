@@ -10,9 +10,9 @@ import java.util.Locale
 import java.time.format._
 
 import scala.collection.mutable.ArrayBuffer
-
+/*
 package object coursecal {
-  
+
   def calendarForConfig(conf: CalendarConfig) = {
     conf.sched.toLowerCase() match {
       case "mwf" => MonWedFriSemester(conf.firstDay, conf.totalWeeks)
@@ -36,4 +36,4 @@ package object coursecal {
       d.getMonth.getDisplayName(TextStyle.SHORT,Locale.US) + ". " + d.getDayOfMonth()
     }
 
-}
+}*/
