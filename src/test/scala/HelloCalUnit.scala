@@ -13,11 +13,13 @@ class HelloCalUnitSpec extends Specification {
 
    }
  }
+
   "The resulting calendar" should {
     "have 16 entries" in {
       val conf = new CalendarConfig("ica.yaml")
       val cal = calendarForConfig(conf)
-      cal.getWeeks() must have size(15)
+      cal.get.getWeeks() must have size(15)
+
     }
-    }
+  }
   }

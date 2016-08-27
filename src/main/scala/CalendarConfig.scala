@@ -32,17 +32,3 @@ class CalendarConfig(confFileName: String) {
 
 }
 }
-
-
-/*
-
-
-def showFirstDay(conf: CalendarConfig): LocalDate = {
-  val firstDay = conf.getFirstDay()
-  println("First day: " + firstDay)
-  firstDay
-}
-
-
-
-*/
