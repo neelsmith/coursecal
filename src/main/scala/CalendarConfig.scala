@@ -29,6 +29,21 @@ class CalendarConfig(confFileName: String) {
   val firstDay = LocalDate.of(yr,mo,da)
   val totalWeeks = c.get("totalWeeks").asInstanceOf[Int]
   val sched = c.get("schedule").asInstanceOf[String]
-
+  /** Creates a semester calendar from the information in a
+  * semester calendar configuration.
+  *
+  * @param conf Configuration of the calendar.
+  * @return A semester calendar corresponding to the configuration.
+  */
+  def getCalendar(): Option[Semester] = {
+    sched.toLowerCase() match {
+      case "mwf" => Some(MonWedFriSemester(firstDay, totalWeeks))
+      //case "monwedfri" => MonWedFriSemester(conf.firstDay, conf.totalWeeks)
+      case "tt" => Some(TuesThursSemester(firstDay, totalWeeks))
+      //case "tth" => TuesThursSemester(conf.firstDay, conf.totalWeeks)
+      //case "tuesthurs" => TuesThursSemester(conf.firstDay, conf.totalWeeks)
+      case _ => None
+    }
+  }
 }
 }

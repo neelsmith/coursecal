@@ -17,6 +17,47 @@ import scala.collection.mutable.HashMap
 */
 class Syllabus (syllabusPath: FilePath ) {
   val entryArray =  getEntriesForSyllabus(resolveFileRef(syllabusPath))
+
+  /** Creates an array of syllabus entries from a
+  * syllabus file identified by Path.
+  *
+  * Syllabus entries may either be daily class entries,
+  * or labelling headings for sections of the course.
+  *
+  * @param syll Absoute path to the syllabus file.
+  * @return Array of syllabus etnries.
+  */
+  def getEntriesForSyllabus(syll: Path): ArrayBuffer[SyllabusEntry] = {
+    val lns = read.lines!(syll)
+
+    val hdrPattern = "^#+(.+)".r
+    val emptyLine = "^$".r
+    val nonEmpty = "([^#].+)".r
+
+    var entryArray = new ArrayBuffer[SyllabusEntry]
+    for (ln <- lns) {
+
+      ln match  {
+      case emptyLine(ln) => //println("Line was empty")
+      case hdrPattern(ln) => {entryArray += SectionTopic(0,ln)}
+
+      case  nonEmpty(ln) => {
+        val oneDay = courseDayForLine(ln)
+        oneDay match {
+          case Some(CourseDay(_,_,_,_)) => {
+            //println("Add " + oneDay.get + " to entries array")
+            entryArray += oneDay.get
+          }
+          case _ => { //println("Failed to get a CourseDay from line " + ln)
+            //println ("Got " + oneDay)
+          }
+        }
+      }
+      case _ => //println("Line '" + ln + "' (length " + ln.size + ") matched no pattern!")
+      }
+    }
+    entryArray
+  }
 }
 
 
