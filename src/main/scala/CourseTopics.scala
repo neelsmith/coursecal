@@ -16,7 +16,7 @@ import scala.collection.mutable.HashMap
 * @param syllabusPath Path to file with syllabus.
 */
 class Syllabus (syllabusPath: FilePath ) {
-  val entryArray =  getEntriesForSyllabus(resolveFileRef(syllabusPath))
+  val entryArray =  getEntries(resolveFileRef(syllabusPath))
 
   /** Creates an array of syllabus entries from a
   * syllabus file identified by Path.
@@ -27,7 +27,7 @@ class Syllabus (syllabusPath: FilePath ) {
   * @param syll Absoute path to the syllabus file.
   * @return Array of syllabus etnries.
   */
-  def getEntriesForSyllabus(syll: Path): ArrayBuffer[SyllabusEntry] = {
+  def getEntries(syll: Path): ArrayBuffer[SyllabusEntry] = {
     val lns = read.lines!(syll)
 
     val hdrPattern = "^#+(.+)".r
