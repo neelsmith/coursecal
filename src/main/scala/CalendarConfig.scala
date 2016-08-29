@@ -35,7 +35,7 @@ class CalendarConfig(confFileName: String) {
   * @param conf Configuration of the calendar.
   * @return A semester calendar corresponding to the configuration.
   */
-  def getCalendar(): Option[Semester] = {
+  def getCalendarOption(): Option[Semester] = {
     sched.toLowerCase() match {
       case "mwf" => Some(MonWedFriSemester(firstDay, totalWeeks))
       //case "monwedfri" => MonWedFriSemester(conf.firstDay, conf.totalWeeks)
@@ -44,6 +44,9 @@ class CalendarConfig(confFileName: String) {
       //case "tuesthurs" => TuesThursSemester(conf.firstDay, conf.totalWeeks)
       case _ => None
     }
+  }
+  def getCalendar() = {
+    getCalendarOption().get
   }
 }
 }
