@@ -13,14 +13,12 @@ import scala.collection.mutable.HashMap
 
 /** A syllabus of topics for a course.
 *
-* @param syllabusPath Path to file with syllabus.
+* @param syllabusFileName Name of file with syllabus.
 */
-class Syllabus (syllabusPath: FilePath ) {
-  val fp = resolveFileRef(syllabusPath)
-  val entryArray =  getEntries()
+class Syllabus (val syllabusFileName: String ) {
 
   /** Creates an array of syllabus entries from a
-  * syllabus file identified by Path.
+  * syllabus file.
   *
   * Syllabus entries may either be daily class entries,
   * or labelling headings for sections of the course.
@@ -28,8 +26,8 @@ class Syllabus (syllabusPath: FilePath ) {
   * @param syll Absoute path to the syllabus file.
   * @return Array of syllabus etnries.
   */
-  def getEntries(): ArrayBuffer[SyllabusEntry] = {
-    val lns = read.lines!(fp)
+  def entries : ArrayBuffer[SyllabusEntry] = {
+    val lns = scala.io.Source.fromFile(syllabusFileName).getLines()
 
     val hdrPattern = "^#+(.+)".r
     val emptyLine = "^$".r
@@ -37,9 +35,9 @@ class Syllabus (syllabusPath: FilePath ) {
 
     var entryArray = new ArrayBuffer[SyllabusEntry]
     for (ln <- lns) {
-
       ln match  {
       case emptyLine(ln) => //println("Line was empty")
+
       case hdrPattern(ln) => {entryArray += SectionTopic(0,ln)}
 
       case  nonEmpty(ln) => {
@@ -63,7 +61,7 @@ class Syllabus (syllabusPath: FilePath ) {
 
 
 trait SyllabusEntry {
-  //def getComponents
+  //def getComponents?
 }
 
 // content entry for one class meeting
@@ -71,7 +69,7 @@ case class CourseDay(val title: String, val assignment: String, val notes: Strin
   override def toString() = {
     "Daily topic: " + title
   }
-  //def getComponents
+
 }
 
 // section label
@@ -79,5 +77,5 @@ case class SectionTopic(level: Int,title: String) extends SyllabusEntry {
   override def toString() = {
     "Section: " + title
   }
-  //def getComponents
+
 }

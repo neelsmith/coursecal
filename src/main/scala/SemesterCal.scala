@@ -24,29 +24,29 @@ package coursecal {
 
 //sealed abstract class Semester {
 trait Semester {
-  def getWeeks(): ArrayBuffer[_ <: CourseWeek]
+  def weeks : ArrayBuffer[_ <: CourseWeek]
 }
 
 case class TuesThursSemester(startDate: LocalDate, totalWeeks: Int) extends Semester {
-  val wks = new ArrayBuffer[TuThWeek]
+  val weeks = new ArrayBuffer[TuThWeek]
   var i = 0
   for (i <- 0 to totalWeeks) {
     val currReferenceDate = startDate.plusWeeks(i)
     val wk = new TuThWeek(currReferenceDate)
-    wks += wk
+    weeks += wk
   }
-  def getWeeks(): ArrayBuffer[TuThWeek] = { wks }
+  //def weeks : ArrayBuffer[TuThWeek] = { wks }
 }
 
 case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Semester {
-  val wks = new ArrayBuffer[MonWedFriWeek]
+  val weeks = new ArrayBuffer[MonWedFriWeek]
   var i = 0
   for (i <- 0 to totalWeeks) {
     val currReferenceDate = startDate.plusWeeks(i)
     val wk = new MonWedFriWeek(currReferenceDate)
-    wks += wk
+    weeks += wk
   }
-  def getWeeks(): ArrayBuffer[MonWedFriWeek] = { wks }
+  //def weeks : ArrayBuffer[MonWedFriWeek] = { wks }
 }
 
 

@@ -33,7 +33,7 @@ object ScheduleMaker  {
     case wk: TuThWeek => {
       //val allEntries = entries
       // two entries in a tu-th week:
-      "| " + shortDisplayDay(wk.tues) + " | " + formatTopic(entries(0)) + " | " + shortDisplayDay(wk.thurs) + " | " + formatTopic(entries(1)) + " | " + gatherNotes(entries) + " |"
+      "| " + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + ". " + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
     }
     case wk: MonWedFriWeek => "MWF:  TBD"
     }
@@ -41,7 +41,7 @@ object ScheduleMaker  {
 
 
   def tthTableHead() = {
-    "\n| Week | Tues     | Topic     | Thurs     | Topic     | Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------| :-------------|\n"
+    "\n| Week | Tues     |  Thurs     |\n| :------------- | :------------- |:------------- |\n"
   }
   def mwfTableHead() = {
     "\n| Week | Mon     | Topic     | Wed     | Topic     | Fri     | Topic     |Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------| :-------------|:-------------| :-------------|\n"
@@ -93,12 +93,4 @@ object ScheduleMaker  {
   }
 }
 
-/*
-
-
-
-
-
-
-*/
 }

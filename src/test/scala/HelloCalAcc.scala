@@ -17,7 +17,7 @@ class HelloCalAccSpec extends Specification {
                                                                  """
 
   def e1 = { val cal = new CalendarConfig("ica.yaml")
-   cal.fName  must have size(8)}
+   cal.confFileName  must have size(8)}
   def e2 = { val cal = new CalendarConfig("ica.yaml")
     cal.yamlText  must startWith("# Configure a course calendar")}
   def e3 = { val cal = new CalendarConfig("ica.yaml")

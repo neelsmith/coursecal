@@ -17,10 +17,8 @@ The toString function of tested course entry should yield
 "Daily topic: Introduction to course"                        $e3
                                                                  """
   def  e1 = {
-    val rp = RelPath("testdata/syllabus1.txt")
-    val sy = new Syllabus(rp)
-    val entries = sy.entryArray
-    entries.pp must have size(15)
+    val sy = new Syllabus("testdata/syllabus1.txt")
+    sy.entries.pp must have size(15)
   }
   def e2 = {
     SectionTopic(1,"Introduction").toString() should beEqualTo("Section: Introduction")
