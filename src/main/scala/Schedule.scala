@@ -18,7 +18,12 @@ object ScheduleMaker  {
 
 
   def gatherNotes(entries: Seq[SyllabusEntry]) = {
-    "Weekly notes go here"
+    val noteEntries = entries.filter {
+      case e : CourseDay => e.notes.size > 0
+      case e: SectionTopic => false
+    }
+
+    noteEntries.map { case e: CourseDay  => e.notes }.mkString(" ")
   }
 
 
