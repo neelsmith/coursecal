@@ -13,7 +13,11 @@ import java.time.format._
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
 
-class FixedEvent(val eventDate: LocalDate, val eventLabel: String)
+class FixedEvent(val eventDate: LocalDate, val eventLabel: String) {
+  override def toString() = {
+    "Fixed event " + eventLabel + " on " + eventDate
+  }
+}
 
 
 
@@ -49,6 +53,11 @@ title: ${conf.pageTitle}
     }
   }
 
+
+// MODIFY HERE:
+// PUT DATES FOR WEEK IN A COLLECTION
+// AND THEN FILTER ALL FIXED DATES FOR PRESENCE OF VAL IN COLLECITON
+// conf.fixedEvents.filter { _.eventDate == externalDate  }
   def formatWeek(
     fixedDates: Buffer[FixedEvent],
     wk: CourseWeek,
@@ -56,9 +65,13 @@ title: ${conf.pageTitle}
   ) = {
     wk match {
     case wk: TuThWeek => {
+      val tuesSpecial = fixedDates.filter { _.eventDate == wk.tues}.map(_.eventLabel).mkString(" ")
+      val thursSpecial = fixedDates.filter { _.eventDate == wk.thurs }.map(_.eventLabel).mkString(" ")
+      val specials = tuesSpecial + thursSpecial
+
       //val allEntries = entries
       // two entries in a tu-th week:
-      "| *" + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + "*. " + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
+      "| *" + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + "*. " + specials + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
     }
     case wk: MonWedFriWeek => "MWF:  TBD"
     }
@@ -102,6 +115,7 @@ title: ${conf.pageTitle}
             case tt: TuThWeek => {
               val tuesTopic = topicsArray.head
               val thursTopic = topicsArray.tail.head
+
               "| " + (count + 1).toString + formatWeek(fixedDates, weeksArray.head,tuesTopic,thursTopic) + "\n" +
               interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail, count + 1)
             }

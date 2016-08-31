@@ -57,12 +57,19 @@ sealed abstract class CourseWeek
 class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
   val tues = oneDay.`with`(DayOfWeek.TUESDAY)
   val thurs = oneDay.`with`(DayOfWeek.THURSDAY)
+
+  override def toString() = {
+    "TuThWeek " + tues + ", " + thurs
+  }
 }
 
 class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
   val mon = oneDay.`with`(DayOfWeek.MONDAY)
   val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
   val fri = oneDay.`with`(DayOfWeek.FRIDAY)
+  override def toString() = {
+    "MWFWeek " + mon + ", " + wed + ", " + fri
+  }
 }
 
 }
