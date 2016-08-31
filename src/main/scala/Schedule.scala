@@ -49,12 +49,16 @@ title: ${conf.pageTitle}
     }
   }
 
-  def formatWeek(wk: CourseWeek, entries: SyllabusEntry*) = {
+  def formatWeek(
+    fixedDates: Buffer[FixedEvent],
+    wk: CourseWeek,
+    entries: SyllabusEntry*
+  ) = {
     wk match {
     case wk: TuThWeek => {
       //val allEntries = entries
       // two entries in a tu-th week:
-      "| " + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + ". " + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
+      "| *" + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + "*. " + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
     }
     case wk: MonWedFriWeek => "MWF:  TBD"
     }
@@ -98,7 +102,7 @@ title: ${conf.pageTitle}
             case tt: TuThWeek => {
               val tuesTopic = topicsArray.head
               val thursTopic = topicsArray.tail.head
-              "| " + (count + 1).toString + formatWeek(weeksArray.head,tuesTopic,thursTopic) + "\n" +
+              "| " + (count + 1).toString + formatWeek(fixedDates, weeksArray.head,tuesTopic,thursTopic) + "\n" +
               interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail, count + 1)
             }
 
@@ -106,7 +110,7 @@ title: ${conf.pageTitle}
               val monTopic = topicsArray.head
               val wedTopic = topicsArray.tail.head
               val friTopic = topicsArray.tail.tail.head
-              "| " + (count + 1).toString + formatWeek(weeksArray.head,monTopic,wedTopic,friTopic) + "\n" +
+              "| " + (count + 1).toString + formatWeek(fixedDates, weeksArray.head,monTopic,wedTopic,friTopic) + "\n" +
               interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail.tail, count + 1)
             }
           }
