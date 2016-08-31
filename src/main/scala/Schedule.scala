@@ -15,6 +15,16 @@ class FixedEvent(val eventDate: LocalDate, val eventLabel: String)
 
 
 object ScheduleMaker  {
+  def schedule( topics: Syllabus, conf: CalendarConfig): String = {
+    val yamlHeader = s"""---
+layout: page
+title: ${conf.pageTitle}
+---
+
+"""
+    yamlHeader + interleaveWeeks(conf.calendar.weeks, topics.entries,0)
+  }
+
 
 
   def gatherNotes(entries: Seq[SyllabusEntry]) = {
