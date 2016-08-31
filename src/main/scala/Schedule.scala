@@ -10,6 +10,9 @@ import java.time.temporal._
 import java.util.Locale
 import java.time.format._
 
+import scala.collection.JavaConversions.asScalaBuffer
+import scala.collection.mutable.Buffer
+
 class FixedEvent(val eventDate: LocalDate, val eventLabel: String)
 
 
@@ -22,7 +25,8 @@ title: ${conf.pageTitle}
 ---
 
 """
-    yamlHeader + interleaveWeeks(conf.calendar.weeks, topics.entries,0)
+    yamlHeader + interleaveWeeks(conf.calendar.weeks, conf.fixedEvents, topics.entries,0)
+
   }
 
 
@@ -65,7 +69,11 @@ title: ${conf.pageTitle}
   }
 
   // weave Week data among sequence of topics
-  def interleaveWeeks(weeksArray: ArrayBuffer[_ <: CourseWeek], topicsArray: ArrayBuffer[_ <: SyllabusEntry], count: Int): String = {
+  def interleaveWeeks(
+    weeksArray: ArrayBuffer[_ <: CourseWeek],
+    fixedDates :    Buffer[FixedEvent],
+    topicsArray: ArrayBuffer[_ <: SyllabusEntry],
+    count: Int): String = {
 
     if (topicsArray.isEmpty) ""
 
@@ -78,9 +86,9 @@ title: ${conf.pageTitle}
         case topic: SectionTopic => {
           weeksArray.head match {
             case tth: TuThWeek =>
-            "##" + topic.title + "\n\n" + tthTableHead() + interleaveWeeks(weeksArray, topicsArray.tail, count)
+            "##" + topic.title + "\n\n" + tthTableHead() + interleaveWeeks(weeksArray, fixedDates,topicsArray.tail, count)
             case mwf: MonWedFriWeek =>
-            "##" + topic.title + "\n\n" + mwfTableHead() + interleaveWeeks(weeksArray, topicsArray.tail, count)
+            "##" + topic.title + "\n\n" + mwfTableHead() + interleaveWeeks(weeksArray,fixedDates, topicsArray.tail, count)
           }
         }
         case topic: CourseDay => {
@@ -91,7 +99,7 @@ title: ${conf.pageTitle}
               val tuesTopic = topicsArray.head
               val thursTopic = topicsArray.tail.head
               "| " + (count + 1).toString + formatWeek(weeksArray.head,tuesTopic,thursTopic) + "\n" +
-              interleaveWeeks(weeksArray.tail, topicsArray.tail.tail, count + 1)
+              interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail, count + 1)
             }
 
             case mwf: MonWedFriWeek => {
@@ -99,7 +107,7 @@ title: ${conf.pageTitle}
               val wedTopic = topicsArray.tail.head
               val friTopic = topicsArray.tail.tail.head
               "| " + (count + 1).toString + formatWeek(weeksArray.head,monTopic,wedTopic,friTopic) + "\n" +
-              interleaveWeeks(weeksArray.tail, topicsArray.tail.tail.tail, count + 1)
+              interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail.tail, count + 1)
             }
           }
 
