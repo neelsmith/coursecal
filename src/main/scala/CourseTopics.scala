@@ -43,7 +43,7 @@ class Syllabus (val syllabusFileName: String ) {
       case  nonEmpty(ln) => {
         val oneDay = courseDayForLine(ln)
         oneDay match {
-          case Some(CourseDay(_,_,_,_)) => {
+          case Some(CourseDay(_,_,_)) => {
             //println("Add " + oneDay.get + " to entries array")
             entryArray += oneDay.get
           }
@@ -65,11 +65,14 @@ trait SyllabusEntry {
 }
 
 // content entry for one class meeting
-case class CourseDay(val title: String, val assignment: String, val notes: String, val tags: Array[String] ) extends SyllabusEntry {
+case class CourseDay(val title: String, val notes: String, val tags: Array[String] ) extends SyllabusEntry {
   override def toString() = {
-    "Daily topic: " + title
+    if (notes.size > 0 ) {
+      "Daily topic: " + title + " (notes: " + notes + ")"
+    } else {
+    "Daily topic: " + title + " (no notes)"
+    }
   }
-
 }
 
 // section label

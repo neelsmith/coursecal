@@ -19,4 +19,4 @@ scalaVersion := "2.11.8" //2.10.5"
 
 name := "coursecal"
 
-version := "0.9.0"
+version := "0.9.13"

@@ -56,9 +56,9 @@ def shortDisplayDay(d: LocalDate) =  {
 def courseDayForLine(ln: String ): Option[CourseDay] = {
   val cols = ln.split("#")
   cols.size match {
-    case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
-    case 2 =>  Some(CourseDay(cols(0),cols(1),"",Array("")))
-    case 1 => Some(CourseDay(cols(0),"","",Array("")))
+    //case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
+    case 2 =>  Some(CourseDay(cols(0),cols(1),Array("")))
+    case 1 => Some(CourseDay(cols(0),"",Array("")))
     case _ => { println("Error for line '" + ln + "', found " + cols.size + " columns.")
       None
     }

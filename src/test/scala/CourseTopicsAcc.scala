@@ -25,6 +25,6 @@ The toString function of tested course entry should yield
   }
   def e3 = {
     val ar = Array[String]()
-    CourseDay("Introduction to course","","",ar).toString() should beEqualTo("Daily topic: Introduction to course")
+    CourseDay("Introduction to course","",ar).toString() should beEqualTo("Daily topic: Introduction to course (no notes)")
   }
 }
