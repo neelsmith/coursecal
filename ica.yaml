@@ -1,7 +1,8 @@
 # Configure a course calendar
 
 # Used for title of web page
-pageTitle : "Calendar for course X, F'16"
+pageTitle : "Introduction to Classical Archaeology, F'16: course schedule"
+
 
 # Date of a day in the first week of the calendar.
 # Any day of the week will do to idenify the week.
@@ -18,3 +19,9 @@ schedule : "tt"
 
 # Number of weeks the calendar should run for
 totalWeeks : 15
+
+fixedDates:
+  - 2016-11-11 == Fall break
+  - 2016-11-13 == Fall break
+  - 2016-11-24 == Thanksgiving
+  - 2016-12-13 == Exams begin

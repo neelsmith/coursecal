@@ -3,17 +3,19 @@ package io.github.neelsmith
 
 
 package coursecal {
+import scala.collection.mutable.ArrayBuffer
 
+import java.time._
+import java.time.temporal._
+import java.util.Locale
+import java.time.format._
+
+class FixedEvent(val eventDate: LocalDate, val eventLabel: String)
 
 
 
 object ScheduleMaker  {
-  import scala.collection.mutable.ArrayBuffer
 
-  import java.time._
-  import java.time.temporal._
-  import java.util.Locale
-  import java.time.format._
 
   def gatherNotes(entries: Seq[SyllabusEntry]) = {
     "Weekly notes go here"
