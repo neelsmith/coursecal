@@ -79,7 +79,7 @@ title: ${conf.pageTitle}
 
 
   def tthTableHead() = {
-    "\n| Week | Tues     |  Thurs     |\n| :------------- | :------------- |:------------- |\n"
+    "\n| Week | Notes | Tues     |  Thurs     |\n| :------------- |:------------- | :------------- |:------------- |\n"
   }
   def mwfTableHead() = {
     "\n| Week | Mon     | Topic     | Wed     | Topic     | Fri     | Topic     |Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------| :-------------|:-------------| :-------------|\n"
@@ -103,9 +103,9 @@ title: ${conf.pageTitle}
         case topic: SectionTopic => {
           weeksArray.head match {
             case tth: TuThWeek =>
-            "##" + topic.title + "\n\n" + tthTableHead() + interleaveWeeks(weeksArray, fixedDates,topicsArray.tail, count)
+            "\n##" + topic.title + "\n\n" + tthTableHead() + interleaveWeeks(weeksArray, fixedDates,topicsArray.tail, count)
             case mwf: MonWedFriWeek =>
-            "##" + topic.title + "\n\n" + mwfTableHead() + interleaveWeeks(weeksArray,fixedDates, topicsArray.tail, count)
+            "\n##" + topic.title + "\n\n" + mwfTableHead() + interleaveWeeks(weeksArray,fixedDates, topicsArray.tail, count)
           }
         }
         case topic: CourseDay => {
@@ -128,8 +128,6 @@ title: ${conf.pageTitle}
               interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail.tail, count + 1)
             }
           }
-
-          //"| " + (count + 1).toString + formatWeek(topicsArray.head, weeksArray.head) + "\n" + interleaveWeeks(weeksArray.tail, topicsArray.tail, count + 1)
         }
       }
     }

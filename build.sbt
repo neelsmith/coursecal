@@ -15,8 +15,8 @@ scalacOptions in Test ++= Seq("-Yrangepos")
 
 initialCommands in (Test, console) := """ammonite.Main().run()"""
 
-scalaVersion := "2.11.8" //2.10.5"
+scalaVersion := "2.11.8"
 
 name := "coursecal"
 
-version := "0.9.13"
+version := "0.9.15"

@@ -8,7 +8,7 @@
 
 import ammonite.ops._
 
-import $ivy.`default::coursecal:0.9.11`
+import $ivy.`default::coursecal:0.9.15`
 import io.github.neelsmith.coursecal._
 
 @main
