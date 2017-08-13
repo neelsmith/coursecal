@@ -1,11 +1,12 @@
 
-package io.github.neelsmith
-package coursecal
-
-import org.specs2._
+package edu.holycross.shot.coursecal
 
 
-class HelloCalAccSpec extends Specification {
+import org.scalatest.FlatSpec
+
+
+class HelloCalAccSpec extends FlatSpec {
+  /*
   def is = s2"""
 
  This is a specification to check constructing a CalendarConfig.
@@ -22,4 +23,5 @@ class HelloCalAccSpec extends Specification {
     cal.yamlText  must startWith("# Configure a course calendar")}
   def e3 = { val cal = new CalendarConfig("ica.yaml")
     shortDisplayDay(cal.firstDay) must beEqualTo("Aug. 25")}
+    */
 }

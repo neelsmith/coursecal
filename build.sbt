@@ -1,22 +1,18 @@
-resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
 
-
-libraryDependencies += "com.lihaoyi" % "ammonite" % "0.7.4" % "test" cross CrossVersion.full
-
-libraryDependencies += "com.lihaoyi" %% "ammonite-ops" % "0.7.4"
-
-libraryDependencies += "org.yaml" % "snakeyaml" % "1.14"
-
-
-libraryDependencies += "org.specs2" %% "specs2-core" % "3.6.5" % "test"
-
-
-scalacOptions in Test ++= Seq("-Yrangepos")
-
-initialCommands in (Test, console) := """ammonite.Main().run()"""
-
-scalaVersion := "2.11.8"
+scalaVersion := "2.12.3"
 
 name := "coursecal"
+organization := "edu.holycross.shot"
+version := "0.9.17"
+licenses += ("GPL-3.0",url("https://opensource.org/licenses/gpl-3.0.html"))
+resolvers += Resolver.jcenterRepo
+resolvers += Resolver.bintrayRepo("neelsmith", "maven")
 
-version := "0.9.15"
+resolvers += "beta" at "http://beta.hpcc.uh.edu/nexus/content/repositories/releases"
+libraryDependencies ++= Seq(
+  "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+
+  "org.yaml" % "snakeyaml" % "1.14"
+
+
+)

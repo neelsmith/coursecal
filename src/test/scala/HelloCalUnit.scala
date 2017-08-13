@@ -1,25 +1,19 @@
 
-package io.github.neelsmith
-package coursecal
 
-import org.specs2.mutable._
-import ammonite.ops._
+package edu.holycross.shot.coursecal
 
-class HelloCalUnitSpec extends Specification {
-  "The CalendarConfig's file name" should {
-   "contain 8 characters" in {
+import org.scalatest.FlatSpec
+
+class HelloCalUnitSpec  extends FlatSpec {
+
+  "The CalendarConfig's file name" should "contain 8 characters" in {
      val cal = new CalendarConfig("ica.yaml")
-     cal.confFileName.pp must have size(8)
-
+     //assert(cal.confFileName.pp.size == 8)
    }
- }
 
-  "The resulting calendar" should {
-    "have 16 entries" in {
+   "The resulting calendar" should "have 16 entries" in {
       val conf = new CalendarConfig("ica.yaml")
       val cal = conf.calendar
-      cal.weeks must have size(15)
-
-    }
+      assert(cal.weeks.size == 15)
   }
-  }
+}

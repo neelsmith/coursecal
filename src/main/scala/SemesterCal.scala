@@ -1,5 +1,4 @@
-package io.github.neelsmith
-
+package edu.holycross.shot.coursecal
 
   import java.time._
   import java.time.temporal._
@@ -12,8 +11,6 @@ This is a group of calendrical objects.
 
 
 
-
-package coursecal {
 
 
   import scala.collection.mutable.ArrayBuffer
@@ -47,29 +44,4 @@ case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Seme
     weeks += wk
   }
   //def weeks : ArrayBuffer[MonWedFriWeek] = { wks }
-}
-
-
-
-sealed abstract class CourseWeek
-
-// Given any day in a week, find the Tues and Thurs dates
-class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
-  val tues = oneDay.`with`(DayOfWeek.TUESDAY)
-  val thurs = oneDay.`with`(DayOfWeek.THURSDAY)
-
-  override def toString() = {
-    "TuThWeek " + tues + ", " + thurs
-  }
-}
-
-class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
-  val mon = oneDay.`with`(DayOfWeek.MONDAY)
-  val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
-  val fri = oneDay.`with`(DayOfWeek.FRIDAY)
-  override def toString() = {
-    "MWFWeek " + mon + ", " + wed + ", " + fri
-  }
-}
-
 }

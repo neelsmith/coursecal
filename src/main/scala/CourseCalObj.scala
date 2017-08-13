@@ -1,4 +1,4 @@
-package io.github.neelsmith
+package edu.holycross.shot
 
 
 /*
@@ -8,7 +8,8 @@ This is a group of calendrical objects.
 package object coursecal {
 
 
-import ammonite.ops._
+//import ammonite.ops._
+import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
 import java.time._
 import java.time.temporal._
@@ -24,12 +25,15 @@ import java.time.format._
 * @param fp FilePath object to resolve.
 * @return A Path object with absolute path.
 */
+
+//
+/*
 def resolveFileRef(fp: FilePath): Path = {
   fp match {
       case fp: RelPath => Path(fp, cwd)
       case fp: Path => fp
     }
-}
+}*/
 
 def shortDisplayWeek(wk: CourseWeek) = {
   wk match {

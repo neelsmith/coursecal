@@ -1,8 +1,5 @@
-package edu.holycross.shot
+package edu.holycross.shot.coursecal
 
-
-
-package coursecal {
 import scala.collection.mutable.ArrayBuffer
 
 import java.time._
@@ -12,6 +9,8 @@ import java.time.format._
 
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
+
+
 
 class FixedEvent(val eventDate: LocalDate, val eventLabel: String) {
   override def toString() = {
@@ -25,12 +24,12 @@ object ScheduleMaker  {
   def schedule( topics: Syllabus, conf: CalendarConfig): String = {
     val yamlHeader = s"""---
 layout: page
-title: ${conf.pageTitle}
+title: ${conf.title}
 ---
 
 """
-    yamlHeader + interleaveWeeks(conf.calendar.weeks, conf.fixedEvents, topics.entries,0)
-
+//    yamlHeader + interleaveWeeks(conf.calendar.weeks, conf.fixedEvents, topics.entries,0)
+  yamlHeader
   }
 
 
@@ -132,6 +131,4 @@ title: ${conf.pageTitle}
       }
     }
   }
-}
-
 }

@@ -1,12 +1,10 @@
 
 //This file has a group of *topic*, or *content* objects.
-
-
-package io.github.neelsmith
+package edu.holycross.shot
 package  coursecal
 
 import scala.io.Source
-import ammonite.ops._
+//import ammonite.ops._
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 
