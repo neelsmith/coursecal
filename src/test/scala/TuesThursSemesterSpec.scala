@@ -6,7 +6,7 @@ import org.scalatest.FlatSpec
 import java.time._
 import java.time.format._
 
-class TuesThursWeekSpec  extends FlatSpec {
+class TuesThursSemesterSpec  extends FlatSpec {
 
   val startDate = LocalDate.parse("2017-08-30")
 

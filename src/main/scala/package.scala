@@ -1,23 +1,6 @@
 package edu.holycross.shot
 
 
-/** Provides classes for working with academic course calendars.
- *
- *  ==Overview==
- *  The pattern for a semester-long is configured by a
- *  [[CalendarConfig]] object, which can be instantiated from
- *  a yaml file.
- *
- *  Daily topics and assignments are managed by a [[CourseTopics]]
- *  object, which can be instantiated from a simple file in
- *  delimited-text format.
- *
- *
- */
-
-
-
-
 import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
 import java.time._
@@ -25,7 +8,18 @@ import java.time.temporal._
 import java.util.Locale
 import java.time.format._
 
-
+/** Provides classes for working with academic course calendars.
+ *
+ *  ==Overview==
+ *  The pattern for a semester-long course is configured by a
+ *  [[CalendarConfig]] object, which can be instantiated from
+ *  a yaml file.
+ *
+ *  Daily topics and assignments are managed by a [[SyllabusEntry]]
+ *  objects, which can be instantiated from a simple file in
+ *  delimited-text format.
+ *
+ */
 package object coursecal {
 
 
