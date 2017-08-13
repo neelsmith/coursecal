@@ -41,8 +41,8 @@ case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Sched
 }
 
 
-/** Factory object for making calendar configurations
-* from YAML source file.
+/** Factory object for making [[CalendarConfig]]s
+* from a YAML source file.
 */
 object CalendarConfig {
 

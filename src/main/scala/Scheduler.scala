@@ -10,12 +10,17 @@ import java.time.format._
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
 
+case class Schedule(topics: Topics, conf: CalendarConfig)  {
+
+}
 
 
-object ScheduleMaker  {
+/** Context-free functions defining headers for tables.
+*/
+object Schedule  {
 
-
-  def schedule( topics: Topics, conf: CalendarConfig): String = {
+/*
+  def schedule( ): String = {
     val yamlHeader = s"""---
 layout: page
 title: ${conf.title}
@@ -70,7 +75,7 @@ title: ${conf.title}
     case wk: WedFriWeek => "WF: TBD"
     }
   }
-
+*/
 
   def tthTableHead() = {
     "\n| Week | Notes | Tues     |  Thurs     |\n| :------------- |:------------- | :------------- |:------------- |\n"
