@@ -17,12 +17,17 @@ class CalendarConfigSpec  extends FlatSpec {
 
    it should "define a starting date" in {
      val expectedDate = LocalDate.parse("2016-08-25")
-     assert(cal.dayOne == expectedDate)
+     assert(cal.weekOne == expectedDate)
   }
 
   it should "define a schedule type" in {
     val expectedType = TTh
     assert(cal.scheduleType == expectedType)
+  }
+
+  it should "define the total number of *calendar* weeks the course will run" in {
+    val expectedWeeks = 15
+    assert(cal.calendarWeeks == expectedWeeks)
   }
 
   it should "have a Vector of events with fixed dates" in {

@@ -1,41 +1,46 @@
 package edu.holycross.shot.coursecal
 
-  import java.time._
-  import java.time.temporal._
-  import java.util.Locale
-  import java.time.format._
-/*
-This is a group of calendrical objects.
-*/
+import java.time._
+import java.time.temporal._
+import java.util.Locale
+import java.time.format._
 
 
 
 
 
+import scala.collection.mutable.ArrayBuffer
 
-  import scala.collection.mutable.ArrayBuffer
-
-// Calendar for a Semester is a list of CourseWeeks.
-// CourseWeeks are either TuThuWeek or MonWedFriWeek objects.
-
-
-//sealed abstract class Semester {
+/** A Vector of [[CourseWeeks]]. */
 trait Semester {
-  def weeks : ArrayBuffer[_ <: CourseWeek]
+  def weeks : Vector[_ <: CourseWeek]
 }
 
+/**  CourseWeeks on a TuesThurs pattern.
+*
+* @param startDate A date in the first week of classes.
+* @param totalWeeks Number of calendar weeks to schedule.
+*/
 case class TuesThursSemester(startDate: LocalDate, totalWeeks: Int) extends Semester {
+  def weeks = {
+    def wks = for (i <- 0 until totalWeeks) yield {
+      val currReferenceDate = startDate.plusWeeks(i)
+      TuThWeek(currReferenceDate)
+    }
+    wks.toVector
+  }
+  /*
   val weeks = new ArrayBuffer[TuThWeek]
   var i = 0
-  for (i <- 0 to totalWeeks) {
+  for (i in  0 until totalWeeks) {
     val currReferenceDate = startDate.plusWeeks(i)
     val wk = new TuThWeek(currReferenceDate)
     weeks += wk
-  }
+  }*/
   //def weeks : ArrayBuffer[TuThWeek] = { wks }
 }
 
-case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Semester {
+case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int)  {
   val weeks = new ArrayBuffer[MonWedFriWeek]
   var i = 0
   for (i <- 0 to totalWeeks) {

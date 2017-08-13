@@ -10,8 +10,22 @@ import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
 
 
-
-case class CalendarConfig(title: String, dayOne: LocalDate, scheduleType: Schedule, fixedEvents: Vector[FixedEvent] ) {
+/** Configuration data needed to compute a course schedule
+* for a given course in a given semester.
+*
+* @param title Title of course calendar.
+* @param dayOne A date falling anywhere in the first week
+* of classes.
+* @param scheduleType Pattern of weekly class meetings.
+* @param calendarWeeks Number of weeks to schedule.  Note
+* that these are real calendar weeks:  if there are no classes
+* for an entire week (e.g., spring break), that week should still
+* be included in the total.  (In your list [[CourseTopics]], you
+* can indicate that no classes will meet at that point in the term.)
+* @param fixedEvent Events outside the list of topics that have a
+* fixed date assigned to them.
+*/
+case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Schedule, calendarWeeks: Int, fixedEvents: Vector[FixedEvent] ) {
 
   /** Creates a semester calendar from the information in a
   * semester calendar configuration.
@@ -21,15 +35,13 @@ case class CalendarConfig(title: String, dayOne: LocalDate, scheduleType: Schedu
   */
 
 
-  /*
+  /**
+  */
   def getCalendarOption(): Option[Semester] = {
 
-    sched.toLowerCase() match {
-      case "mwf" => Some(MonWedFriSemester(firstDay, lastWeekIndex))
-      //case "monwedfri" => MonWedFriSemester(conf.firstDay, conf.lastWeekIndex)
-      case "tt" => Some(TuesThursSemester(firstDay, lastWeekIndex))
-      //case "tth" => TuesThursSemester(conf.firstDay, conf.lastWeekIndex)
-      //case "tuesthurs" => TuesThursSemester(conf.firstDay, conf.lastWeekIndex)
+    scheduleType match {
+      case MWF => Some(MonWedFriSemester(weekOne, calendarWeeks))
+      case TTh => Some(TuesThursSemester(weekOne, calendarWeeks))
       case _ => None
     }
 
@@ -38,7 +50,7 @@ case class CalendarConfig(title: String, dayOne: LocalDate, scheduleType: Schedu
 
   def calendar = {
     getCalendarOption().get
-  }  */
+  }
 }
 
 object CalendarConfig {
@@ -51,7 +63,9 @@ object CalendarConfig {
 
     val pageTitle = c.get("pageTitle").asInstanceOf[String]
     val firstDay = LocalDate.parse(c.get("firstDay").asInstanceOf[String])
-    val lastWeekIndex = c.get("totalWeeks").asInstanceOf[Int] - 1 // 0-origin
+
+    val totalWeeks = c.get("totalWeeks").asInstanceOf[Int]
+
     val schedString = c.get("schedule").asInstanceOf[String]
     val scheduleType = schedString.toLowerCase match {
       case "mwf" => MWF
@@ -66,6 +80,6 @@ object CalendarConfig {
     val fixedEvents =  trimmed.map { case a  => (new FixedEvent(LocalDate.parse(a(0)), a(1)))  }
 
 
-    CalendarConfig(pageTitle, firstDay, scheduleType, fixedEvents)
+    CalendarConfig(pageTitle, firstDay, scheduleType,totalWeeks, fixedEvents)
   }
 }

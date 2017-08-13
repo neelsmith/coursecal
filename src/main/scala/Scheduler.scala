@@ -73,7 +73,11 @@ title: ${conf.title}
       "| *" + shortDisplayDay(wk.tues) + ", " + shortDisplayDay(wk.thurs) + "*. " + specials + gatherNotes(entries) + " | " + formatTopic(entries(0)) + " | "  + formatTopic(entries(1)) + " |"
     }
     case wk: MonWedFriWeek => "MWF:  TBD"
+    case wk: WedFriWeek => "WF: TBD"
     }
+
+
+
   }
 
 
@@ -126,6 +130,7 @@ title: ${conf.title}
               "| " + (count + 1).toString + formatWeek(fixedDates, weeksArray.head,monTopic,wedTopic,friTopic) + "\n" +
               interleaveWeeks(weeksArray.tail, fixedDates, topicsArray.tail.tail.tail, count + 1)
             }
+            case wk: WedFriWeek => "WF: TBD"
           }
         }
       }
