@@ -50,9 +50,20 @@ class CalendarConfigSpec  extends FlatSpec {
           case tth: TuesThursSemester => assert(tth.totalWeeks == 15)
           case _ => fail("Should have created a TTh semester")
         }
-
       }
       case None => fail("Should have created a Semester option")
     }
+  }
+
+  it should "find a week calendar for any week of the semester identified by zero-origin index" in {
+      val calconf = CalendarConfig("src/test/resources/greek101.yaml")
+      val week1 = calconf.calForWeek(1)
+      week1 match {
+        case mwf: MonWedFriWeek => {
+          val expectedWed = LocalDate.parse("2017-08-30")
+          assert(mwf.wed == expectedWed)
+        }
+        case _ => fail("Should have created a MonWedFriWeek")
+      }
   }
 }

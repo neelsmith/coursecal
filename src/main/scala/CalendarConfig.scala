@@ -38,6 +38,21 @@ case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Sched
       case _ => None
     }
   }
+
+
+  /** Compute week calendar for a given week of the semester
+  * identified by 1-origin index.
+  *
+  * @param weekNumber Week index.
+  */
+  def calForWeek(weekNumber: Int):  CourseWeek = {
+    val referenceDate = weekOne.plusWeeks(weekNumber - 1)
+    scheduleType match {
+      case MWF => MonWedFriWeek(referenceDate)
+      case TTh => TuThWeek(referenceDate)
+      case WF =>  WedFriWeek(referenceDate)
+    }
+  }
 }
 
 
