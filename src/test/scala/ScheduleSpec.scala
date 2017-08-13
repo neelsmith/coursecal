@@ -22,7 +22,7 @@ class ScheduleSpec  extends FlatSpec {
     val topics = "src/test/resources/greek101.txt"
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
-    val expectedWeeks = 1
+    val expectedWeeks = 3
     assert(sched.topicsWeeks == expectedWeeks)
   }
 
