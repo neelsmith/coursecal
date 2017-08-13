@@ -43,7 +43,14 @@ case class Topics (entries : Vector[TopicEntry] ) {
   }
 
 
-
+  /** Cluster a series of [[Week]]s by segments
+  * labelled with headings.
+  *
+  * @param classesPerWeek Number of times class meets weekly.
+  */
+  def weeklySegmented(classesPerWeek: Int)  = {
+    segments.map(_.weekly(classesPerWeek))
+  }
 
 
   /** Cluster a sequence of [[TopicEntry]]s in weekly

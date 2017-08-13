@@ -70,4 +70,13 @@ class TopicsSpec  extends FlatSpec {
       val expectedWeeks = 3
       assert(byWeek.size == expectedWeeks)
   }
+
+  it should "cluster classes into weeks within a clustering by topics identified by heading" in {
+      val f = "src/test/resources/greek101.txt"
+      val topics = Topics(f)
+      val segmented = topics.weeklySegmented(3)
+      val expectedSegs = 3
+      assert(segmented.size == expectedSegs)
+
+  }
 }
