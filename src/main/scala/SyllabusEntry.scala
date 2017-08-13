@@ -45,21 +45,19 @@ object CourseDay {
 
   /** Create a CourseDay object from one line of delimited text.
   *
-  * Lines should be formatted as three columns delimited by '#'
-  * representing a title or description, a link to an assignment, and
-  * weekly notes or reminders.  The third column is optional; the
-  * second is optional if there is no third column.
+  * Lines should be formatted as two columns delimited by '#'.  The first
+  * column is the entry for the day;  the second column is optional weekly
+  * notes or reminders.
   *
   * @param ln The line of text.
   */
-  def apply(ln: String ): Option[CourseDay] = {
+  def apply(ln: String ): CourseDay = {
     val cols = ln.split("#")
     cols.size match {
       //case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
-      case 2 =>  Some(CourseDay(cols(0),cols(1),Vector.empty[DayTag]))
-      case 1 => Some(CourseDay(cols(0),"",Vector.empty[DayTag]))
-      case _ => { println("Error for line '" + ln + "', found " + cols.size + " columns.")
-        None
+      case 2 =>  CourseDay(cols(0),cols(1),Vector.empty[DayTag])
+      case 1 => CourseDay(cols(0),"",Vector.empty[DayTag])
+      case _ => { throw new Exception("Error for line '" + ln + "', found " + cols.size + " columns.")
       }
     }
 
