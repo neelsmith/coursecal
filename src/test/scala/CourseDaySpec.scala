@@ -48,7 +48,15 @@ class CourseDaySpec  extends FlatSpec {
       }
   }
 
+  it should "identify defined tags occuring in a string" in {
+    val tags = CourseDay.tagsInText("Advising @none")
+    val expected = Vector(NoClass)
+    assert (tags == expected)
+  }
 
-
+  it should "strip recognized tags from a string" in {
+    val detagged = CourseDay.removeTags("Advising @none")
+    assert(detagged == "Advising")
+  }
 
 }

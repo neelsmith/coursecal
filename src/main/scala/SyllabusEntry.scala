@@ -10,17 +10,32 @@ import scala.collection.mutable.HashMap
 trait SyllabusEntry
 
 
-/** Labelledsection heading.
+/** Labelled section heading.
 *
 * @param level Heading level.
 * @param title Title of section.
 */
-case class SectionTopic(level: Int,title: String) extends SyllabusEntry {
+case class SectionTopic(level: Int, title: String) extends SyllabusEntry {
+
   override def toString() = {
     "Section: " + title
   }
 }
 
+/** Factory object for creating [[SectionTopic]]s from text source.
+*/
+object SectionTopic {
+
+  /** Create a SectionTopic object from one line of text.
+  *
+  * @param ln The line of text.
+  */
+  def apply(ln: String ): SectionTopic = {
+    val hdrPattern = "^(#+)(.+)".r
+    val hdrPattern(level, txt) = ln
+    SectionTopic(level.size, txt.trim)
+  }
+}
 
 /** Content entry for one class meeting.
 *
@@ -49,6 +64,7 @@ object CourseDay {
   */
   def apply(ln: String ): Option[CourseDay] = {
     val cols = ln.split("#")
+    val tagVector = tagsInText(cols(0))
     cols.size match {
       //case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
       case 2 =>  Some(CourseDay(cols(0).trim,cols(1).trim,Vector.empty[DayTag]))
@@ -57,6 +73,38 @@ object CourseDay {
         None
       }
     }
+  }
 
+  /** Map of tagging strings to [[DayTag]]s */
+  val tagsMap: Map[String,DayTag] = Map(
+    "@none" -> NoClass
+  )
+
+  /** Find any occurrences of recognized tags in text.
+  *
+  * @param s Text to examine.
+  */
+  def tagsInText(s: String): Vector[DayTag] = {
+    val tags = for (t <- tagsMap.keySet) yield {
+      if (s.contains(t)) {
+        Some(tagsMap(t))
+      } else {
+        None
+      }
+    }
+    tags.flatten.toVector
+  }
+
+  def removeNextTag(s: String, tagList: Vector[String]): String = {
+    if (tagList.isEmpty) {
+      s
+    } else {
+      val thinner = s.replaceAll(tagList.head, "")
+      removeNextTag(thinner.trim, tagList.drop(1))
+    }
+  }
+
+  def removeTags(s: String): String = {
+    removeNextTag(s.trim, tagsMap.keySet.toVector)
   }
 }
