@@ -5,7 +5,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 
 
-/** A syllabus of topics for a course.
+/** A sequence of topics for a course.
 *
 * @param entries Sequence of [[TopicEntry]]s for the semester.
 */
@@ -24,7 +24,7 @@ case class Topics (entries : Vector[TopicEntry] ) {
 
   def addSegment(src: Vector[TopicEntry], target: Vector[Topics]) : Vector[Topics] = {
     if (src.isEmpty) {
-      target
+      target.filter(_.entries.nonEmpty)
 
     } else {
       val nextSegment: Vector[TopicEntry] = Topics.nextSegment(src, Vector.empty[TopicEntry] )
