@@ -15,9 +15,14 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
 }
 
 
-/** Context-free functions defining headers for tables.
+/**
 */
 object Schedule  {
+
+
+  def apply(topicsFile: String, confFile: String): Schedule = {
+    Schedule(Topics(topicsFile), CalendarConfig(confFile))
+  }
 
 /*
   def schedule( ): String = {
