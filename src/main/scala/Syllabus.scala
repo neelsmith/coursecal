@@ -25,37 +25,18 @@ object Syllabus {
   * @param syllabusFileName Name of file with sequence of course topics.
   */
   def apply(syllabusFileName: String): Syllabus = {
-    val lns = scala.io.Source.fromFile(syllabusFileName).getLines().toVector
-
-
-/*
-    val hdrPattern = "^#+(.+)".r
-    val emptyLine = "^$".r
-    val nonEmpty = "([^#].+)".r
-
-    var entryArray = new ArrayBuffer[SyllabusEntry]
-    for (ln <- lns) {
-      ln match  {
-      case emptyLine(ln) => //println("Line was empty")
-
-      case hdrPattern(ln) => {entryArray += SectionTopic(0,ln)}
-
-      case  nonEmpty(ln) => {
-        val oneDay = courseDayForLine(ln)
-        oneDay match {
-          case Some(CourseDay(_,_,_)) => {
-            //println("Add " + oneDay.get + " to entries array")
-            entryArray += oneDay.get
-          }
-          case _ => { //println("Failed to get a CourseDay from line " + ln)
-            //println ("Got " + oneDay)
-          }
-        }
+    val hdr = "^#.+".r
+    val lns = scala.io.Source.fromFile(syllabusFileName).getLines().toVector.filter(_.nonEmpty)
+    println("LINES: " + lns)
+    val entries = lns.map( l =>
+      hdr.findFirstIn(l) match {
+        case None =>  CourseDay(l)
+        case h: Some[String] => Some(SectionTopic(l))
       }
-      case _ => //println("Line '" + ln + "' (length " + ln.size + ") matched no pattern!")
-      }
-    }
-    entryArray*/
-    Syllabus(Vector.empty[SyllabusEntry])
+    )
+    Syllabus(entries.map(_.get))
   }
+
+
+
 }
