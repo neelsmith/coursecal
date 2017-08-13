@@ -63,10 +63,11 @@ class TopicsSpec  extends FlatSpec {
   }
 
 
-  it should "cluster classes into weeks for a given number of meetings per week" in pending /* {
+  it should "cluster classes into weeks for a given number of meetings per week" in {
       val f = "src/test/resources/greek101.txt"
       val topics = Topics(f)
-      val x = topics.weekly(2)
+      val byWeek = topics.weekly(3)
+      val expectedWeeks = 3
+      assert(byWeek.size == expectedWeeks)
   }
-*/
 }

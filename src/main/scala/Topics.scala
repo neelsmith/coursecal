@@ -4,6 +4,7 @@ import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 
+case class Week(entries : Vector[TopicEntry], dimension: Int)
 
 /** A sequence of topics for a course.
 *
@@ -18,10 +19,14 @@ case class Topics (entries : Vector[TopicEntry] ) {
   /** Cluster [[CourseDay]] entries into groups
   * organized by [[TopicEntry]]s
   */
-  def segments = {
+  def segments: Vector[Topics] = {
     addSegment(entries,Vector(Topics(Vector.empty[TopicEntry])) )
   }
 
+
+  /** Break of a set of [[TopicEntry]]s into a series of [[Topics]] broken up
+  * by [[SectionTopic]]s.
+  */
   def addSegment(src: Vector[TopicEntry], target: Vector[Topics]) : Vector[Topics] = {
     if (src.isEmpty) {
       target.filter(_.entries.nonEmpty)
@@ -41,24 +46,35 @@ case class Topics (entries : Vector[TopicEntry] ) {
 
 
 
-  /** Aggregate sequence of [[TopicEntry]]s in weekly
+  /** Cluster a sequence of [[TopicEntry]]s in weekly
   * sequences.
   *
   * @param classesPerWeek Number of class meetings per Week.
   */
-  def weekly(classesPerWeek: Int)  = {  ///    : Vector[Vector[TopicEntry]] = {
+  def weekly(classesPerWeek: Int):  Vector[Week]  = {
       val clustered = Vector.empty
-      println("WEEKLY:")
       addWeek(days, clustered, classesPerWeek)
   }
 
 
-  def addWeek(source: Vector[TopicEntry], clustered: Vector[Vector[TopicEntry]], classesPerWeek: Int) = {
-    if (source.size > classesPerWeek) {
-      println("TAKE: " + source.take(classesPerWeek))
+  /** Recursively cluster [[TopicEntry]]s in weekly sequences by
+  * adding the next week of [[TopicEntry]]s to a list.
+  *
+  * @param classesPerWeek Number of class meetings per Week.
+  */
+  def addWeek(source: Vector[TopicEntry],
+    clustered: Vector[Week],
+    classesPerWeek: Int):  Vector[Week] = {
 
+    if (source.size >= classesPerWeek) {
+      val week = Week(source.take(classesPerWeek), classesPerWeek)
+      val appended = clustered ++ Vector(week)
+      addWeek(source.drop(classesPerWeek),appended, classesPerWeek)
     } else {
-      println("done")
+      if (source.size > 0) {
+        println(s"WE HAVE ${source.size} DANGLING RECORDS")
+      }
+      clustered
     }
   }
 
