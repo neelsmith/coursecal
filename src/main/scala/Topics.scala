@@ -15,6 +15,16 @@ case class Topics (entries : Vector[TopicEntry] ) {
   /** Number of entries. */
   def size: Int = entries.size
 
+  /** Cluster [[CourseDay]] entries into groups
+  * organized by [[TopicEntry]]s
+  */
+  def segment = {
+  }
+
+
+
+
+
   /** Aggregate sequence of [[TopicEntry]]s in weekly
   * sequences.
   *
@@ -34,7 +44,6 @@ case class Topics (entries : Vector[TopicEntry] ) {
     } else {
       println("done")
     }
-
   }
 
 
@@ -82,13 +91,33 @@ object Topics {
     Topics(entries.map(_.get))
   }
 
-    /** True if entry is a [[CourseDay]].
-    */
-    def isDay(entry: TopicEntry) : Boolean  =
-      entry match {
-        case day: CourseDay => true
-        case _ => false
+  /** True if entry is a [[CourseDay]].
+  */
+  def isDay(entry: TopicEntry) : Boolean  = entry match {
+      case day: CourseDay => true
+      case _ => false
+  }
+
+  /**  Gather all [[CourseDay]] entires from a topic list up
+  * until the next [[TopicEntry]], collecting a heading value with
+  * the list if it begins with a heading.
+  */
+  def nextSegment(src: Vector[TopicEntry], target: Vector[TopicEntry]): Vector[TopicEntry] = {
+    val nextVal = src(0)
+    nextVal match {
+      case day : CourseDay => {
+        println("course day " + day)
+        nextSegment(src.drop(1), Vector(day) ++ target )
       }
+      case topic : SectionTopic => {
+        // accept section heading at beginning of segment
+        if (target.size == 0) {
+          nextSegment(src.drop(1), Vector(topic))
+        } else {
+          target
+        }
+      }
+    }
 
-
+  }
 }

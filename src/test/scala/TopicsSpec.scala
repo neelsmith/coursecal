@@ -8,7 +8,7 @@ import java.time.format._
 
 class TopicsSpec  extends FlatSpec {
 
-  "The Topics object" should "create a Syllabus from a file" in {
+  "The Topics object" should "create a TopicsList from a file" in {
     val f = "src/test/resources/greek101.txt"
     val topics = Topics(f)
     topics match {
@@ -17,6 +17,17 @@ class TopicsSpec  extends FlatSpec {
     }
   }
 
+
+  it should "extract a heading-delimited segment from a list"  in {
+    val f = "src/test/resources/greek101.txt"
+    val topics = Topics(f)
+
+    val seg1 = Topics.nextSegment(topics.entries, Vector.empty[TopicEntry])
+    val expectedSize = 4
+    assert( seg1.size == expectedSize)
+
+  }
+/*
   "A Topics list" should "extract course days from the list" in {
     val f = "src/test/resources/greek101.txt"
     val topics = Topics(f)
@@ -36,5 +47,5 @@ class TopicsSpec  extends FlatSpec {
       val topics = Topics(f)
       val x = topics.weekly(2)
   }
-
+*/
 }
