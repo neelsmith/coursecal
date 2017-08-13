@@ -27,7 +27,7 @@ class TopicsSpec  extends FlatSpec {
     assert( seg1.size == expectedSize)
 
   }
-/*
+
   "A Topics list" should "extract course days from the list" in {
     val f = "src/test/resources/greek101.txt"
     val topics = Topics(f)
@@ -42,7 +42,21 @@ class TopicsSpec  extends FlatSpec {
       assert (topics.weeks(2) ==5)
   }
 
-  it should "cluster classes into weeks for a given number of meetings per week" in {
+  it should "cluster topics in sublists grouped under headings" in {
+    val f = "src/test/resources/greek101.txt"
+    val topics = Topics(f)
+    val targetEntries : Vector[TopicEntry]= Vector.empty[TopicEntry]
+
+    val topicsV : Vector[Topics] = Vector.empty
+    val clusters = topics.addSegment(topics.entries, topicsV)
+
+    val expectedClusters = 3
+    assert(clusters.size == expectedClusters)
+
+
+  }
+
+  it should "cluster classes into weeks for a given number of meetings per week" in pending /* {
       val f = "src/test/resources/greek101.txt"
       val topics = Topics(f)
       val x = topics.weekly(2)

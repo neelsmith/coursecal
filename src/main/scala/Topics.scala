@@ -18,7 +18,23 @@ case class Topics (entries : Vector[TopicEntry] ) {
   /** Cluster [[CourseDay]] entries into groups
   * organized by [[TopicEntry]]s
   */
-  def segment = {
+  def segments = {
+    addSegment(entries,Vector(Topics(Vector.empty[TopicEntry])) )
+  }
+
+  def addSegment(src: Vector[TopicEntry], target: Vector[Topics]) : Vector[Topics] = {
+    if (src.isEmpty) {
+      target
+
+    } else {
+      val nextSegment: Vector[TopicEntry] = Topics.nextSegment(src, Vector.empty[TopicEntry] )
+      if (target.size == 0) {
+        addSegment(src.drop(nextSegment.size), Vector(Topics(nextSegment)))
+      } else {
+        val composite =   target ++  Vector(Topics(nextSegment))
+        addSegment(src.drop(nextSegment.size), composite)
+      }
+    }
   }
 
 
@@ -74,6 +90,17 @@ case class Topics (entries : Vector[TopicEntry] ) {
 * delimited-text file.
 */
 object Topics {
+/*
+  def fromText(s:String): Topics = {
+    val hdr = "^#.+".r
+    val entries = s.split("\n").map( l =>
+      hdr.findFirstIn(l) match {
+        case None =>  CourseDay(l)
+        case h: Some[String] => Some(SectionTopic(l))
+      }
+    )
+    Topics(entries.map(_.get))
+  }*/
 
   /** Create a [[Topics]] from a delimited-text file.
   *
@@ -103,21 +130,23 @@ object Topics {
   * the list if it begins with a heading.
   */
   def nextSegment(src: Vector[TopicEntry], target: Vector[TopicEntry]): Vector[TopicEntry] = {
-    val nextVal = src(0)
-    nextVal match {
-      case day : CourseDay => {
-        println("course day " + day)
-        nextSegment(src.drop(1), Vector(day) ++ target )
-      }
-      case topic : SectionTopic => {
-        // accept section heading at beginning of segment
-        if (target.size == 0) {
-          nextSegment(src.drop(1), Vector(topic))
-        } else {
-          target
+    if (src.isEmpty) {
+      target
+    } else {
+      val nextVal = src(0)
+      nextVal match {
+        case day : CourseDay => {
+          nextSegment(src.drop(1), Vector(day) ++ target )
+        }
+        case topic : SectionTopic => {
+          // accept section heading at beginning of segment
+          if (target.size == 0) {
+            nextSegment(src.drop(1), Vector(topic))
+          } else {
+            target
+          }
         }
       }
     }
-
   }
 }
