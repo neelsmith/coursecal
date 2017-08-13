@@ -12,15 +12,9 @@ import scala.collection.mutable.Buffer
 
 
 
-class FixedEvent(val eventDate: LocalDate, val eventLabel: String) {
-  override def toString() = {
-    "Fixed event " + eventLabel + " on " + eventDate
-  }
-}
-
-
-
 object ScheduleMaker  {
+
+
   def schedule( topics: Syllabus, conf: CalendarConfig): String = {
     val yamlHeader = s"""---
 layout: page
@@ -75,9 +69,6 @@ title: ${conf.title}
     case wk: MonWedFriWeek => "MWF:  TBD"
     case wk: WedFriWeek => "WF: TBD"
     }
-
-
-
   }
 
 
@@ -94,7 +85,9 @@ title: ${conf.title}
     fixedDates :    Buffer[FixedEvent],
     topicsArray: ArrayBuffer[_ <: SyllabusEntry],
     count: Int): String = {
+      ""
 
+/*
     if (topicsArray.isEmpty) ""
 
     else if (topicsArray.size == 1) {
@@ -134,6 +127,6 @@ title: ${conf.title}
           }
         }
       }
-    }
+    }*/
   }
 }

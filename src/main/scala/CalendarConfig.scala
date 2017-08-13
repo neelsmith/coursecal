@@ -20,41 +20,37 @@ import scala.collection.mutable.Buffer
 * @param calendarWeeks Number of weeks to schedule.  Note
 * that these are real calendar weeks:  if there are no classes
 * for an entire week (e.g., spring break), that week should still
-* be included in the total.  (In your list [[CourseTopics]], you
+* be included in the total.  (In your list of course topics, you
 * can indicate that no classes will meet at that point in the term.)
 * @param fixedEvent Events outside the list of topics that have a
 * fixed date assigned to them.
 */
 case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Schedule, calendarWeeks: Int, fixedEvents: Vector[FixedEvent] ) {
 
-  /** Creates a semester calendar from the information in a
-  * semester calendar configuration.
-  *
-  * @param conf Configuration of the calendar.
-  * @return A semester calendar corresponding to the configuration.
+  /** Find a semester calendar for the configured dates
+  * and type.
   */
-
-
-  /**
-  */
-  def getCalendarOption(): Option[Semester] = {
+  def calendar: Option[Semester] = {
     scheduleType match {
       case MWF => Some(MonWedFriSemester(weekOne, calendarWeeks))
       case TTh => Some(TuesThursSemester(weekOne, calendarWeeks))
       case WF => Some(WedFriSemester(weekOne, calendarWeeks))
       case _ => None
     }
-
-  }
-
-
-  def calendar = {
-    getCalendarOption().get
   }
 }
 
+
+/** Factory object for making calendar configurations
+* from YAML source file.
+*/
 object CalendarConfig {
 
+
+  /** Create a [[CalendarConfig]] from a configuration file.
+  *
+  * @param confFileName YAML file with configuration data.
+  */
   def apply(confFileName: String): CalendarConfig = {
     val source = scala.io.Source.fromFile(confFileName)
     val yamlText = try source.mkString finally source.close()

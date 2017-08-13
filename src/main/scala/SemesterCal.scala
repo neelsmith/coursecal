@@ -11,7 +11,7 @@ import java.time.format._
 
 import scala.collection.mutable.ArrayBuffer
 
-/** A Vector of [[CourseWeeks]]. */
+/** A Vector of [[CourseWeek]]s. */
 trait Semester {
   def weeks : Vector[_ <: CourseWeek]
 }
