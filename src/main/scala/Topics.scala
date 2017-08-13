@@ -9,7 +9,16 @@ import scala.collection.mutable.HashMap
 *
 * @param entries Sequence of [[TopicEntry]]s for the semester.
 */
-case class Topics (entries : Vector[TopicEntry] )
+case class Topics (entries : Vector[TopicEntry] ) {
+
+
+
+
+  /** Extract [[CourseDay]] entries from the list.
+  */
+  def days: Vector[TopicEntry] = entries.filter(Topics.isDay(_))
+}
+
 
 
 /** Factory object for creating a [[Topics]] from a
@@ -32,5 +41,14 @@ object Topics {
     )
     Topics(entries.map(_.get))
   }
+
+    /** True if entry is a [[CourseDay]].
+    */
+    def isDay(entry: TopicEntry) : Boolean  =
+      entry match {
+        case day: CourseDay => true
+        case _ => false
+      }
+
 
 }

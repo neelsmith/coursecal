@@ -12,6 +12,18 @@ import scala.collection.mutable.Buffer
 
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
+
+  def topicsWeeks : Int = {
+    0
+  }
+
+
+  /** True if number of weeks of scheduled topics
+  * equals number of configured weeks in calendar.
+  */
+  def isComplete: Boolean = {
+    (topicsWeeks == conf.calendarWeeks)
+  }
 }
 
 
@@ -19,7 +31,11 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
 */
 object Schedule  {
 
-
+  /** Create a Schedule from pair of files.
+  *
+  * @param topicsFile Text file with topics for the semester.
+  * @param confFile YAML file configuring calendar for the semester.
+  */
   def apply(topicsFile: String, confFile: String): Schedule = {
     Schedule(Topics(topicsFile), CalendarConfig(confFile))
   }
