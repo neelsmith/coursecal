@@ -46,7 +46,6 @@ case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
 }
 
 
-
 /**  Class dates for a WF schedule pattern in a single
 * week.
 *

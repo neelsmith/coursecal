@@ -16,7 +16,7 @@ trait Semester {
   def weeks : Vector[_ <: CourseWeek]
 }
 
-/**  CourseWeeks on a TuesThurs pattern.
+/**  CourseWeeks on a TTh pattern.
 *
 * @param startDate A date in the first week of classes.
 * @param totalWeeks Number of calendar weeks to schedule.
@@ -29,24 +29,37 @@ case class TuesThursSemester(startDate: LocalDate, totalWeeks: Int) extends Seme
     }
     wks.toVector
   }
-  /*
-  val weeks = new ArrayBuffer[TuThWeek]
-  var i = 0
-  for (i in  0 until totalWeeks) {
-    val currReferenceDate = startDate.plusWeeks(i)
-    val wk = new TuThWeek(currReferenceDate)
-    weeks += wk
-  }*/
-  //def weeks : ArrayBuffer[TuThWeek] = { wks }
 }
 
-case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int)  {
-  val weeks = new ArrayBuffer[MonWedFriWeek]
-  var i = 0
-  for (i <- 0 to totalWeeks) {
-    val currReferenceDate = startDate.plusWeeks(i)
-    val wk = new MonWedFriWeek(currReferenceDate)
-    weeks += wk
+
+/**  CourseWeeks on a MWF pattern.
+*
+* @param startDate A date in the first week of classes.
+* @param totalWeeks Number of calendar weeks to schedule.
+*/
+case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Semester  {
+  def weeks = {
+    def wks = for (i <- 0 until totalWeeks) yield {
+      val currReferenceDate = startDate.plusWeeks(i)
+      MonWedFriWeek(currReferenceDate)
+    }
+    wks.toVector
   }
-  //def weeks : ArrayBuffer[MonWedFriWeek] = { wks }
+}
+
+
+
+/**  CourseWeeks on a WF pattern.
+*
+* @param startDate A date in the first week of classes.
+* @param totalWeeks Number of calendar weeks to schedule.
+*/
+case class WedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Semester {
+  def weeks = {
+    def wks = for (i <- 0 until totalWeeks) yield {
+      val currReferenceDate = startDate.plusWeeks(i)
+      WedFriWeek(currReferenceDate)
+    }
+    wks.toVector
+  }
 }

@@ -38,10 +38,10 @@ case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Sched
   /**
   */
   def getCalendarOption(): Option[Semester] = {
-
     scheduleType match {
       case MWF => Some(MonWedFriSemester(weekOne, calendarWeeks))
       case TTh => Some(TuesThursSemester(weekOne, calendarWeeks))
+      case WF => Some(WedFriSemester(weekOne, calendarWeeks))
       case _ => None
     }
 
