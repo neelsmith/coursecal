@@ -7,17 +7,17 @@ import scala.collection.mutable.HashMap
 
 /** A syllabus of topics for a course.
 *
-* @param entries Sequence of [[SyllabusEntry]]s for the semester.
+* @param entries Sequence of [[TopicEntry]]s for the semester.
 */
 case class Topics (entries : Vector[TopicEntry] )
 
 
-/** Factory object for creating a [[Syllabus]] from a
+/** Factory object for creating a [[Topics]] from a
 * delimited-text file.
 */
 object Topics {
 
-  /** Create a [[Syllabus]] from a delimited-text file.
+  /** Create a [[Topics]] from a delimited-text file.
   *
   * @param syllabusFileName Name of file with sequence of course topics.
   */
