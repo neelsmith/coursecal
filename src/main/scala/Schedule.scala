@@ -12,7 +12,6 @@ import scala.collection.mutable.Buffer
 
 
 
-case class DatedWeek(topics: Week, dates: CourseWeek)
 
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
