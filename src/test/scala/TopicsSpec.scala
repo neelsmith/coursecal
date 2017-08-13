@@ -77,6 +77,11 @@ class TopicsSpec  extends FlatSpec {
       val segmented = topics.weeklySegmented(3)
       val expectedSegs = 3
       assert(segmented.size == expectedSegs)
+  }
 
+  it should "extract headings when they exist" in {
+    val f = "src/test/resources/greek101.txt"
+    val topics = Topics(f)
+    assert(topics.heading.get == SectionTopic(2, "Section 1: introduction"))
   }
 }

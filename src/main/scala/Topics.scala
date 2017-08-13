@@ -12,6 +12,14 @@ case class Week(entries : Vector[TopicEntry], dimension: Int)
 */
 case class Topics (entries : Vector[TopicEntry] ) {
 
+  /**  Extract heading for this unit, if it exists.
+  */
+  def heading: Option[SectionTopic] = {
+    entries(0) match {
+      case day: CourseDay => None
+      case hdg : SectionTopic => Some(hdg)
+    }
+  }
 
   /** Number of entries. */
   def size: Int = entries.size
