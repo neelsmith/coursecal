@@ -22,8 +22,16 @@ class ScheduleSpec  extends FlatSpec {
     val topics = "src/test/resources/greek101.txt"
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
-    val expectedWeeks = 3
+    val expectedWeeks = 4
     assert(sched.topicsWeeks == expectedWeeks)
+  }
+
+  it should "weave match topics with calendar dates" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+    val x = sched.datedTopics
+    println("\n\n\n\nTHE REAL DEAL + \n " + x)
   }
 
 }

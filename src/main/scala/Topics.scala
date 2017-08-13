@@ -56,7 +56,7 @@ case class Topics (entries : Vector[TopicEntry] ) {
   *
   * @param classesPerWeek Number of times class meets weekly.
   */
-  def weeklySegmented(classesPerWeek: Int)  = {
+  def weeklySegmented(classesPerWeek: Int): Vector[Vector[Week]]  = {
     segments.map(_.weekly(classesPerWeek))
   }
 

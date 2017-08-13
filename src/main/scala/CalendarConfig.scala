@@ -39,6 +39,14 @@ case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Sched
     }
   }
 
+  def semesterCalendar: Semester = {
+    scheduleType match {
+      case MWF => MonWedFriSemester(weekOne, calendarWeeks)
+      case TTh => TuesThursSemester(weekOne, calendarWeeks)
+      case WF =>  WedFriSemester(weekOne, calendarWeeks)
+    }
+  }
+
 
   /** Compute week calendar for a given week of the semester
   * identified by 1-origin index.

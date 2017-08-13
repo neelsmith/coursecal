@@ -31,15 +31,15 @@ class TopicsSpec  extends FlatSpec {
   "A Topics list" should "extract course days from the list" in {
     val f = "src/test/resources/greek101.txt"
     val topics = Topics(f)
-    val expectedDays = 9
+    val expectedDays = 12
     assert(topics.days.size == expectedDays)
   }
 
   it should "compute the number of weeks required for a given number of meetings per week" in {
       val f = "src/test/resources/greek101.txt"
       val topics = Topics(f)
-      assert (topics.weeks(3) == 3)
-      assert (topics.weeks(2) ==5)
+      assert (topics.weeks(3) == 4)
+      assert (topics.weeks(2) == 6)
   }
 
   it should "provide a mechanism for clustering topics in sublists grouped under headings" in {
@@ -67,7 +67,7 @@ class TopicsSpec  extends FlatSpec {
       val f = "src/test/resources/greek101.txt"
       val topics = Topics(f)
       val byWeek = topics.weekly(3)
-      val expectedWeeks = 3
+      val expectedWeeks = 4
       assert(byWeek.size == expectedWeeks)
   }
 
