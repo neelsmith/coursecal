@@ -15,9 +15,9 @@ import java.time.format._
  *  [[CalendarConfig]] object, which can be instantiated from
  *  a yaml file.
  *
- *  Daily topics and assignments are managed by a [[SyllabusEntry]]
- *  objects, which can be instantiated from a simple file in
- *  delimited-text format.
+ *  Daily topics and assignments are managed by a [[Syllabus]]
+ *  objects, which can be instantiated from a simple text file
+ *  listing topics in a sequence.
  *
  */
 package object coursecal {

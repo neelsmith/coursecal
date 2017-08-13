@@ -15,7 +15,7 @@ import scala.collection.mutable.Buffer
 object ScheduleMaker  {
 
 
-  def schedule( topics: Syllabus, conf: CalendarConfig): String = {
+  def schedule( topics: Topics, conf: CalendarConfig): String = {
     val yamlHeader = s"""---
 layout: page
 title: ${conf.title}
@@ -28,7 +28,7 @@ title: ${conf.title}
 
 
 
-  def gatherNotes(entries: Seq[SyllabusEntry]) = {
+  def gatherNotes(entries: Seq[TopicEntry]) = {
     val noteEntries = entries.filter {
       case e : CourseDay => e.notes.size > 0
       case e: SectionTopic => false
@@ -38,7 +38,7 @@ title: ${conf.title}
   }
 
 
-  def formatTopic(topic: SyllabusEntry) = {
+  def formatTopic(topic: TopicEntry) = {
     topic match {
 
       case topic: CourseDay => topic.title // wrap in link, but only if not a no-assignment day
@@ -54,7 +54,7 @@ title: ${conf.title}
   def formatWeek(
     fixedDates: Buffer[FixedEvent],
     wk: CourseWeek,
-    entries: SyllabusEntry*
+    entries: TopicEntry*
   ) = {
     wk match {
     case wk: TuThWeek => {
@@ -83,7 +83,7 @@ title: ${conf.title}
   def interleaveWeeks(
     weeksArray: ArrayBuffer[_ <: CourseWeek],
     fixedDates :    Buffer[FixedEvent],
-    topicsArray: ArrayBuffer[_ <: SyllabusEntry],
+    topicsArray: ArrayBuffer[_ <: TopicEntry],
     count: Int): String = {
       ""
 

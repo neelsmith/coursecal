@@ -7,7 +7,7 @@ import scala.collection.mutable.HashMap
 
 /** Item that can appear in a sequence of course topics.
 */
-trait SyllabusEntry
+trait TopicEntry
 
 
 /** Labelled section heading.
@@ -15,7 +15,7 @@ trait SyllabusEntry
 * @param level Heading level.
 * @param title Title of section.
 */
-case class SectionTopic(level: Int, title: String) extends SyllabusEntry {
+case class SectionTopic(level: Int, title: String) extends TopicEntry {
 
   override def toString() = {
     "Section: " + title
@@ -43,7 +43,7 @@ object SectionTopic {
 * @param notes Notes
 * @param tags Tags
 */
-case class CourseDay(title: String, notes: String, tags: Vector[DayTag] ) extends SyllabusEntry {
+case class CourseDay(title: String, notes: String, tags: Vector[DayTag] ) extends TopicEntry {
   override def toString() = {
     if (notes.size > 0 ) {
       "Daily topic: " + title + " (notes: " + notes + ")"

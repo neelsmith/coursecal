@@ -25,7 +25,7 @@ import scala.collection.mutable.Buffer
 * @param fixedEvent Events outside the list of topics that have a
 * fixed date assigned to them.
 */
-case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: Schedule, calendarWeeks: Int, fixedEvents: Vector[FixedEvent] ) {
+case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: SchedulePattern, calendarWeeks: Int, fixedEvents: Vector[FixedEvent] ) {
 
   /** Find a semester calendar for the configured dates
   * and type.
