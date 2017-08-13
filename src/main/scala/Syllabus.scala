@@ -25,8 +25,10 @@ object Syllabus {
   * @param syllabusFileName Name of file with sequence of course topics.
   */
   def apply(syllabusFileName: String): Syllabus = {
-    val lns = scala.io.Source.fromFile(syllabusFileName).getLines()
+    val lns = scala.io.Source.fromFile(syllabusFileName).getLines().toVector
 
+
+/*
     val hdrPattern = "^#+(.+)".r
     val emptyLine = "^$".r
     val nonEmpty = "([^#].+)".r
@@ -53,7 +55,7 @@ object Syllabus {
       case _ => //println("Line '" + ln + "' (length " + ln.size + ") matched no pattern!")
       }
     }
-    entryArray
+    entryArray*/
     Syllabus(Vector.empty[SyllabusEntry])
   }
 }
