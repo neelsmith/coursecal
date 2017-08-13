@@ -44,3 +44,20 @@ case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
     "MWFWeek " + mon + ", " + wed + ", " + fri
   }
 }
+
+
+
+/**  Class dates for a WF schedule pattern in a single
+* week.
+*
+* @param oneDay A single day in the week (any day) for
+* which classes meet on Wed and Fri.
+*/
+case class WedFriWeek(val oneDay: LocalDate) extends CourseWeek {
+  val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
+  val fri = oneDay.`with`(DayOfWeek.FRIDAY)
+
+  override def toString() = {
+    "WFWeek " + wed + ", " + fri
+  }
+}
