@@ -51,8 +51,8 @@ object CourseDay {
     val cols = ln.split("#")
     cols.size match {
       //case 3 =>  Some(CourseDay(cols(0),cols(1),cols(2),Array("")))
-      case 2 =>  Some(CourseDay(cols(0),cols(1),Vector.empty[DayTag]))
-      case 1 => Some(CourseDay(cols(0),"",Vector.empty[DayTag]))
+      case 2 =>  Some(CourseDay(cols(0).trim,cols(1).trim,Vector.empty[DayTag]))
+      case 1 => Some(CourseDay(cols(0).trim,"",Vector.empty[DayTag]))
       case _ => { println("Error for line '" + ln + "', found " + cols.size + " columns.")
         None
       }
