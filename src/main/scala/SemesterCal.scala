@@ -6,9 +6,6 @@ import java.util.Locale
 import java.time.format._
 
 
-
-
-
 import scala.collection.mutable.ArrayBuffer
 
 /** A Vector of [[CourseWeek]]s. */

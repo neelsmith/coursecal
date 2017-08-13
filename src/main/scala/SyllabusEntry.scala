@@ -95,6 +95,13 @@ object CourseDay {
     tags.flatten.toVector
   }
 
+
+  /** Recursively remove a defined tag from a string until all
+  * defined tags have been removed.
+  *
+  * @param s String to remove tags from.
+  * @param tagList List of tags to remove.
+  */
   def removeNextTag(s: String, tagList: Vector[String]): String = {
     if (tagList.isEmpty) {
       s
@@ -104,6 +111,10 @@ object CourseDay {
     }
   }
 
+  /** Remove all defined tags from a string.
+  *
+  * @param s String to remove tags from.
+  */
   def removeTags(s: String): String = {
     removeNextTag(s.trim, tagsMap.keySet.toVector)
   }
