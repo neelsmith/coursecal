@@ -18,4 +18,12 @@ class ScheduleSpec  extends FlatSpec {
     }
   }
 
+  "A Schedule" should "compute the number of weeks in the topics list" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+    val expectedWeeks = 1
+    assert(sched.topicsWeeks == expectedWeeks)
+  }
+
 }

@@ -13,8 +13,11 @@ import scala.collection.mutable.Buffer
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
 
+  /** Compute number of calendar weeks configured in
+  * topics list for configured schedule of class meetings.
+  */
   def topicsWeeks : Int = {
-    0
+    topics.weeks(conf.scheduleType.classes)
   }
 
 

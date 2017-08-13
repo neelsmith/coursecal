@@ -12,7 +12,30 @@ import scala.collection.mutable.HashMap
 case class Topics (entries : Vector[TopicEntry] ) {
 
 
+  /** Aggregate sequence of [[TopicEntry]]s in weekly
+  * sequences.
+  *
+  * @param classesPerWeek Number of class meetings per Week.
+  */
+  def weekly(classesPerWeek: Int)  = {  ///    : Vector[Vector[TopicEntry]] = {
 
+  }
+
+  /** Compute number of calendar weeks required for entries
+  * for a schedule with a given number of meetings per week.
+  *
+  * @param classesPerWeek Number of class meeting per week.
+  */
+  def weeks(classesPerWeek: Int) : Int = {
+      val dayCount = days.size
+      val wholeWeeks = dayCount /  classesPerWeek
+      val rem = dayCount % classesPerWeek
+      if ( rem > 0) {
+        wholeWeeks + 1
+      } else {
+        wholeWeeks
+      }
+  }
 
   /** Extract [[CourseDay]] entries from the list.
   */
