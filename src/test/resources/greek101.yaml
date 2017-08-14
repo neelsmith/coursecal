@@ -11,9 +11,10 @@ schedule : "mwf"
 totalWeeks : 15
 
 fixedDates:
-  - 2017-10-09 == Fall break
-  - 2017-10-11 == Fall break
-  - 2017-10-13 == Fall break
-  - 2017-11-23 == Thanksgiving
-  - 2017-11-25 == Thanksgiving
-  - 2017-12-12 == Exams begin
+  - 2017-08-28 == First-year advising.
+  - 2017-10-09 == Fall break.
+  - 2017-10-11 == Fall break.
+  - 2017-10-13 == Fall break.
+  - 2017-11-23 == Thanksgiving.
+  - 2017-11-25 == Thanksgiving.
+  - 2017-12-12 == Exams begin.
