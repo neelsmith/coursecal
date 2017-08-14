@@ -9,8 +9,7 @@ import java.time.format._
 /** Classes mapping a weekly schedule pattern on to specific
 * dates for a single week.
 */
-sealed abstract class CourseWeek
-
+sealed abstract class CourseWeek 
 
 /**  Class dates for a TTh schedule pattern in a single
 * week.

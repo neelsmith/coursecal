@@ -23,15 +23,10 @@ import java.time.format._
 package object coursecal {
 
 
-  def shortDisplayWeek(wk: CourseWeek) = {
-    wk match {
-      case wk: TuThWeek =>  "Tues., " + shortDisplayDay(wk.tues) + "\tThurs., " + shortDisplayDay(wk.thurs)
-      case wk: MonWedFriWeek =>  "Mon., " + shortDisplayDay(wk.mon) + "\tWed., " + shortDisplayDay(wk.wed) + "\tFri., " + shortDisplayDay(wk.fri)
-      case wk: WedFriWeek =>  "Wed., " + shortDisplayDay(wk.wed) + "\tFri., " + shortDisplayDay(wk.fri)
-    }
-  }
-
-  // Format a readable short string to display a date
+  /** Format a readable short string to display a LocalDate.
+  *
+  * @param d Date to display.
+  */
   def shortDisplayDay(d: LocalDate) =  {
     d.getMonth.getDisplayName(TextStyle.SHORT,Locale.US) + ". " + d.getDayOfMonth()
   }
