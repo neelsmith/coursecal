@@ -10,7 +10,7 @@ import java.time.format._
 */
 class FixedEvent(val eventDate: LocalDate, val eventLabel: String) {
 
-  override def toString() = {
+  override def toString = {
     "Fixed event " + eventLabel + " on " + eventDate
   }
 }
