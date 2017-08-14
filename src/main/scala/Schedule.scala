@@ -21,7 +21,10 @@ import scala.collection.mutable.Buffer
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
 
-
+  /**  Compose a markdown page including ghpages YAML
+  * header that formats an entire term as a calendar table,
+  * or tables.
+  */
   def markdownCalendar: String = {
     conf.scheduleType match {
         case MWF =>  {
@@ -36,13 +39,8 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
           val segs = segments.map(_.markdown(Schedule.wfTableHead))
           ghpageYamlHeader + segs.mkString("\n\n")
         }
-
     }
-
-
   }
-
-
 
 
   /** Create a course-long sequence of [[DatedWeek]]s.
@@ -175,13 +173,20 @@ object Schedule  {
   }
 
 
+  /** Markdown heading for a calendar table on a Tues-Thurs schedule.
+  */
   def tthTableHead: String = {
     "\n| Week | Notes | Tues     |  Thurs     |\n| :------------- |:------------- | :------------- |:------------- |\n"
   }
+
+  /** Markdown heading for a calendar table on a Mon-Wed-Fri schedule.
+  */
   def mwfTableHead: String = {
     "\n| Week | Mon     |  Wed     |  Fri     | Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------|\n"
   }
 
+  /** Markdown heading for a calendar table on a Wed-Fri schedule.
+  */
   def wfTableHead: String = {
     "\n| Week | Wed     |    | Fri     | Topic     |Notes |\n| :------------- |  :-------------| :-------------|:-------------| :-------------|\n"
   }

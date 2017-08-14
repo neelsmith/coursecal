@@ -4,8 +4,6 @@ import scala.io.Source
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.HashMap
 
-case class Week(entries : Vector[TopicEntry], dimension: Int)
-
 /** A sequence of topics for a course.
 *
 * @param entries Sequence of [[TopicEntry]]s for the semester.
