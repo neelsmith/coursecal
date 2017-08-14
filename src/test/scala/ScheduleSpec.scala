@@ -30,7 +30,7 @@ class ScheduleSpec  extends FlatSpec {
     val topics = "src/test/resources/greek101.txt"
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
-    val semester = sched.datedTopics
+    val semester = sched.datedTopics(0)
     val expectedWeeks = 4
     assert(semester.size == expectedWeeks)
   }
@@ -45,14 +45,6 @@ class ScheduleSpec  extends FlatSpec {
 
   }
 
-  it should "format a segment of the topcis list as a markdown table" in {
-    val topics = "src/test/resources/greek101.txt"
-    val conf = "src/test/resources/greek101.yaml"
-    val sched = Schedule(topics, conf)
-
-    val md = sched.markdownCalendar
-    println(md)
-  }
 
   it should "break up the schedule in to a series of segments" in {
     val topics = "src/test/resources/greek101.txt"
@@ -63,5 +55,46 @@ class ScheduleSpec  extends FlatSpec {
     val expectedSegments = 3
     assert(segmentV.size == expectedSegments)
   }
+
+
+  it should "collect a Vector of FixedEvents for a given week" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+
+    val referenceDate = LocalDate.parse("2017-08-30")
+    val mwf = MonWedFriWeek(referenceDate)
+
+    val fixed = sched.fixedEventsForWeek(mwf)
+    assert(fixed.size == 1)
+
+  }
+
+  it should "correctly advance dates across segments" in pending
+  // compare dates
+  /*{
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+    val segs = sched.segments
+
+    for (i <- 0 until segs.size) {
+
+      val s = segs(i)
+      val w = s.weeks(0)
+
+    }
+  }*/
+
+  it should "format a segment of the topics list as a markdown table" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+
+    val md = sched.markdownCalendar
+    val expectedLines = 25
+    assert(md.split("\n").size == expectedLines)
+  }
+
 
 }

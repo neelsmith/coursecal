@@ -7,7 +7,7 @@ package edu.holycross.shot.coursecal
 * @param topics A [[Week]] of course topics.
 * @param dates One week of calendar dates for a course meeting pattern.
 */
-case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedEvent] = Vector.empty[FixedEvent]) { 
+case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedEvent] = Vector.empty[FixedEvent]) {
 
 
   /** Collect a Vector of notes for all [[CourseDay]]s in this week.*/
@@ -15,6 +15,11 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
 
   /** Fold notes for this week into a single String. */
   def notesString: String = notes.mkString(" ")
+
+  def fixedLabels: Vector[String] = fixedEvents.map(_.eventLabel)
+
+  def fixedString: String = fixedLabels.mkString(" ")
+
 
   /** Format a string representing a week on a course calendar
   * as one line of a markdown table.
@@ -32,7 +37,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
   */
   def tthString: String = {
     dates match {
-      case tth : TuThWeek => s"|${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0).label} | ${topics.entries(1).label} | ${notesString} |\n"
+      case tth : TuThWeek => s"|${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0).label} | ${topics.entries(1).label} | ${fixedString} ${notesString} |\n"
 
       case mwf : MonWedFriWeek => ""
       case wf : WedFriWeek => ""
@@ -49,7 +54,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
 
       case mwf : MonWedFriWeek => {
 
-        s"|${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |  ${notesString} |\n"
+        s"|${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |   ${fixedString}  ${notesString} |\n"
       }
 
     }
@@ -62,7 +67,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
     dates match {
       case tth : TuThWeek =>  ""
       case mwf : MonWedFriWeek => ""
-      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |  ${notesString} |\n"
+      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |   ${fixedString}  ${notesString} |\n"
 
     }
   }

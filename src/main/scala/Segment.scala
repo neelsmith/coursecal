@@ -12,7 +12,7 @@ import scala.collection.mutable.HashMap
 * @param heading Optional heading for this section of the course.
 */
 case class Segment(weeks : Vector[DatedWeek], initialIndex: Int, heading: Option[SectionTopic]) {
-
+  
 
   /** Compose appropriate markdown to format the schedule
   * for this segment of a course as a calendar table.

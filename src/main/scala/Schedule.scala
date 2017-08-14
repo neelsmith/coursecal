@@ -20,7 +20,12 @@ import scala.collection.mutable.Buffer
 */
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
-  def fixedEventsForWeek(courseWeek: CourseWeek) = {
+
+  /** Find fixed events for a given week.
+  *
+  * @param courseWeek Week to check.
+  */
+  def fixedEventsForWeek(courseWeek: CourseWeek): Vector[FixedEvent] = {
     conf.fixedEvents.filter(_.inWeek(courseWeek))
   }
 
@@ -51,32 +56,43 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
   * and clustered into week units of the size configured
   * in `conf`.
   */
-  def datedTopics: Vector[DatedWeek] = {
-    addDatedTopics(weeklySegmented, 0, Vector.empty)
+  def datedTopics(startingIndex: Int = 0): Vector[DatedWeek] = {
+    addDatedTopics(weeklySegmented, startingIndex, Vector.empty)
   }
 
 
   /** Create a course-long sequence of [[DatedWeek]]s by recursively
+  * converting a Vector of [[Week]]s into a single [[DatedWeek]].
+  *
+  * @param weeks  Sections of the course clustered as a Vector of [[Week]]s,
+  * with each Vector corresponding to a segment of the course.
+  * @param startingIndex Index of the first week of this segment within
+  * the course as a whole.
+  * @param calendarVector The resulted list of [[DatedWeek]]s.
   *
   */
   def addDatedTopics(
     weeks: Vector[Vector[Week]],
     startingIndex: Int,
     calendarVector: Vector[DatedWeek]) : Vector[DatedWeek] = {
-
     if (weeks.isEmpty) {
       calendarVector
 
     } else {
       val nextSection = weeks(0)
       val dWeeks = for (i <- 0 until nextSection.size) yield {
-        val datedWeek = DatedWeek(nextSection(i), conf.semesterCalendar.weeks(i + startingIndex))
+        val calendarWeek = conf.semesterCalendar.weeks(i + startingIndex)
+        val fixed = fixedEventsForWeek(calendarWeek)
+
+        val datedWeek = DatedWeek(nextSection(i), calendarWeek, fixed)
         datedWeek
       }
+
+      val newIdx = startingIndex + dWeeks.size
       if (calendarVector.isEmpty) {
-        addDatedTopics(weeks.drop(1), startingIndex + nextSection.size, dWeeks.toVector)
+        addDatedTopics(weeks.drop(1), newIdx, dWeeks.toVector)
       } else {
-        addDatedTopics(weeks.drop(1), startingIndex + nextSection.size, calendarVector ++ dWeeks.toVector)
+        addDatedTopics(weeks.drop(1), newIdx, calendarVector ++ dWeeks.toVector)
       }
     }
   }
@@ -103,8 +119,9 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
     (topicsWeeks == conf.calendarWeeks)
   }
 
-
-  def segments = {
+  /** Break schedule up into segments.
+  */
+  def segments : Vector[Segment] = {
     val segs = topics.segments
     val v = Vector.empty[Segment]
     addSegment(segs, v, 0)
@@ -115,7 +132,10 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
     if (src.isEmpty) {
       target
     } else {
-      val newIdx = idx + src(0).size
+
+
+      val newIdx = idx + src(0).weeks(conf.scheduleType.classes)
+
       val seg = segment(src(0).entries, newIdx)
       if (target.size == 0) {
         addSegment(src.drop(1), Vector(seg), newIdx)
@@ -134,16 +154,16 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
   * @param weekSize Number of class meetings per week.
   * @param startingIndex Index of first week of this segment within the whole term.
   */
-  def segment( entries : Vector[TopicEntry], startingIndex: Int = 0): Segment = {
+  def segment( entries : Vector[TopicEntry], startingIndex: Int): Segment = {
     entries(0) match {
       case day : CourseDay => {
         //val weeks = Topics(entries).weekly(conf.scheduleType.classes)
-        val datedWeeks = Schedule(Topics(entries), conf).datedTopics
+        val datedWeeks = Schedule(Topics(entries), conf).datedTopics(startingIndex)
         Segment(datedWeeks, startingIndex, None)
       }
       case topic : SectionTopic => {
         //val weeks = Topics(entries.drop(1)).weekly(conf.scheduleType.classes)
-        val datedWeeks = Schedule(Topics(entries.drop(1)), conf).datedTopics
+        val datedWeeks = Schedule(Topics(entries.drop(1)), conf).datedTopics(startingIndex)
         val heading = Some(topic)
         Segment(datedWeeks, startingIndex, heading)
       }
