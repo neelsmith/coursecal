@@ -20,12 +20,8 @@ import scala.collection.mutable.Buffer
 */
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
-  def fixedEventsForWeek(dates: CourseWeek) = {
-    dates match {
-      case tth : TuThWeek => 
-      case mwf : MonWedFriWeek =>
-      case wf : WedFriWeek =>
-    }
+  def fixedEventsForWeek(courseWeek: CourseWeek) = {
+    conf.fixedEvents.filter(_.inWeek(courseWeek))
   }
 
   /**  Compose a markdown page including ghpages YAML

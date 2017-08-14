@@ -43,8 +43,6 @@ class CourseWeekSpec  extends FlatSpec {
 
     it should "collect a vector of dates for mon, wed and fri " in {
       val expected = Vector( LocalDate.parse("2017-08-28"), LocalDate.parse("2017-08-30"), LocalDate.parse("2017-09-01"))
-
-
       val mwf = MonWedFriWeek(startDate)
       assert (mwf.dates == expected)
     }
@@ -54,15 +52,12 @@ class CourseWeekSpec  extends FlatSpec {
 
        val expectedWed = LocalDate.parse("2017-08-30")
        val expectedFri = LocalDate.parse("2017-09-01")
-
        assert(wf.wed == expectedWed)
        assert(wf.fri == expectedFri)
     }
 
     it should "collect a vector of dates for  wed and fri " in {
       val expected = Vector(  LocalDate.parse("2017-08-30"), LocalDate.parse("2017-09-01"))
-
-
       val wf = WedFriWeek(startDate)
       assert (wf.dates == expected)
     }
