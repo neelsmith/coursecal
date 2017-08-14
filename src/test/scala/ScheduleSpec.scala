@@ -34,6 +34,27 @@ class ScheduleSpec  extends FlatSpec {
     for (wk <- semester) {
       println(wk.calendarString)
     }
+    println("SIZE: " + semester.size)
+  }
+
+  it should "generate an appropirate YAML header for a ghpages md file" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+
+    val expected = "---\nlayout: page\ntitle: \"Greek 101, F'17: course schedule\"\n---\n"
+    assert (sched.ghpageYamlHeader == expected)
+
+  }
+
+  it should "format a segment of the topcis list as a markdown table" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+
+    val segments = sched.weeklySegmented
+    val seg1 = segments(0)
+    println(sched.markdownSegment(seg1))
   }
 
 }

@@ -25,7 +25,14 @@ class TopicsSpec  extends FlatSpec {
     val seg1 = Topics.nextSegment(topics.entries, Vector.empty[TopicEntry])
     val expectedSize = 4
     assert( seg1.size == expectedSize)
-
+    seg1(0) match {
+      case  st: SectionTopic => {
+        assert(st.level == 2)
+        val expectedTitle = "Section 1: introduction"
+        assert(st.title == expectedTitle)
+      }
+      case _ => fail("Should have found a SectionTopic")
+    }
   }
 
   "A Topics list" should "extract course days from the list" in {

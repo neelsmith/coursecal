@@ -167,7 +167,7 @@ object Topics {
       val nextVal = src(0)
       nextVal match {
         case day : CourseDay => {
-          nextSegment(src.drop(1), Vector(day) ++ target )
+          nextSegment(src.drop(1), target ++ Vector(day)  )
         }
         case topic : SectionTopic => {
           // accept section heading at beginning of segment
