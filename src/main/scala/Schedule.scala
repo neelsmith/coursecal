@@ -20,6 +20,13 @@ import scala.collection.mutable.Buffer
 */
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
+  def fixedEventsForWeek(dates: CourseWeek) = {
+    dates match {
+      case tth : TuThWeek => 
+      case mwf : MonWedFriWeek =>
+      case wf : WedFriWeek =>
+    }
+  }
 
   /**  Compose a markdown page including ghpages YAML
   * header that formats an entire term as a calendar table,

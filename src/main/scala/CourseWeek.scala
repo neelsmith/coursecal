@@ -9,7 +9,9 @@ import java.time.format._
 /** Classes mapping a weekly schedule pattern on to specific
 * dates for a single week.
 */
-sealed abstract class CourseWeek 
+sealed abstract class CourseWeek {
+  def dates: Vector[LocalDate]
+}
 
 /**  Class dates for a TTh schedule pattern in a single
 * week.
@@ -21,6 +23,9 @@ case class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
   val tues = oneDay.`with`(DayOfWeek.TUESDAY)
   val thurs = oneDay.`with`(DayOfWeek.THURSDAY)
 
+  def dates : Vector[LocalDate] = {
+    Vector(tues, thurs)
+  }
   override def toString() = {
     "TuThWeek " + tues + ", " + thurs
   }
@@ -38,6 +43,9 @@ case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
   val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
   val fri = oneDay.`with`(DayOfWeek.FRIDAY)
 
+  def dates : Vector[LocalDate] = {
+    Vector(mon, wed, fri)
+  }
 
   override def toString() = {
     "MWFWeek " + mon + ", " + wed + ", " + fri
@@ -54,6 +62,11 @@ case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
 case class WedFriWeek(val oneDay: LocalDate) extends CourseWeek {
   val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
   val fri = oneDay.`with`(DayOfWeek.FRIDAY)
+
+
+  def dates : Vector[LocalDate] = {
+    Vector(wed, fri)
+  }
 
   override def toString() = {
     "WFWeek " + wed + ", " + fri
