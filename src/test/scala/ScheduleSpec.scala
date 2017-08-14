@@ -31,10 +31,8 @@ class ScheduleSpec  extends FlatSpec {
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
     val semester = sched.datedTopics
-    for (wk <- semester) {
-      println(wk.calendarString)
-    }
-    println("SIZE: " + semester.size)
+    val expectedWeeks = 4
+    assert(semester.size == expectedWeeks)
   }
 
   it should "generate an appropirate YAML header for a ghpages md file" in {
@@ -42,7 +40,7 @@ class ScheduleSpec  extends FlatSpec {
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
 
-    val expected = "---\nlayout: page\ntitle: \"Greek 101, F'17: course schedule\"\n---\n"
+    val expected = "---\nlayout: page\ntitle: \"Greek 101, F'17: course schedule\"\n---\n\n"
     assert (sched.ghpageYamlHeader == expected)
 
   }
@@ -52,9 +50,18 @@ class ScheduleSpec  extends FlatSpec {
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
 
-    val segments = sched.weeklySegmented
-    val seg1 = segments(0)
-    println(sched.markdownSegment(seg1))
+    val md = sched.markdownCalendar
+    println(md)
+  }
+
+  it should "break up the schedule in to a series of segments" in {
+    val topics = "src/test/resources/greek101.txt"
+    val conf = "src/test/resources/greek101.yaml"
+    val sched = Schedule(topics, conf)
+
+    val segmentV = sched.segments
+    val expectedSegments = 3
+    assert(segmentV.size == expectedSegments)
   }
 
 }

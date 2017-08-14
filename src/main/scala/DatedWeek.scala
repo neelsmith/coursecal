@@ -25,7 +25,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
   */
   def tthString: String = {
     dates match {
-      case tth : TuThWeek => s"${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0)} | ${topics.entries(1)}"
+      case tth : TuThWeek => s"|${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0)} | ${topics.entries(1)}\n"
       case mwf : MonWedFriWeek => ""
       case wf : WedFriWeek => ""
     }
@@ -37,7 +37,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
   def mwfString: String = {
     dates match {
       case tth : TuThWeek => ""
-      case mwf : MonWedFriWeek => s"${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0)} | ${topics.entries(1)}| ${topics.entries(2)} |"
+      case mwf : MonWedFriWeek => s"|${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0)} | ${topics.entries(1)}| ${topics.entries(2)} |\n"
       case wf : WedFriWeek => ""
     }
   }
@@ -49,7 +49,8 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
     dates match {
       case tth : TuThWeek =>  ""
       case mwf : MonWedFriWeek => ""
-      case wf : WedFriWeek => shortDisplayDay(wf.wed)
+      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0)} | ${topics.entries(1)}| ${topics.entries(2)} |\n"
+
     }
   }
 

@@ -20,20 +20,26 @@ import scala.collection.mutable.Buffer
 */
 case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
-  /** Compose a markdown string representing lines in
-  * a calendar table for a single segment of the course topics.
-  */
-  def markdownSegment(v: Vector[Week]): String  = {
-    println(v)
 
-    ""
-  }
 
   def markdownCalendar: String = {
-    //ghpageYamlHeader
-    //datedTopics
+    conf.scheduleType match {
+        case MWF =>  {
+          val segs = segments.map(_.markdown(Schedule.mwfTableHead))
+          ghpageYamlHeader + segs.mkString("\n\n")
+        }
+        case TTh => {
+          val segs = segments.map(_.markdown(Schedule.tthTableHead))
+          ghpageYamlHeader + segs.mkString("\n\n")
+        }
+        case WF => {
+          val segs = segments.map(_.markdown(Schedule.wfTableHead))
+          ghpageYamlHeader + segs.mkString("\n\n")
+        }
 
-    ""
+    }
+
+
   }
 
 
@@ -97,6 +103,51 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
   }
 
 
+  def segments = {
+    val segs = topics.segments
+    val v = Vector.empty[Segment]
+    addSegment(segs, v, 0)
+  }
+
+
+  def addSegment(src: Vector[Topics], target: Vector[Segment], idx: Int = 0) : Vector[Segment] = {
+    if (src.isEmpty) {
+      target
+    } else {
+      val newIdx = idx + src(0).size
+      val seg = segment(src(0).entries, newIdx)
+      if (target.size == 0) {
+        addSegment(src.drop(1), Vector(seg), newIdx)
+      } else{
+        val newTarget = target ++ Vector(seg)
+        addSegment(src.drop(1), newTarget, newIdx)
+      }
+    }
+  }
+
+
+  /** Create a [[Segment]] object from a series of [[TopicEntry]]s and some
+  * configuration data.
+  *
+  * @param entries Optional [[SectionTopic]] followed by a series of [[CourseDay]]s.
+  * @param weekSize Number of class meetings per week.
+  * @param startingIndex Index of first week of this segment within the whole term.
+  */
+  def segment( entries : Vector[TopicEntry], startingIndex: Int = 0): Segment = {
+    entries(0) match {
+      case day : CourseDay => {
+        //val weeks = Topics(entries).weekly(conf.scheduleType.classes)
+        val datedWeeks = Schedule(Topics(entries), conf).datedTopics
+        Segment(datedWeeks, startingIndex, None)
+      }
+      case topic : SectionTopic => {
+        //val weeks = Topics(entries.drop(1)).weekly(conf.scheduleType.classes)
+        val datedWeeks = Schedule(Topics(entries.drop(1)), conf).datedTopics
+        val heading = Some(topic)
+        Segment(datedWeeks, startingIndex, heading)
+      }
+    }
+  }
 
   /** YAML header for markdown source for ghpage
   * version of calendar. */
@@ -104,6 +155,7 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
 layout: page
 title: "${conf.title}"
 ---
+
 """
 
 }
@@ -127,7 +179,11 @@ object Schedule  {
     "\n| Week | Notes | Tues     |  Thurs     |\n| :------------- |:------------- | :------------- |:------------- |\n"
   }
   def mwfTableHead: String = {
-    "\n| Week | Mon     | Topic     | Wed     | Topic     | Fri     | Topic     |Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------| :-------------|:-------------| :-------------|\n"
+    "\n| Week | Mon     |  Wed     |  Fri     | Notes |\n| :------------- | :------------- |:------------- | :-------------| :-------------|\n"
+  }
+
+  def wfTableHead: String = {
+    "\n| Week | Wed     |    | Fri     | Topic     |Notes |\n| :------------- |  :-------------| :-------------|:-------------| :-------------|\n"
   }
 
 }

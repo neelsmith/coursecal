@@ -24,8 +24,7 @@ case class Topics (entries : Vector[TopicEntry] ) {
   /** Number of entries. */
   def size: Int = entries.size
 
-  /** Cluster [[CourseDay]] entries into groups
-  * organized by [[TopicEntry]]s
+  /** Cluster entries into groups organized by [[TopicEntry]]s
   */
   def segments: Vector[Topics] = {
     addSegment(entries,Vector(Topics(Vector.empty[TopicEntry])) )

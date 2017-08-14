@@ -18,7 +18,8 @@ trait TopicEntry
 case class SectionTopic(level: Int, title: String) extends TopicEntry {
 
   override def toString() = {
-    "Section: " + title
+    val hash = for (i <- 0 until level) yield "#"
+    hash.mkString + " " + title
   }
 }
 
