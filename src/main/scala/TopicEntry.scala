@@ -7,7 +7,9 @@ import scala.collection.mutable.HashMap
 
 /** Item that can appear in a sequence of course topics.
 */
-trait TopicEntry
+trait TopicEntry {
+  def label: String
+}
 
 
 /** Labelled section heading.
@@ -17,10 +19,17 @@ trait TopicEntry
 */
 case class SectionTopic(level: Int, title: String) extends TopicEntry {
 
+  /** Markdown string */
   override def toString() = {
     val hash = for (i <- 0 until level) yield "#"
     hash.mkString + " " + title
   }
+
+  /** Simple, human-readable label. */
+  def label: String = {
+    title
+  }
+
 }
 
 /** Factory object for creating [[SectionTopic]]s from text source.
@@ -45,12 +54,19 @@ object SectionTopic {
 * @param tags Tags
 */
 case class CourseDay(title: String, notes: String, tags: Vector[DayTag] ) extends TopicEntry {
+
+  /** Useful string serialization for debugging. */
   override def toString() = {
     if (notes.size > 0 ) {
       "Daily topic: " + title + " (notes: " + notes + ")"
     } else {
     "Daily topic: " + title + " (no notes)"
     }
+  }
+
+  /** Simple, human-readable label. */
+  def label : String = {
+    CourseDay.removeTags(title)
   }
 }
 

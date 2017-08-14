@@ -159,7 +159,8 @@ title: "${conf.title}"
 }
 
 
-/**
+/** Factory for creating [[Schedule]]s, and definition of static
+* header strings for markdown tables.
 */
 object Schedule  {
 

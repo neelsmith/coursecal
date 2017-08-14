@@ -9,6 +9,11 @@ package edu.holycross.shot.coursecal
 */
 case class DatedWeek(topics: Week, dates: CourseWeek) {
 
+  def notes: Vector[String] = topics.courseDays.map(_.notes).filter(_.nonEmpty)
+
+  def notesString: String = notes.mkString(" ")
+
+
   /** Format a string representing a week on a course calendar
   * as one line of a markdown table.
   */
@@ -25,7 +30,8 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
   */
   def tthString: String = {
     dates match {
-      case tth : TuThWeek => s"|${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0)} | ${topics.entries(1)}\n"
+      case tth : TuThWeek => s"|${shortDisplayDay(tth.tues)}-${shortDisplayDay(tth.thurs)} | ${topics.entries(0).label} | ${topics.entries(1).label} | ${notesString} |\n"
+
       case mwf : MonWedFriWeek => ""
       case wf : WedFriWeek => ""
     }
@@ -37,8 +43,13 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
   def mwfString: String = {
     dates match {
       case tth : TuThWeek => ""
-      case mwf : MonWedFriWeek => s"|${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0)} | ${topics.entries(1)}| ${topics.entries(2)} |\n"
       case wf : WedFriWeek => ""
+
+      case mwf : MonWedFriWeek => {
+
+        s"|${shortDisplayDay(mwf.mon)}-${shortDisplayDay(mwf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |  ${notesString} |\n"
+      }
+
     }
   }
 
@@ -49,7 +60,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek) {
     dates match {
       case tth : TuThWeek =>  ""
       case mwf : MonWedFriWeek => ""
-      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0)} | ${topics.entries(1)}| ${topics.entries(2)} |\n"
+      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}| ${topics.entries(2).label} |  ${notesString} |\n"
 
     }
   }
