@@ -3,7 +3,7 @@ scalaVersion := "2.12.3"
 
 name := "coursecal"
 organization := "edu.holycross.shot"
-version := "1.0.2"
+version := "1.0.3"
 licenses += ("GPL-3.0",url("https://opensource.org/licenses/gpl-3.0.html"))
 //resolvers += Resolver.jcenterRepo
 resolvers += Resolver.bintrayRepo("neelsmith", "maven")

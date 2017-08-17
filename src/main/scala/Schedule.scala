@@ -215,7 +215,7 @@ object Schedule  {
   /** Markdown heading for a calendar table on a Wed-Fri schedule.
   */
   def wfTableHead: String = {
-    "\n| Week | Wed     |    | Fri     | Topic     |Notes |\n| :------------- |  :-------------| :-------------|:-------------| :-------------|\n"
+    "\n| Week | Wed      | Fri     |Notes |\n|  :-------------| :-------------|:-------------| :-------------|\n"
   }
 
 }
