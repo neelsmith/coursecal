@@ -132,11 +132,14 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
     if (src.isEmpty) {
       target
     } else {
-
-
+      println("Src size: " + src.size)
+      println("Prev idx: " + idx)
+      println("Dimension: "+ conf.scheduleType.classes)
+      println("Weeks: " + src(0).weeks(conf.scheduleType.classes))
       val newIdx = idx + src(0).weeks(conf.scheduleType.classes)
 
-      val seg = segment(src(0).entries, newIdx)
+      // this is wrong...
+      val seg = segment(src(0).entries, idx)
       if (target.size == 0) {
         addSegment(src.drop(1), Vector(seg), newIdx)
       } else{
