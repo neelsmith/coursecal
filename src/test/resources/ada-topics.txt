@@ -1,0 +1,10 @@
+
+[Intro to course](../assignments/intro)#
+[Origins of coinage: what is a coin](../assignments/origins)?
+
+[Introduction to WAM projects](../assignments/wam1)
+Change of plans: designing a catalog. (Background reading:  [Archaic and Classical Greek coinage](../assignments/greek1))#
+
+
+[Cataloging in *RIC*](../assignments/cataloging)#
+Publishing a cataloged entry to a github repository#

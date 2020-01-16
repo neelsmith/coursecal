@@ -1,0 +1,14 @@
+# Configure a course calendar
+# Used for title of web page
+pageTitle : "Archaeological Data Analysis, S'20: course schedule"
+# YYYY-MM-DD
+firstDay: "2020-01-21"
+
+# Pattern of class meetings: "mwf", "tt" or "wf"
+schedule : "tt"
+
+# Number of weeks the calendar should run for
+totalWeeks : 3
+
+fixedDates:
+  - 2020-01-30 == Special day

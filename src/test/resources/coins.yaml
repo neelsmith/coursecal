@@ -1,0 +1,19 @@
+# Configure a course calendar
+# Used for title of web page
+pageTitle : "Ancient Coins, F'17: course schedule"
+# YYYY-MM-DD
+firstDay: "2017-08-30"
+
+# Pattern of class meetings: "mwf" or "tt"
+schedule : "wf"
+
+# Number of weeks the calendar should run for
+totalWeeks : 15
+
+fixedDates:
+  - 2017-10-09 == Fall break
+  - 2017-10-11 == Fall break
+  - 2017-10-13 == Fall break
+  - 2017-11-23 == Thanksgiving
+  - 2017-11-25 == Thanksgiving
+  - 2017-12-12 == Exams begin
