@@ -1,5 +1,7 @@
 # Release notes
 
+**1.2.1-1.2.6**: Synchronize sbt and plugin versions for correct binary publication to bintray.
+
 **1.2.0**:  Correct header sequence in TTh course.
 
 **1.2.0**:  In weekly display, show only distinct fixed-date messages.
