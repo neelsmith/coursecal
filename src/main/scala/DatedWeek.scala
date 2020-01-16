@@ -18,7 +18,14 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
 
   def fixedLabels: Vector[String] = fixedEvents.map(_.eventLabel)
 
-  def fixedString: String = fixedLabels.mkString(" ")
+  def fixedString: String = {
+    // ITALICIZE HERE:
+    if (fixedLabels.isEmpty) {
+      ""
+    } else {
+      fixedLabels.map(s => s"**${s}**").mkString(" ")
+    }
+  }
 
 
   /** Format a string representing a week on a course calendar
@@ -67,7 +74,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
     dates match {
       case tth : TuThWeek =>  ""
       case mwf : MonWedFriWeek => ""
-      case wf : WedFriWeek => s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}|  ${fixedString}  ${notesString} |\n"
+      case wf : WedFriWeek =>       s"|${shortDisplayDay(wf.wed)}-${shortDisplayDay(wf.fri)} | ${topics.entries(0).label} | ${topics.entries(1).label}|  ${fixedString}  ${notesString} |\n"
 
     }
   }

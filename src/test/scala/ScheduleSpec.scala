@@ -35,7 +35,7 @@ class ScheduleSpec  extends FlatSpec {
     assert(semester.size == expectedWeeks)
   }
 
-  it should "generate an appropirate YAML header for a ghpages md file" in {
+  it should "generate an appropriate YAML header for a ghpages md file" in {
     val topics = "src/test/resources/greek101.txt"
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
@@ -94,6 +94,17 @@ class ScheduleSpec  extends FlatSpec {
     val md = sched.markdownCalendar
     val expectedLines = 25
     assert(md.split("\n").size == expectedLines)
+
+    //
+  }
+
+  it should "format a TTh schedule correctly" in {
+    val topics = "src/test/resources/ada-topics.txt"
+    val conf = "src/test/resources/ada.yaml"
+    val sched = Schedule(topics, conf)
+
+    val md = sched.markdownCalendar
+    println(md)
   }
 
 

@@ -1,6 +1,7 @@
 # Release notes
 
 
+**1.1.0**: Add strong emphasis on fixed-day notes.
 
 **1.0.3**: Minor bug in formatting of heading on WF calendar.
 

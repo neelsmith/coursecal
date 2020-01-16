@@ -42,7 +42,7 @@ class CalendarConfigSpec  extends FlatSpec {
     }
   }
 
-  it should "find a calendar for the configured dates and couse pattern" in {
+  it should "find a calendar for the configured dates and course pattern" in {
     val cal = calconf.calendar
     cal match {
       case c: Some[Semester] => {
