@@ -1,6 +1,8 @@
 # Release notes
 
-**1.2.0**  In weekly display, show only distinct fixed-date messages.
+**1.2.0**:  Correct header sequence in TTh course.
+
+**1.2.0**:  In weekly display, show only distinct fixed-date messages.
 
 **1.1.0**: Add strong emphasis on fixed-day notes.
 

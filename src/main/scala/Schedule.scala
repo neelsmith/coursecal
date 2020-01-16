@@ -203,7 +203,7 @@ object Schedule  {
   /** Markdown heading for a calendar table on a Tues-Thurs schedule.
   */
   def tthTableHead: String = {
-    "\n| Week | Notes | Tues     |  Thurs     |\n| :------------- |:------------- | :------------- |:------------- |\n"
+    "\n| Week | Tues | Thurs     |     Notes  |\n| :------------- |:------------- | :------------- |:------------- |\n"
   }
 
   /** Markdown heading for a calendar table on a Mon-Wed-Fri schedule.
