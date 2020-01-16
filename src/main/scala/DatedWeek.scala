@@ -23,7 +23,7 @@ case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedE
     if (fixedLabels.isEmpty) {
       ""
     } else {
-      fixedLabels.map(s => s"**${s}**").mkString(" ")
+      fixedLabels.map(s => s"**${s}**").distinct.mkString(" ")
     }
   }
 
