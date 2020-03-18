@@ -1,5 +1,7 @@
 # Release notes
 
+**1.2.7**:  Adds logging, and fixes a bug when more topics than calendar weeks allow.
+
 **1.2.1-1.2.6**: Synchronize sbt and plugin versions for correct binary publication to bintray.
 
 **1.2.0**:  Correct header sequence in TTh course.

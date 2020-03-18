@@ -1,14 +1,18 @@
 package edu.holycross.shot.coursecal
 
 import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.HashMap
+
+
+
+import wvlet.log._
+import wvlet.log.LogFormatter.SourceCodeLogFormatter
+
 
 /** A sequence of topics for a course.
 *
 * @param entries Sequence of [[TopicEntry]]s for the semester.
 */
-case class Topics (entries : Vector[TopicEntry] ) {
+case class Topics (entries : Vector[TopicEntry] ) extends LogSupport {
 
   /**  Extract heading for this unit, if it exists.
   */
@@ -25,7 +29,9 @@ case class Topics (entries : Vector[TopicEntry] ) {
   /** Cluster entries into groups organized by [[TopicEntry]]s
   */
   def segments: Vector[Topics] = {
-    addSegment(entries,Vector(Topics(Vector.empty[TopicEntry])) )
+    val noEntries = Vector.empty[TopicEntry]
+    debug("Topics instance segmenting " + entries.size + " TopicEntrys.")
+    addSegment(entries, Vector(Topics(noEntries)) )
   }
 
 
@@ -84,7 +90,7 @@ case class Topics (entries : Vector[TopicEntry] ) {
       addWeek(source.drop(classesPerWeek),appended, classesPerWeek)
     } else {
       if (source.size > 0) {
-        println(s"WE HAVE ${source.size} DANGLING RECORDS")
+        warn(s"WE HAVE ${source.size} DANGLING RECORDS")
       }
       clustered
     }
@@ -136,7 +142,7 @@ object Topics {
   */
   def apply(syllabusFileName: String): Topics = {
     val hdr = "^#.+".r
-    val lns = scala.io.Source.fromFile(syllabusFileName).getLines().toVector.filter(_.nonEmpty)
+    val lns = Source.fromFile(syllabusFileName).getLines().toVector.filter(_.nonEmpty)
     val entries = lns.map( l =>
       hdr.findFirstIn(l) match {
         case None =>  CourseDay(l)

@@ -10,6 +10,8 @@ import java.time.format._
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
 
+import wvlet.log._
+import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 
 /** A class for working with lists of topics and calendrical
@@ -18,9 +20,10 @@ import scala.collection.mutable.Buffer
 * @param topics List of daily topics.
 * @param conf Configuration of calendrical data.
 */
-case class Schedule(topics: Topics, conf: CalendarConfig)  {
+case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
 
-
+  //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  debug("Created Schedule instance.")
   /** Find fixed events for a given week.
   *
   * @param courseWeek Week to check.
@@ -34,12 +37,14 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
   * or tables.
   */
   def markdownCalendar: String = {
+    debug("Make markdown string for calendar")
     conf.scheduleType match {
         case MWF =>  {
           val segs = segments.map(_.markdown(Schedule.mwfTableHead))
           ghpageYamlHeader + segs.mkString("\n\n")
         }
         case TTh => {
+          debug("Determine segments for a TTh course schedule")
           val segs = segments.map(_.markdown(Schedule.tthTableHead))
           ghpageYamlHeader + segs.mkString("\n\n")
         }
@@ -62,7 +67,7 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
 
   /** Create a course-long sequence of [[DatedWeek]]s by recursively
-  * converting a Vector of [[Week]]s into a single [[DatedWeek]].
+  * converting a Vector of [[Week]]s into a single Vectorof [[DatedWeek]].
   *
   * @param weeks  Sections of the course clustered as a Vector of [[Week]]s,
   * with each Vector corresponding to a segment of the course.
@@ -75,12 +80,31 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
     weeks: Vector[Vector[Week]],
     startingIndex: Int,
     calendarVector: Vector[DatedWeek]) : Vector[DatedWeek] = {
+
     if (weeks.isEmpty) {
       calendarVector
 
     } else {
-      val nextSection = weeks(0)
-      val dWeeks = for (i <- 0 until nextSection.size) yield {
+      debug("adding dated topics: weeks = " + weeks.flatten.size)
+      val calendarWeeks = conf.semesterCalendar.weeks.size
+      debug("compare remaining calendar weeks: " + calendarWeeks)
+      val nextSection = weeks.head
+
+      val limit = if (calendarWeeks > nextSection.size) {
+        nextSection.size
+      } else {
+        calendarWeeks
+      }
+      debug("NEXT SECTION: \n" + weeks.flatten.mkString("\n"))
+
+      // SO HERE IT IS.
+      // CRASH IF MORE CONTENT THAN WEEKS LEFT IN COURSE!
+
+
+
+      //val dWeeks = for (i <- 0 until nextSection.size) yield {
+      val dWeeks = for (i <- 0 until limit) yield {
+        debug("Getting dated week using index " + i + " and starting point " + startingIndex)
         val calendarWeek = conf.semesterCalendar.weeks(i + startingIndex)
         val fixed = fixedEventsForWeek(calendarWeek)
 
@@ -90,9 +114,9 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
 
       val newIdx = startingIndex + dWeeks.size
       if (calendarVector.isEmpty) {
-        addDatedTopics(weeks.drop(1), newIdx, dWeeks.toVector)
+        addDatedTopics(weeks.tail, newIdx, dWeeks.toVector)
       } else {
-        addDatedTopics(weeks.drop(1), newIdx, calendarVector ++ dWeeks.toVector)
+        addDatedTopics(weeks.tail, newIdx, calendarVector ++ dWeeks.toVector)
       }
     }
   }
@@ -127,15 +151,21 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
     addSegment(segs, v, 0)
   }
 
-
+  /** Recursively add content from a source Vector of [[Topic]]s to create a
+  * Vector of [[Segment]]s.
+  *
+  * @param src Vector of [[Topic]]s to be processed.
+  * @param target Vector of previously collected [[Segment]]s.
+  * @param idx Some damned index or other.
+  */
   def addSegment(src: Vector[Topics], target: Vector[Segment], idx: Int = 0) : Vector[Segment] = {
     if (src.isEmpty) {
       target
     } else {
-      println("Src size: " + src.size)
-      println("Prev idx: " + idx)
-      println("Dimension: "+ conf.scheduleType.classes)
-      println("Weeks: " + src(0).weeks(conf.scheduleType.classes))
+      debug("Number of topics: " + src.size)
+      debug("Prev idx: " + idx)
+      debug("Dimension: "+ conf.scheduleType.classes)
+      debug("Weeks: " + src(0).weeks(conf.scheduleType.classes))
       val newIdx = idx + src(0).weeks(conf.scheduleType.classes)
 
       // this is wrong...
@@ -157,17 +187,26 @@ case class Schedule(topics: Topics, conf: CalendarConfig)  {
   * @param weekSize Number of class meetings per week.
   * @param startingIndex Index of first week of this segment within the whole term.
   */
-  def segment( entries : Vector[TopicEntry], startingIndex: Int): Segment = {
-    entries(0) match {
+  def segment(
+    entries : Vector[TopicEntry],
+    startingIndex: Int): Segment = {
+
+    debug("Segmenting " + entries.size + " TopicEntrys, counting from " + startingIndex )
+    entries.head match {
       case day : CourseDay => {
         //val weeks = Topics(entries).weekly(conf.scheduleType.classes)
+        debug("First entry is a CourseDay: create new schedule to get dated topics from index "+ startingIndex)
         val datedWeeks = Schedule(Topics(entries), conf).datedTopics(startingIndex)
         Segment(datedWeeks, startingIndex, None)
       }
       case topic : SectionTopic => {
         //val weeks = Topics(entries.drop(1)).weekly(conf.scheduleType.classes)
-        val datedWeeks = Schedule(Topics(entries.drop(1)), conf).datedTopics(startingIndex)
+        debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics from index " + startingIndex)
+        val entriesSchedule = Schedule(Topics(entries.tail), conf)
+        debug("Created schedule for remianing entries")
+        val datedWeeks = entriesSchedule.datedTopics(startingIndex)
         val heading = Some(topic)
+        debug("Heading is " + heading)
         Segment(datedWeeks, startingIndex, heading)
       }
     }
@@ -188,7 +227,7 @@ title: "${conf.title}"
 /** Factory for creating [[Schedule]]s, and definition of static
 * header strings for markdown tables.
 */
-object Schedule  {
+object Schedule  extends LogSupport {
 
   /** Create a Schedule from pair of files.
   *
@@ -196,6 +235,7 @@ object Schedule  {
   * @param confFile YAML file configuring calendar for the semester.
   */
   def apply(topicsFile: String, confFile: String): Schedule = {
+    debug("Creating schedule from files " + topicsFile + " and " + confFile)
     Schedule(Topics(topicsFile), CalendarConfig(confFile))
   }
 
