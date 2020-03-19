@@ -1,8 +1,8 @@
-## The practice of science: manuscripts and other scientific instruments
+*No classes*
+*No classes*
 
-The Archimedes palimpsest, and Archimedes, *On Floating Bodies*
-[Reading tables in MSS of Ptolemy](../assignments/rising-times/)
 
+## Analyzing the *Geography* of Ptolemy
 
 Spherics and four-dimensional diagrams
 The *Handy Tables*
@@ -10,6 +10,8 @@ The *Handy Tables*
 
 Ptolemy, the *Planisphere*
 Scientific communities in the letters of Archimedes
+
+## Tables of ascension in the *Almagest*
 
 
 Playful science? Archimedes, *The Sand Reckoner*#

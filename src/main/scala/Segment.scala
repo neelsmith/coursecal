@@ -1,18 +1,19 @@
 package edu.holycross.shot.coursecal
 
 import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.HashMap
 
+import wvlet.log._
+import wvlet.log.LogFormatter.SourceCodeLogFormatter
 
 /** A segment of a full-term schedule with topics mapped on to calendar weeks.
 *
 * @param weeks Mapping of topics on to calendar weeks for this segment of the course.
-* @param initialWeek Count of first week of this segment with course as a whole.
+* @param initialWeek Count of first week of this segment within course as a whole.
 * @param heading Optional heading for this section of the course.
 */
-case class Segment(weeks : Vector[DatedWeek], initialIndex: Int, heading: Option[SectionTopic]) {
-  
+case class Segment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic]) extends LogSupport {
+  Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  debug("New Segment instance starts with week " + initialWeek + " of course.")
 
   /** Compose appropriate markdown to format the schedule
   * for this segment of a course as a calendar table.
@@ -26,4 +27,5 @@ case class Segment(weeks : Vector[DatedWeek], initialIndex: Int, heading: Option
 
     Vector(s"${hdg}\n", tableHeading, rows.mkString).mkString
   }
+  Logger.setDefaultLogLevel(LogLevel.INFO)
 }

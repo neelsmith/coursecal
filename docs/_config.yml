@@ -1,0 +1,23 @@
+
+
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            coursecal library
+tagline:          'Work with citable scholarly resources'
+description:      'A library for building course calendars from plain-text files'
+
+url: 'http://neelsmith.github.io'
+baseurl: '/coursecal/'
+
+
+author:
+  name:           'Neel Smith'
+
+
+links:
+  - title:  Github repository
+    url:  https://github.com/neelsmith/coursecal
+    external: true

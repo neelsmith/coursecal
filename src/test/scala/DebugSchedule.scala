@@ -5,6 +5,7 @@ package edu.holycross.shot.coursecal
 import org.scalatest.FlatSpec
 import java.time._
 import java.time.format._
+import java.io.PrintWriter
 
 class DebugSchedule  extends FlatSpec {
 
@@ -22,6 +23,8 @@ class DebugSchedule  extends FlatSpec {
   "A Schedule instance" should "make proper markdown for a calendar" in {
     val sched = Schedule(topics, conf)
     val md = sched.markdownCalendar
+    val testOut = "calendar.md"
+    new PrintWriter(testOut){write(md); close;}
   }
 
 

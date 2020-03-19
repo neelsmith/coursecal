@@ -22,7 +22,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 */
 case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
 
-  //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  Logger.setDefaultLogLevel(LogLevel.INFO)
   debug("Created Schedule instance.")
   /** Find fixed events for a given week.
   *
@@ -61,8 +61,8 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   * and clustered into week units of the size configured
   * in `conf`.
   */
-  def datedTopics(startingIndex: Int = 0): Vector[DatedWeek] = {
-    addDatedTopics(weeklySegmented, startingIndex, Vector.empty)
+  def datedTopics: Vector[DatedWeek] = {
+    addDatedTopics(weeklySegmented, Vector.empty)
   }
 
 
@@ -78,7 +78,6 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   */
   def addDatedTopics(
     weeks: Vector[Vector[Week]],
-    startingIndex: Int,
     calendarVector: Vector[DatedWeek]) : Vector[DatedWeek] = {
 
     if (weeks.isEmpty) {
@@ -97,26 +96,19 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
       }
       debug("NEXT SECTION: \n" + weeks.flatten.mkString("\n"))
 
-      // SO HERE IT IS.
-      // CRASH IF MORE CONTENT THAN WEEKS LEFT IN COURSE!
-
-
-
-      //val dWeeks = for (i <- 0 until nextSection.size) yield {
       val dWeeks = for (i <- 0 until limit) yield {
-        debug("Getting dated week using index " + i + " and starting point " + startingIndex)
-        val calendarWeek = conf.semesterCalendar.weeks(i + startingIndex)
+        debug("Getting dated week using index " + i )
+        val calendarWeek = conf.semesterCalendar.weeks(i)
         val fixed = fixedEventsForWeek(calendarWeek)
 
         val datedWeek = DatedWeek(nextSection(i), calendarWeek, fixed)
         datedWeek
       }
 
-      val newIdx = startingIndex + dWeeks.size
       if (calendarVector.isEmpty) {
-        addDatedTopics(weeks.tail, newIdx, dWeeks.toVector)
+        addDatedTopics(weeks.tail, dWeeks.toVector)
       } else {
-        addDatedTopics(weeks.tail, newIdx, calendarVector ++ dWeeks.toVector)
+        addDatedTopics(weeks.tail, calendarVector ++ dWeeks.toVector)
       }
     }
   }
@@ -156,25 +148,25 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   *
   * @param src Vector of [[Topic]]s to be processed.
   * @param target Vector of previously collected [[Segment]]s.
-  * @param idx Some damned index or other.
+  * @param weekCount Week number within course as a whole.
   */
-  def addSegment(src: Vector[Topics], target: Vector[Segment], idx: Int = 0) : Vector[Segment] = {
+  def addSegment(src: Vector[Topics], target: Vector[Segment], weekCount: Int) : Vector[Segment] = {
     if (src.isEmpty) {
       target
     } else {
       debug("Number of topics: " + src.size)
-      debug("Prev idx: " + idx)
-      debug("Dimension: "+ conf.scheduleType.classes)
+      debug("Week count: " + weekCount)
+      debug("Classes per week: "+ conf.scheduleType.classes)
       debug("Weeks: " + src(0).weeks(conf.scheduleType.classes))
-      val newIdx = idx + src(0).weeks(conf.scheduleType.classes)
+      val newWeekCount = weekCount + src.head.weeks(conf.scheduleType.classes)
 
-      // this is wrong...
-      val seg = segment(src(0).entries, idx)
+      // this is wrong...?
+      val seg = segment(src.head.entries, weekCount)
       if (target.size == 0) {
-        addSegment(src.drop(1), Vector(seg), newIdx)
+        addSegment(src.tail, Vector(seg), newWeekCount)
       } else{
         val newTarget = target ++ Vector(seg)
-        addSegment(src.drop(1), newTarget, newIdx)
+        addSegment(src.tail, newTarget, newWeekCount)
       }
     }
   }
@@ -185,29 +177,24 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   *
   * @param entries Optional [[SectionTopic]] followed by a series of [[CourseDay]]s.
   * @param weekSize Number of class meetings per week.
-  * @param startingIndex Index of first week of this segment within the whole term.
   */
-  def segment(
-    entries : Vector[TopicEntry],
-    startingIndex: Int): Segment = {
+  def segment(entries : Vector[TopicEntry], weekCount: Int): Segment = {
 
-    debug("Segmenting " + entries.size + " TopicEntrys, counting from " + startingIndex )
+    debug("Segmenting " + entries.size + " TopicEntrys at week count " + weekCount )
     entries.head match {
       case day : CourseDay => {
-        //val weeks = Topics(entries).weekly(conf.scheduleType.classes)
-        debug("First entry is a CourseDay: create new schedule to get dated topics from index "+ startingIndex)
-        val datedWeeks = Schedule(Topics(entries), conf).datedTopics(startingIndex)
-        Segment(datedWeeks, startingIndex, None)
+        debug("First entry is a CourseDay")
+        val datedWeeks = Schedule(Topics(entries), conf).datedTopics
+        Segment(datedWeeks, weekCount, None)
       }
       case topic : SectionTopic => {
-        //val weeks = Topics(entries.drop(1)).weekly(conf.scheduleType.classes)
-        debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics from index " + startingIndex)
+        debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics ")
         val entriesSchedule = Schedule(Topics(entries.tail), conf)
-        debug("Created schedule for remianing entries")
-        val datedWeeks = entriesSchedule.datedTopics(startingIndex)
+        debug("Created schedule for remaining entries with " + entriesSchedule.topics.size + " topics.")
+        val datedWeeks = entriesSchedule.datedTopics
         val heading = Some(topic)
         debug("Heading is " + heading)
-        Segment(datedWeeks, startingIndex, heading)
+        Segment(datedWeeks, weekCount, heading)
       }
     }
   }

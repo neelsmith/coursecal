@@ -30,7 +30,7 @@ class ScheduleSpec  extends FlatSpec {
     val topics = "src/test/resources/greek101.txt"
     val conf = "src/test/resources/greek101.yaml"
     val sched = Schedule(topics, conf)
-    val semester = sched.datedTopics(0)
+    val semester = sched.datedTopics
     val expectedWeeks = 4
     assert(semester.size == expectedWeeks)
   }

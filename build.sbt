@@ -4,7 +4,7 @@ scalaVersion := (crossScalaVersions ).value.last
 
 name := "coursecal"
 organization := "edu.holycross.shot"
-version := "1.2.7"
+version := "1.2.8"
 licenses += ("GPL-3.0",url("https://opensource.org/licenses/gpl-3.0.html"))
 resolvers += Resolver.jcenterRepo
 resolvers += Resolver.bintrayRepo("neelsmith", "maven")
@@ -14,3 +14,11 @@ libraryDependencies ++= Seq(
   "org.yaml" % "snakeyaml" % "1.14"
 
 )
+
+mdocIn := file("mdocs")
+mdocOut := file("docs")
+mdocExtraArguments += "--no-link-hygiene"
+
+
+
+enablePlugins(MdocPlugin)
