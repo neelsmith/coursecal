@@ -5,9 +5,9 @@
 permalink:        pretty
 
 # Setup
-title:            coursecal library
-tagline:          'Work with citable scholarly resources'
-description:      'A library for building course calendars from plain-text files'
+title:            coursecal
+tagline:          'A library for building course calendars'
+description:      'Develop course calendars from simple lists in plain-text files'
 
 url: 'http://neelsmith.github.io'
 baseurl: '/coursecal/'
