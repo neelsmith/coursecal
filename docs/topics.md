@@ -4,14 +4,14 @@ layout: page
 ---
 
 
-We can load topics from a file.
+We can load topics from a text file. Each non-empty line is either an entry for a class day, or a header for a section of the course.  The difference between the two is that headers start with one or more `#` characters indiciating the header level in markdown output.
 
 ```scala
 val f = "src/test/resources/greek101.txt"
 val topics = Topics(f)
 ```  
 
-They have a Vector of `TopicEntry`s:
+Non-empty lines are parsed into `TopicEntry`s:
 
 ```scala
 assert(topics.entries.size == 15)
@@ -26,7 +26,7 @@ assert(topics.days.size == 12)
 
 ### SectionTopics
 
-These can be built from MD strings pound-sign headers:
+These are built from markdown strings with pound-sign headers.
 
 ```scala
 val topic = SectionTopic("## Part 2")
