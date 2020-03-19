@@ -1,5 +1,7 @@
 # Release notes
 
+**2.0.0**: API-breaking changes.
+
 **1.2.8**:  Corrects a bug in indexing weeks of semester.
 
 **1.2.7**:  Adds logging, and fixes a bug when more topics than calendar weeks allow.

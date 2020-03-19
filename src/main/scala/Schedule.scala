@@ -24,7 +24,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   *
   * @param courseWeek Week to check.
   */
-  def fixedEventsForWeek(courseWeek: CourseWeek): Vector[FixedEvent] = {
+  def fixedEventsForWeek(courseWeek: DatedWeekMeetings): Vector[FixedEvent] = {
     conf.fixedEvents.filter(_.inWeek(courseWeek))
   }
 
@@ -69,40 +69,42 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   * @param startWeek Week count for first week of this section of topics.
   *
   */
-  def datedTopics(
-  /*,
-    calendarVector: Vector[DatedWeek],
-    startWeek: Int*/
-  ) : Vector[DatedWeek] = {
 
+  /*(
+,
+  calendarVector: Vector[DatedWeek],
+  startWeek: Int
+) */
+
+
+  def datedTopics : Vector[DatedWeek] = {
     val calendarWeeks = conf.semesterCalendar.weeks.size
-    val weeks = weeklyClustered
+    val weeks = topics.weekly(conf.scheduleType.classes)
 
     //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-    debug("adding dated topics: weeks = " + weeks.flatten.size)
-    debug("organized in " + weeks.size + " segments")
+    debug("adding dated topics")//: weeks = " + weeks.flatten.size)
+    debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
     debug("total weeks in semester: " + calendarWeeks)
+
+
+    val dWeeks = for ( (wk,i) <- weeks.zipWithIndex) yield {
+        val calendarWeek = conf.semesterCalendar.weeks(i)
+        val fixed = fixedEventsForWeek(calendarWeek)
+        val datedWeek = DatedWeek(wk, calendarWeek, fixed)
+        debug(calendarWeek + " = wk: " + wk + " and dixed evts " + fixed)
+        debug("YIELDS " + datedWeek)
+        datedWeek
+    }
+
     //Logger.setDefaultLogLevel(LogLevel.INFO)
 
-
-
-    Vector.empty[DatedWeek]
+    dWeeks
 
 /*
-      val nextSection = weeks.head
 
-      val limit = if (calendarWeeks > nextSection.size) {
-        nextSection.size
-      } else {
-        calendarWeeks
-      }
-      debug("NEXT SECTION of course weeks: \n" + weeks.flatten.mkString("\n"))
-      debug("Now figuring dated weeks")
 
       val dWeeks = for (i <- startWeek until limit) yield {
-        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-        debug("Getting dated week using week index " + i)
-        //Logger.setDefaultLogLevel(LogLevel.INFO)
+
         val calendarWeek = conf.semesterCalendar.weeks(i)
         val fixed = fixedEventsForWeek(calendarWeek)
 
@@ -151,24 +153,24 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
 
   /** Break schedule up into segments.
   */
-  def segments : Vector[Segment] = {
+  def segments : Vector[DatedSegment] = {
     val clusters = topics.clusters
-    val v = Vector.empty[Segment]
+    val v = Vector.empty[DatedSegment]
     addSegment(clusters, v, 0)
   }
 
   /** Recursively add content from a source Vector of [[Topic]]s to create a
-  * Vector of [[Segment]]s.
+  * Vector of [[DatedSegment]]s.
   *
   * @param src Vector of [[Topic]]s to be processed.
-  * @param target Vector of previously collected [[Segment]]s.
+  * @param target Vector of previously collected [[DatedSegment]]s.
   * @param weekCount Week number within course as a whole.
   */
   def addSegment(
     src: Vector[TopicGroup],
-    target: Vector[Segment],
+    target: Vector[DatedSegment],
     weekCount: Int = 0
-  ) : Vector[Segment] = {
+  ) : Vector[DatedSegment] = {
 
     if (src.isEmpty) {
       target
@@ -179,7 +181,6 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
       debug("Weeks: " + src(0).weeks(conf.scheduleType.classes))
       val newWeekCount = weekCount + src.head.weeks(conf.scheduleType.classes)
 
-      // this is wrong...?
       val seg = segment(src.head.entries, weekCount)
       if (target.size == 0) {
         addSegment(src.tail, Vector(seg), newWeekCount)
@@ -191,33 +192,36 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   }
 
 
-  /** Create a [[Segment]] object from a series of [[TopicEntry]]s a
+  /** Create a [[DatedSegment]] object from a series of [[TopicEntry]]s a
   * 0-origin index into the list of weeks.
   *
   * @param entries Optional [[SectionTopic]] followed by a series of [[CourseDay]]s.
   * @param weekCount 0-origin index into the list of weeks.
   */
   def segment(
-    entries : Vector[TopicEntry], weekCount: Int): Segment = {
-      ////Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    entries : Vector[TopicEntry], weekCount: Int): DatedSegment = {
+    //Logger.setDefaultLogLevel(LogLevel.DEBUG)
     // FIRST FIND A DATE FOR START.
     val newConf= conf.resetWeekOne(weekCount)
     // SET UP A CONFIG FOR THAT.
     debug("Segmenting " + entries.size + " TopicEntrys at week count " + weekCount )
-      //Logger.setDefaultLogLevel(LogLevel.INFO)
+
+    debug("->" + entries.mkString("\n->"))
+    //Logger.setDefaultLogLevel(LogLevel.INFO)
     entries.head match {
       case day : CourseDay => {
         debug("First entry is a CourseDay")
 
-        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("Creating mini schedule for segment of " + entries.size + " entries")
-        //Logger.setDefaultLogLevel(LogLevel.INFO)
+        Logger.setDefaultLogLevel(LogLevel.INFO)
 
         val datedWeeks = Schedule(TopicGroup(entries), newConf).datedTopics
-        Segment(datedWeeks, weekCount, None)
+        DatedSegment(datedWeeks, weekCount, None)
       }
       case topic : SectionTopic => {
 
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics ")
 
         val entriesSchedule = Schedule(TopicGroup(entries.tail), newConf)
@@ -227,7 +231,8 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
         val datedWeeks = entriesSchedule.datedTopics
         val heading = Some(topic)
         debug("Heading is " + heading)
-        Segment(datedWeeks, weekCount, heading)
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
+        DatedSegment(datedWeeks, weekCount, heading)
       }
     }
   }

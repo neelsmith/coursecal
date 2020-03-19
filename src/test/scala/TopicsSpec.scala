@@ -6,23 +6,23 @@ import org.scalatest.FlatSpec
 import java.time._
 import java.time.format._
 
-class TopicsSpec  extends FlatSpec {
+class TopicGroupSpec  extends FlatSpec {
 
-  "The Topics object" should "create a TopicsList from a file" in {
+  "The TopicGroup object" should "create a TopicGroupList from a file" in {
     val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
+    val topics = TopicGroup(f)
     topics match {
-      case t: Topics => assert(true)
-      case _ => fail("Should have created a Topics object")
+      case t: TopicGroup => assert(true)
+      case _ => fail("Should have created a TopicGroup object")
     }
   }
 
 
   it should "extract a heading-delimited segment from a list"  in {
     val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
+    val topics = TopicGroup(f)
 
-    val seg1 = Topics.nextSegment(topics.entries, Vector.empty[TopicEntry])
+    val seg1 = TopicGroup.nextCluster(topics.entries, Vector.empty[TopicEntry])
     val expectedSize = 4
     assert( seg1.size == expectedSize)
     seg1(0) match {
@@ -35,60 +35,24 @@ class TopicsSpec  extends FlatSpec {
     }
   }
 
-  "A Topics list" should "extract course days from the list" in {
+  "A TopicGroup list" should "extract course days from the list" in {
     val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
+    val topics = TopicGroup(f)
     val expectedDays = 12
     assert(topics.days.size == expectedDays)
   }
 
   it should "compute the number of weeks required for a given number of meetings per week" in {
       val f = "src/test/resources/greek101.txt"
-      val topics = Topics(f)
+      val topics = TopicGroup(f)
       assert (topics.weeks(3) == 4)
       assert (topics.weeks(2) == 6)
   }
 
-  it should "provide a mechanism for clustering topics in sublists grouped under headings" in {
-    val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
-    val targetEntries : Vector[TopicEntry]= Vector.empty[TopicEntry]
-
-    val topicsV : Vector[Topics] = Vector.empty
-    val clusters = topics.addSegment(topics.entries, topicsV)
-
-    val expectedClusters = 3
-    assert(clusters.size == expectedClusters)
-  }
-
-  it should "cluster topics in sublists by heading from a parameterless function" in {
-    val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
-    val cluster = topics.segments
-    val expectedClusters = 3
-    assert(cluster.size == expectedClusters)
-  }
-
-
-  it should "cluster classes into weeks for a given number of meetings per week" in {
-      val f = "src/test/resources/greek101.txt"
-      val topics = Topics(f)
-      val byWeek = topics.weekly(3)
-      val expectedWeeks = 4
-      assert(byWeek.size == expectedWeeks)
-  }
-
-  it should "cluster classes into weeks within a clustering by topics identified by heading" in {
-      val f = "src/test/resources/greek101.txt"
-      val topics = Topics(f)
-      val segmented = topics.weeklySegmented(3)
-      val expectedSegs = 3
-      assert(segmented.size == expectedSegs)
-  }
 
   it should "extract headings when they exist" in {
     val f = "src/test/resources/greek101.txt"
-    val topics = Topics(f)
+    val topics = TopicGroup(f)
     assert(topics.heading.get == SectionTopic(2, "Section 1: introduction"))
   }
 }

@@ -14,7 +14,7 @@ case class FixedEvent(eventDate: LocalDate, eventLabel: String) {
   *
   * @param courseWeek Week of dates to compare.
   */
-  def inWeek(courseWeek: CourseWeek): Boolean = {
+  def inWeek(courseWeek: DatedWeekMeetings): Boolean = {
     courseWeek.dates.contains(eventDate)
   }
 

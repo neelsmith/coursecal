@@ -10,9 +10,9 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * @param initialWeek Count of first week of this segment within course as a whole.
 * @param heading Optional heading for this section of the course.
 */
-case class Segment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic]) extends LogSupport {
+case class DatedSegment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic]) extends LogSupport {
   //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-  debug("New Segment instance starts with week " + initialWeek + " of course.")
+  debug("New DatedSegment instance starts with week " + initialWeek + " of course.")
 
   /** Compose appropriate markdown to format the schedule
   * for this segment of a course as a calendar table.

@@ -26,14 +26,6 @@ class ScheduleSpec  extends FlatSpec {
     assert(sched.topicsWeeks == expectedWeeks)
   }
 
-  it should "weave match topics with calendar dates" in {
-    val topics = "src/test/resources/greek101.txt"
-    val conf = "src/test/resources/greek101.yaml"
-    val sched = Schedule(topics, conf)
-    val semester = sched.datedTopics
-    val expectedWeeks = 4
-    assert(semester.size == expectedWeeks)
-  }
 
   it should "generate an appropriate YAML header for a ghpages md file" in {
     val topics = "src/test/resources/greek101.txt"
@@ -70,33 +62,7 @@ class ScheduleSpec  extends FlatSpec {
 
   }
 
-  it should "correctly advance dates across segments" in pending
-  // compare dates
-  /*{
-    val topics = "src/test/resources/greek101.txt"
-    val conf = "src/test/resources/greek101.yaml"
-    val sched = Schedule(topics, conf)
-    val segs = sched.segments
 
-    for (i <- 0 until segs.size) {
-
-      val s = segs(i)
-      val w = s.weeks(0)
-
-    }
-  }*/
-
-  it should "format a segment of the topics list as a markdown table" in {
-    val topics = "src/test/resources/greek101.txt"
-    val conf = "src/test/resources/greek101.yaml"
-    val sched = Schedule(topics, conf)
-
-    val md = sched.markdownCalendar
-    val expectedLines = 25
-    assert(md.split("\n").size == expectedLines)
-
-    //
-  }
 
   it should "format a TTh schedule correctly" in {
     val topics = "src/test/resources/ada-topics.txt"

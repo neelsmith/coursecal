@@ -42,12 +42,12 @@ case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
   */
   def addCluster(src: Vector[TopicEntry], target: Vector[TopicGroup]) : Vector[TopicGroup] = {
     // SO THIS LOOKS GOOD:
-    Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    //Logger.setDefaultLogLevel(LogLevel.DEBUG)
     debug("TopicGroup, addCluster: src size " + src.size)
     debug("<-" + src.mkString("\n<-"))
     debug("TopicGroup, addCluster: target size " + target.size)
     debug("=>" + target.map(tg => tg.entries.mkString("=>")).mkString("\n"))
-    Logger.setDefaultLogLevel(LogLevel.INFO)
+    //Logger.setDefaultLogLevel(LogLevel.INFO)
 
       if (src.isEmpty) {
         target
@@ -58,16 +58,16 @@ case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
 
         val newSrc = src.drop(nextClusterSequence.size)
         val newTarget = target :+ newTopicGroup
-        Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("next cluster has " + nextClusterSequence.size + " topics.")
         debug("<-" + nextClusterSequence.mkString("\n<-"))
-        Logger.setDefaultLogLevel(LogLevel.INFO)
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
         val updated = addCluster(newSrc,newTarget)
 
-        Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("**updated cluster list**:  size now " + updated.size )
         debug("=>" + updated.map(_.entries.mkString("\n=>")))
-        Logger.setDefaultLogLevel(LogLevel.INFO)
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
 
         updated
       }
@@ -76,10 +76,10 @@ case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
 
       /*
     if (src.isEmpty) {
-      Logger.setDefaultLogLevel(LogLevel.DEBUG)
+      //Logger.setDefaultLogLevel(LogLevel.DEBUG)
       debug("TopicGroup, addcluster complete with " + target.filter(_.entries.nonEmpty).size + " entries")
       debug(target)
-      Logger.setDefaultLogLevel(LogLevel.INFO)
+      //Logger.setDefaultLogLevel(LogLevel.INFO)
 
 
       target.filter(_.entries.nonEmpty)
@@ -91,10 +91,10 @@ case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
         addCluster(src.drop(nextCluster.size), Vector(TopicGroup(nextCluster)))
       } else {
         val composite =   target ++  Vector(TopicGroup(nextCluster))
-          Logger.setDefaultLogLevel(LogLevel.DEBUG)
+          //Logger.setDefaultLogLevel(LogLevel.DEBUG)
           debug("TopicGroup, next cluster: " + nextCluster)
           debug("NEW COMPOSITE:\n-->" + composite.mkString("\n-->"))
-          Logger.setDefaultLogLevel(LogLevel.INFO)
+          //Logger.setDefaultLogLevel(LogLevel.INFO)
         addCluster(src.drop(nextCluster.size), composite)
       }
     } */

@@ -20,4 +20,20 @@ val conf = "src/test/resources/greek101.yaml"
 val sched = Schedule(topics, conf)
 ```
 
-Some stuff it has:
+## Some stuff it has
+
+It can cluster topics into a series of [[Week]]s by segments labelled with headings
+
+```scala mdoc
+sched.weeklyClustered
+```
+
+A list of `DatedSegment`s
+
+```scala mdoc
+sched.segments
+```
+
+```scala mdoc
+sched.segments.map(s => s.weeks)
+```

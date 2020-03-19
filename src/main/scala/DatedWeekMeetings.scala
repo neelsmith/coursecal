@@ -9,7 +9,7 @@ import java.time.format._
 /** Classes mapping a weekly schedule pattern on to specific
 * dates for a single week.
 */
-sealed abstract class CourseWeek {
+sealed abstract class DatedWeekMeetings {
   def dates: Vector[LocalDate]
 }
 
@@ -19,7 +19,7 @@ sealed abstract class CourseWeek {
 * @param oneDay A single day in the week (any day) for
 * which classes meet on Tues and Thurs.
 */
-case class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
+case class TuThWeek(val oneDay: LocalDate) extends DatedWeekMeetings {
   val tues = oneDay.`with`(DayOfWeek.TUESDAY)
   val thurs = oneDay.`with`(DayOfWeek.THURSDAY)
 
@@ -38,7 +38,7 @@ case class TuThWeek(val oneDay: LocalDate) extends CourseWeek {
 * @param oneDay A single day in the week (any day) for
 * which classes meet on Mon, Wed and Fri.
 */
-case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
+case class MonWedFriWeek(val oneDay: LocalDate) extends DatedWeekMeetings {
   val mon = oneDay.`with`(DayOfWeek.MONDAY)
   val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
   val fri = oneDay.`with`(DayOfWeek.FRIDAY)
@@ -59,7 +59,7 @@ case class MonWedFriWeek(val oneDay: LocalDate) extends CourseWeek {
 * @param oneDay A single day in the week (any day) for
 * which classes meet on Wed and Fri.
 */
-case class WedFriWeek(val oneDay: LocalDate) extends CourseWeek {
+case class WedFriWeek(val oneDay: LocalDate) extends DatedWeekMeetings {
   val wed = oneDay.`with`(DayOfWeek.WEDNESDAY)
   val fri = oneDay.`with`(DayOfWeek.FRIDAY)
 

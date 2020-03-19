@@ -10,7 +10,7 @@ package edu.holycross.shot.coursecal
 */
 case class DatedWeek(
   topics: Week,
-  dates: CourseWeek,
+  dates: DatedWeekMeetings,
   fixedEvents: Vector[FixedEvent] = Vector.empty[FixedEvent]
 ) {
 

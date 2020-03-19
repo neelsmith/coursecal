@@ -89,7 +89,7 @@ case class CalendarConfig(
   *
   * @param weekNumber Week index.
   */
-  def calForWeek(weekNumber: Int):  CourseWeek = {
+  def calForWeek(weekNumber: Int):  DatedWeekMeetings = {
     val referenceDate = weekOne.plusWeeks(weekNumber - 1)
     scheduleType match {
       case MWF => MonWedFriWeek(referenceDate)

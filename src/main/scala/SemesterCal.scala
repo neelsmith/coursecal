@@ -6,12 +6,12 @@ import java.util.Locale
 import java.time.format._
 
 
-/** A Vector of [[CourseWeek]]s. */
+/** A Vector of [[DatedWeekMeetings]]s. */
 trait Semester {
-  def weeks : Vector[_ <: CourseWeek]
+  def weeks : Vector[_ <: DatedWeekMeetings]
 }
 
-/**  CourseWeeks on a TTh pattern.
+/**  DatedWeekMeetingss on a TTh pattern.
 *
 * @param startDate A date in the first week of classes.
 * @param totalWeeks Number of calendar weeks to schedule.
@@ -27,7 +27,7 @@ case class TuesThursSemester(startDate: LocalDate, totalWeeks: Int) extends Seme
 }
 
 
-/**  CourseWeeks on a MWF pattern.
+/**  DatedWeekMeetingss on a MWF pattern.
 *
 * @param startDate A date in the first week of classes.
 * @param totalWeeks Number of calendar weeks to schedule.
@@ -44,7 +44,7 @@ case class MonWedFriSemester(startDate: LocalDate, totalWeeks: Int) extends Seme
 
 
 
-/**  CourseWeeks on a WF pattern.
+/**  DatedWeekMeetingss on a WF pattern.
 *
 * @param startDate A date in the first week of classes.
 * @param totalWeeks Number of calendar weeks to schedule.
