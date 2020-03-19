@@ -12,7 +12,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 *
 * @param entries Sequence of [[TopicEntry]]s for the semester.
 */
-case class Topics (entries : Vector[TopicEntry] ) extends LogSupport {
+case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
 
   /**  Extract heading for this unit, if it exists.
   */
@@ -28,39 +28,86 @@ case class Topics (entries : Vector[TopicEntry] ) extends LogSupport {
 
   /** Cluster entries into groups organized by [[TopicEntry]]s
   */
-  def segments: Vector[Topics] = {
-    val noEntries = Vector.empty[TopicEntry]
-    debug("Topics instance segmenting " + entries.size + " TopicEntrys.")
-    addSegment(entries, Vector(Topics(noEntries)) )
+
+  def clusters: Vector[TopicGroup] = {
+    val noEntries = Vector.empty[TopicGroup]
+    debug("TopicGroup instance clustering " + entries.size + " TopicEntrys.")
+
+    addCluster(entries, noEntries )
   }
 
 
-  /** Break of a set of [[TopicEntry]]s into a series of [[Topics]] broken up
+  /** Break of a set of [[TopicEntry]]s into a series of [[TopicGroup]] broken up
   * by [[SectionTopic]]s.
   */
-  def addSegment(src: Vector[TopicEntry], target: Vector[Topics]) : Vector[Topics] = {
+  def addCluster(src: Vector[TopicEntry], target: Vector[TopicGroup]) : Vector[TopicGroup] = {
+    // SO THIS LOOKS GOOD:
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    debug("TopicGroup, addCluster: src size " + src.size)
+    debug("<-" + src.mkString("\n<-"))
+    debug("TopicGroup, addCluster: target size " + target.size)
+    debug("=>" + target.map(tg => tg.entries.mkString("=>")).mkString("\n"))
+    Logger.setDefaultLogLevel(LogLevel.INFO)
+
+      if (src.isEmpty) {
+        target
+      } else {
+
+        val nextClusterSequence: Vector[TopicEntry] = TopicGroup.nextCluster(src, Vector.empty[TopicEntry] )
+        val newTopicGroup = TopicGroup(nextClusterSequence)
+
+        val newSrc = src.drop(nextClusterSequence.size)
+        val newTarget = target :+ newTopicGroup
+        Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        debug("next cluster has " + nextClusterSequence.size + " topics.")
+        debug("<-" + nextClusterSequence.mkString("\n<-"))
+        Logger.setDefaultLogLevel(LogLevel.INFO)
+        val updated = addCluster(newSrc,newTarget)
+
+        Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        debug("**updated cluster list**:  size now " + updated.size )
+        debug("=>" + updated.map(_.entries.mkString("\n=>")))
+        Logger.setDefaultLogLevel(LogLevel.INFO)
+
+        updated
+      }
+
+
+
+      /*
     if (src.isEmpty) {
+      Logger.setDefaultLogLevel(LogLevel.DEBUG)
+      debug("TopicGroup, addcluster complete with " + target.filter(_.entries.nonEmpty).size + " entries")
+      debug(target)
+      Logger.setDefaultLogLevel(LogLevel.INFO)
+
+
       target.filter(_.entries.nonEmpty)
 
     } else {
-      val nextSegment: Vector[TopicEntry] = Topics.nextSegment(src, Vector.empty[TopicEntry] )
+      val nextCluster: Vector[TopicEntry] = TopicGroup.nextCluster(src, Vector.empty[TopicEntry] )
+
       if (target.size == 0) {
-        addSegment(src.drop(nextSegment.size), Vector(Topics(nextSegment)))
+        addCluster(src.drop(nextCluster.size), Vector(TopicGroup(nextCluster)))
       } else {
-        val composite =   target ++  Vector(Topics(nextSegment))
-        addSegment(src.drop(nextSegment.size), composite)
+        val composite =   target ++  Vector(TopicGroup(nextCluster))
+          Logger.setDefaultLogLevel(LogLevel.DEBUG)
+          debug("TopicGroup, next cluster: " + nextCluster)
+          debug("NEW COMPOSITE:\n-->" + composite.mkString("\n-->"))
+          Logger.setDefaultLogLevel(LogLevel.INFO)
+        addCluster(src.drop(nextCluster.size), composite)
       }
-    }
+    } */
   }
 
 
-  /** Cluster a series of [[Week]]s by segments
+  /** Cluster a series of [[Week]]s by clusters
   * labelled with headings.
   *
   * @param classesPerWeek Number of times class meets weekly.
   */
-  def weeklySegmented(classesPerWeek: Int): Vector[Vector[Week]]  = {
-    segments.map(_.weekly(classesPerWeek))
+  def weeklyClustered(classesPerWeek: Int): Vector[Vector[Week]]  = {
+    clusters.map(_.weekly(classesPerWeek))
   }
 
 
@@ -115,15 +162,15 @@ case class Topics (entries : Vector[TopicEntry] ) extends LogSupport {
 
   /** Extract [[CourseDay]] entries from the list.
   */
-  def days: Vector[TopicEntry] = entries.filter(Topics.isDay(_))
+  def days: Vector[TopicEntry] = entries.filter(TopicGroup.isDay(_))
 }
 
 
 
-/** Factory object for creating a [[Topics]] from a
+/** Factory object for creating a [[TopicGroup]] from a
 * delimited-text file.
 */
-object Topics {
+object TopicGroup {
 /*
   def fromText(s:String): Topics = {
     val hdr = "^#.+".r
@@ -136,11 +183,11 @@ object Topics {
     Topics(entries.map(_.get))
   }*/
 
-  /** Create a [[Topics]] from a delimited-text file.
+  /** Create a [[TopicGroup]] from a delimited-text file.
   *
   * @param syllabusFileName Name of file with sequence of course topics.
   */
-  def apply(syllabusFileName: String): Topics = {
+  def apply(syllabusFileName: String): TopicGroup = {
     val hdr = "^#.+".r
     val lns = Source.fromFile(syllabusFileName).getLines().toVector.filter(_.nonEmpty)
     val entries = lns.map( l =>
@@ -149,7 +196,7 @@ object Topics {
         case h: Some[String] => Some(SectionTopic(l))
       }
     )
-    Topics(entries.map(_.get))
+    TopicGroup(entries.map(_.get))
   }
 
   /** True if entry is a [[CourseDay]].
@@ -163,19 +210,19 @@ object Topics {
   * until the next [[TopicEntry]], collecting a heading value with
   * the list if it begins with a heading.
   */
-  def nextSegment(src: Vector[TopicEntry], target: Vector[TopicEntry]): Vector[TopicEntry] = {
+  def nextCluster(src: Vector[TopicEntry], target: Vector[TopicEntry]): Vector[TopicEntry] = {
     if (src.isEmpty) {
       target
     } else {
       val nextVal = src(0)
       nextVal match {
         case day : CourseDay => {
-          nextSegment(src.drop(1), target ++ Vector(day)  )
+          nextCluster(src.drop(1), target ++ Vector(day)  )
         }
         case topic : SectionTopic => {
-          // accept section heading at beginning of segment
+          // accept section heading at beginning of cluster
           if (target.size == 0) {
-            nextSegment(src.drop(1), Vector(topic))
+            nextCluster(src.drop(1), Vector(topic))
           } else {
             target
           }

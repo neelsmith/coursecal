@@ -25,7 +25,43 @@ import scala.collection.mutable.Buffer
 * @param fixedEvent Events outside the list of topics that have a
 * fixed date assigned to them.
 */
-case class CalendarConfig(title: String, weekOne: LocalDate, scheduleType: SchedulePattern, calendarWeeks: Int, fixedEvents: Vector[FixedEvent] ) {
+case class CalendarConfig(
+  title: String,
+  weekOne: LocalDate,
+  scheduleType: SchedulePattern,
+  calendarWeeks: Int,
+  fixedEvents: Vector[FixedEvent] ) {
+
+
+  /** Create a new [[CalendarConfig]] identical to this one,
+  * but with a different starting date.
+  *
+  * @param startDate A calendar date in the first week of
+  * the new calendar.
+  */
+  def resetWeekOne(startDate: LocalDate): CalendarConfig  = {
+    CalendarConfig(title, startDate, scheduleType, calendarWeeks, fixedEvents)
+  }
+
+  /**
+  *
+  * @param weekIndex Zero-origin index into week of this calendar.
+  * New [[CalendarConfig]] will begin from this week.
+  */
+  def dateForWeek(weekIndex: Int): LocalDate = {
+    calForWeek(weekIndex).dates.head
+  }
+
+  /** Create a new [[CalendarConfig]] identical to this one,
+  * but with a different starting date.
+  *
+  * @param weekIndex Zero-origin index into week of this calendar.
+  * New [[CalendarConfig]] will begin from this week.
+  */
+  def resetWeekOne(weekIndex: Int): CalendarConfig = {
+    val newStartDate = dateForWeek(weekIndex)
+    CalendarConfig(title, newStartDate, scheduleType, calendarWeeks, fixedEvents)
+  }
 
   /** Find a semester calendar for the configured dates
   * and type.

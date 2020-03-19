@@ -6,9 +6,13 @@ package edu.holycross.shot.coursecal
 *
 * @param topics A [[Week]] of course topics.
 * @param dates One week of calendar dates for a course meeting pattern.
+* @param fixedEvents Any fixed-date events that should be noted.
 */
-case class DatedWeek(topics: Week, dates: CourseWeek, fixedEvents: Vector[FixedEvent] = Vector.empty[FixedEvent]) {
-
+case class DatedWeek(
+  topics: Week,
+  dates: CourseWeek,
+  fixedEvents: Vector[FixedEvent] = Vector.empty[FixedEvent]
+) {
 
   /** Collect a Vector of notes for all [[CourseDay]]s in this week.*/
   def notes: Vector[String] = topics.courseDays.map(_.notes).filter(_.nonEmpty)

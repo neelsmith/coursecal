@@ -16,9 +16,9 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * @param topics List of daily topics.
 * @param conf Configuration of calendrical data.
 */
-case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
+case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport {
 
-  Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  ////Logger.setDefaultLogLevel(LogLevel.DEBUG)
   debug("Created Schedule instance.")
   /** Find fixed events for a given week.
   *
@@ -53,36 +53,42 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
 
 
   /** Create a course-long sequence of [[DatedWeek]]s.
-  * Topics are grouped into header-delimited segments,
+  * TopicGroup are grouped into header-delimited segments,
   * and clustered into week units of the size configured
   * in `conf`.
   */
-  def datedTopics: Vector[DatedWeek] = {
-    addDatedTopics(weeklySegmented, Vector.empty)
-  }
+
 
 
   /** Create a course-long sequence of [[DatedWeek]]s by recursively
-  * converting a Vector of [[Week]]s into a single Vectorof [[DatedWeek]].
+  * converting a Vector of [[Week]]s into a single Vector of [[DatedWeek]].
   *
   * @param weeks  Sections of the course clustered as a Vector of [[Week]]s,
   * with each Vector corresponding to a segment of the course.
-  * @param startingIndex Index of the first week of this segment within
-  * the course as a whole.
-  * @param calendarVector The resulted list of [[DatedWeek]]s.
+  * @param calendarVector The previously accumulated list of [[DatedWeek]]s.
+  * @param startWeek Week count for first week of this section of topics.
   *
   */
-  def addDatedTopics(
-    weeks: Vector[Vector[Week]],
-    calendarVector: Vector[DatedWeek]) : Vector[DatedWeek] = {
+  def datedTopics(
+  /*,
+    calendarVector: Vector[DatedWeek],
+    startWeek: Int*/
+  ) : Vector[DatedWeek] = {
 
-    if (weeks.isEmpty) {
-      calendarVector
+    val calendarWeeks = conf.semesterCalendar.weeks.size
+    val weeks = weeklyClustered
 
-    } else {
-      debug("adding dated topics: weeks = " + weeks.flatten.size)
-      val calendarWeeks = conf.semesterCalendar.weeks.size
-      debug("compare remaining calendar weeks: " + calendarWeeks)
+    //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    debug("adding dated topics: weeks = " + weeks.flatten.size)
+    debug("organized in " + weeks.size + " segments")
+    debug("total weeks in semester: " + calendarWeeks)
+    //Logger.setDefaultLogLevel(LogLevel.INFO)
+
+
+
+    Vector.empty[DatedWeek]
+
+/*
       val nextSection = weeks.head
 
       val limit = if (calendarWeeks > nextSection.size) {
@@ -90,11 +96,13 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
       } else {
         calendarWeeks
       }
-      debug("NEXT SECTION: \n" + weeks.flatten.mkString("\n"))
+      debug("NEXT SECTION of course weeks: \n" + weeks.flatten.mkString("\n"))
+      debug("Now figuring dated weeks")
 
-// HERE CHANGE START VALUE FOR i
-      val dWeeks = for (i <- 0 until limit) yield {
-        debug("Getting dated week using index " + i )
+      val dWeeks = for (i <- startWeek until limit) yield {
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        debug("Getting dated week using week index " + i)
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
         val calendarWeek = conf.semesterCalendar.weeks(i)
         val fixed = fixedEventsForWeek(calendarWeek)
 
@@ -102,20 +110,29 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
         datedWeek
       }
 
+      val newStart = startWeek + dWeeks.size
+      //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+      debug("NEW WEEK INDEX STARTS AT " + newStart + " after adding " + dWeeks.size + " new dated weeks.")
+      //Logger.setDefaultLogLevel(LogLevel.INFO)
+
       if (calendarVector.isEmpty) {
-        addDatedTopics(weeks.tail, dWeeks.toVector)
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        debug("Adding first section with week count " + newStart)
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
+        addDatedTopics(weeks.tail, dWeeks.toVector, newStart)
       } else {
-        addDatedTopics(weeks.tail, calendarVector ++ dWeeks.toVector)
-      }
-    }
+        addDatedTopics(weeks.tail, calendarVector ++ dWeeks.toVector, newStart)
+      }*/
+
+
   }
 
 
   /** Cluster topics into a series of [[Week]]s by segments
   * labelled with headings.
   */
-  def weeklySegmented: Vector[Vector[Week]] = {
-    topics.weeklySegmented(conf.scheduleType.classes)
+  def weeklyClustered: Vector[Vector[Week]] = {
+    topics.weeklyClustered(conf.scheduleType.classes)
   }
 
   /** Compute number of calendar weeks configured in
@@ -135,10 +152,9 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   /** Break schedule up into segments.
   */
   def segments : Vector[Segment] = {
-    val segs = topics.segments
+    val clusters = topics.clusters
     val v = Vector.empty[Segment]
-    // THIS IS IT: NEED TO HAVE DYNAMIC INDEX OF WEEK:
-    addSegment(segs, v, 0)
+    addSegment(clusters, v, 0)
   }
 
   /** Recursively add content from a source Vector of [[Topic]]s to create a
@@ -148,7 +164,12 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   * @param target Vector of previously collected [[Segment]]s.
   * @param weekCount Week number within course as a whole.
   */
-  def addSegment(src: Vector[Topics], target: Vector[Segment], weekCount: Int) : Vector[Segment] = {
+  def addSegment(
+    src: Vector[TopicGroup],
+    target: Vector[Segment],
+    weekCount: Int = 0
+  ) : Vector[Segment] = {
+
     if (src.isEmpty) {
       target
     } else {
@@ -170,25 +191,39 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   }
 
 
-  /** Create a [[Segment]] object from a series of [[TopicEntry]]s and some
-  * configuration data.
+  /** Create a [[Segment]] object from a series of [[TopicEntry]]s a
+  * 0-origin index into the list of weeks.
   *
   * @param entries Optional [[SectionTopic]] followed by a series of [[CourseDay]]s.
-  * @param weekSize Number of class meetings per week.
+  * @param weekCount 0-origin index into the list of weeks.
   */
-  def segment(entries : Vector[TopicEntry], weekCount: Int): Segment = {
-
+  def segment(
+    entries : Vector[TopicEntry], weekCount: Int): Segment = {
+      ////Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    // FIRST FIND A DATE FOR START.
+    val newConf= conf.resetWeekOne(weekCount)
+    // SET UP A CONFIG FOR THAT.
     debug("Segmenting " + entries.size + " TopicEntrys at week count " + weekCount )
+      //Logger.setDefaultLogLevel(LogLevel.INFO)
     entries.head match {
       case day : CourseDay => {
         debug("First entry is a CourseDay")
-        val datedWeeks = Schedule(Topics(entries), conf).datedTopics
+
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+        debug("Creating mini schedule for segment of " + entries.size + " entries")
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
+
+        val datedWeeks = Schedule(TopicGroup(entries), newConf).datedTopics
         Segment(datedWeeks, weekCount, None)
       }
       case topic : SectionTopic => {
+
         debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics ")
-        val entriesSchedule = Schedule(Topics(entries.tail), conf)
+
+        val entriesSchedule = Schedule(TopicGroup(entries.tail), newConf)
+        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("Created schedule for remaining entries with " + entriesSchedule.topics.size + " topics.")
+        //Logger.setDefaultLogLevel(LogLevel.INFO)
         val datedWeeks = entriesSchedule.datedTopics
         val heading = Some(topic)
         debug("Heading is " + heading)
@@ -221,7 +256,7 @@ object Schedule  extends LogSupport {
   */
   def apply(topicsFile: String, confFile: String): Schedule = {
     debug("Creating schedule from files " + topicsFile + " and " + confFile)
-    Schedule(Topics(topicsFile), CalendarConfig(confFile))
+    Schedule(TopicGroup(topicsFile), CalendarConfig(confFile))
   }
 
 
