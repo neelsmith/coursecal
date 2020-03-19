@@ -6,7 +6,7 @@ layout: page
 
 ### Imports
 
-```scala mdoc
+```scala
 import edu.holycross.shot.coursecal._
 ```
 
