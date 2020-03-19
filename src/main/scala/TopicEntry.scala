@@ -1,8 +1,5 @@
 package edu.holycross.shot.coursecal
 
-import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
-import scala.collection.mutable.HashMap
 
 
 /** Item that can appear in a sequence of course topics.

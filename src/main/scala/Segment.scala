@@ -1,6 +1,5 @@
 package edu.holycross.shot.coursecal
 
-import scala.io.Source
 
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
@@ -12,7 +11,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * @param heading Optional heading for this section of the course.
 */
 case class Segment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic]) extends LogSupport {
-  Logger.setDefaultLogLevel(LogLevel.DEBUG)
+  //Logger.setDefaultLogLevel(LogLevel.DEBUG)
   debug("New Segment instance starts with week " + initialWeek + " of course.")
 
   /** Compose appropriate markdown to format the schedule
@@ -27,5 +26,5 @@ case class Segment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[
 
     Vector(s"${hdg}\n", tableHeading, rows.mkString).mkString
   }
-  Logger.setDefaultLogLevel(LogLevel.INFO)
+  //Logger.setDefaultLogLevel(LogLevel.INFO)
 }

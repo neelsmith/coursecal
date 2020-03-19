@@ -1,14 +1,10 @@
 package edu.holycross.shot.coursecal
 
-import scala.collection.mutable.ArrayBuffer
 
 import java.time._
 import java.time.temporal._
 import java.util.Locale
 import java.time.format._
-
-import scala.collection.JavaConversions.asScalaBuffer
-import scala.collection.mutable.Buffer
 
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
@@ -22,7 +18,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 */
 case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
 
-  Logger.setDefaultLogLevel(LogLevel.INFO)
+  Logger.setDefaultLogLevel(LogLevel.DEBUG)
   debug("Created Schedule instance.")
   /** Find fixed events for a given week.
   *
@@ -96,6 +92,7 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
       }
       debug("NEXT SECTION: \n" + weeks.flatten.mkString("\n"))
 
+// HERE CHANGE START VALUE FOR i
       val dWeeks = for (i <- 0 until limit) yield {
         debug("Getting dated week using index " + i )
         val calendarWeek = conf.semesterCalendar.weeks(i)
@@ -140,6 +137,7 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
   def segments : Vector[Segment] = {
     val segs = topics.segments
     val v = Vector.empty[Segment]
+    // THIS IS IT: NEED TO HAVE DYNAMIC INDEX OF WEEK:
     addSegment(segs, v, 0)
   }
 
@@ -154,7 +152,7 @@ case class Schedule(topics: Topics, conf: CalendarConfig) extends LogSupport {
     if (src.isEmpty) {
       target
     } else {
-      debug("Number of topics: " + src.size)
+      debug("Number of topic segments: " + src.size)
       debug("Week count: " + weekCount)
       debug("Classes per week: "+ conf.scheduleType.classes)
       debug("Weeks: " + src(0).weeks(conf.scheduleType.classes))

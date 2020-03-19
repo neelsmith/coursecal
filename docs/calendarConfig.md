@@ -4,4 +4,4 @@ layout: page
 ---
 
 
-The `CalendarConfig` class 
+The `CalendarConfig` class

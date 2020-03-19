@@ -1,8 +1,5 @@
 package edu.holycross.shot
 
-
-import scala.io.Source
-import scala.collection.mutable.ArrayBuffer
 import java.time._
 import java.time.temporal._
 import java.util.Locale
