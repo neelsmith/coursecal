@@ -1,5 +1,5 @@
 ---
-title: "Topics"
+title: "TopicGroup"
 layout: page
 ---
 
@@ -14,7 +14,7 @@ We can load topics from a text file. Each non-empty line is either an entry for 
 
 ```scala mdoc:silent
 val f = "src/test/resources/greek101.txt"
-val topics = Topics(f)
+val topics = TopicGroup(f)
 ```  
 
 Non-empty lines are parsed into [entries](../topicEntry/):

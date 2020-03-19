@@ -6,15 +6,13 @@ layout: page
 ```scala mdoc:invisible
 import edu.holycross.shot.coursecal._
 
-import java.time._
-import java.time.format._
 ```
 
-Load some topics into a `Topics` structure.
+Load some topics into a `TopicGroup` structure.
 
 ```scala mdoc:silent
 val f = "src/test/resources/greek101.txt"
-val topics = Topics(f)
+val topics = TopicGroup(f)
 ```  
 
 Non-empty lines are parsed into `TopicEntry`s:
