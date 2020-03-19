@@ -4,11 +4,4 @@ layout: page
 ---
 
 
-
-
-Given a date, we can find the corresponding course week:
-
-```scala
-val startDate = LocalDate.parse("2017-08-30")
-val tth = TuThWeek(startDate)
-```
+The `Week` class is one week's worth of topics.

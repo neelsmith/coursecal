@@ -17,25 +17,8 @@ val f = "src/test/resources/greek101.txt"
 val topics = Topics(f)
 ```  
 
-Non-empty lines are parsed into `TopicEntry`s:
+Non-empty lines are parsed into [entries](../topicEntry/):
 
 ```scala mdoc
 assert(topics.entries.size == 15)
-```
-
-`TopicEntry`s can include headers and class days.  Get the class days:
-
-```scala mdoc
-assert(topics.days.size == 12)
-```
-
-
-### SectionTopics
-
-These are built from markdown strings with pound-sign headers.
-
-```scala mdoc
-val topic = SectionTopic("## Part 2")
-assert(topic.level == 2)
-assert(topic.title == "Part 2")
 ```
