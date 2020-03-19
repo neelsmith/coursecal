@@ -14,7 +14,7 @@ import edu.holycross.shot.coursecal._
 
 ### Content of course material
 
-- the [`Topics`](topics/) class
+- the [`TopicGroup`](topicGroup/) class
 - the [`Week`](week/) class
 
 
@@ -28,7 +28,7 @@ import edu.holycross.shot.coursecal._
 
 Structures combining course material and calendrical information, from lowest level to highest:
 
-- the [`CourseWeek`](courseweek/) class
+- the [`DatedWeekMeetings`](datedWeekMeetings/) class
 - the [`DatedWeek`](datedWeek/) class
-- the [`Segment`](segment/) class
+- the [`DatedSegment`](datedSegment/) class
 - the [`Schedule`](schedule/) class
