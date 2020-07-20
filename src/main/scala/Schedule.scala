@@ -68,6 +68,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   *
   */
   def datedTopics : Vector[DatedWeek] = {
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
     val calendarWeeks = conf.semesterCalendar.weeks.size
     val weeks = topics.weekly(conf.scheduleType.classes)
 
@@ -76,10 +77,10 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
     debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
     debug("total weeks in semester: " + calendarWeeks)
 
-    // OFF BY ONE IN HERE SOMEWHERE
     val dWeeks = for ( (wk,i) <- weeks.zipWithIndex) yield {
         val calendarWeek = conf.semesterCalendar.weeks(i)
         val fixed = fixedEventsForWeek(calendarWeek)
+        debug(s"Get dated week index ${i} and week " + wk )
         val datedWeek = DatedWeek(wk, calendarWeek, fixed)
         debug(calendarWeek + " = wk: " + wk + " and dixed evts " + fixed)
         debug("YIELDS " + datedWeek)
@@ -118,6 +119,8 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
     addSegment(clusters, v, 0)
   }
 
+
+  // THIS IS WHERE THE OFF-BY-ONE HAPPNES
   /** Recursively add content from a source Vector of [[Topic]]s to create a
   * Vector of [[DatedSegment]]s.
   *
@@ -142,7 +145,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
 
       val seg = segment(src.head.entries, weekCount)
       if (target.size == 0) {
-        addSegment(src.tail, Vector(seg), newWeekCount)
+        addSegment(src.tail, Vector(seg), newWeekCount  )
       } else{
         val newTarget = target ++ Vector(seg)
         addSegment(src.tail, newTarget, newWeekCount)
@@ -151,6 +154,8 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   }
 
 
+
+  // THIS IS FAILING AT INDEX 0?
   /** Create a [[DatedSegment]] object from a series of [[TopicEntry]]s a
   * 0-origin index into the list of weeks.
   *
@@ -158,8 +163,9 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   * @param weekCount 0-origin index into the list of weeks.
   */
   def segment(
-    entries : Vector[TopicEntry], weekCount: Int): DatedSegment = {
-    //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    entries : Vector[TopicEntry],
+    weekCount: Int): DatedSegment = {
+
     // FIRST FIND A DATE FOR START.
     val newConf= conf.resetWeekOne(weekCount)
     // SET UP A CONFIG FOR THAT.
