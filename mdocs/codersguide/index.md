@@ -21,14 +21,8 @@ You should be able to do everything you want to do using a [`Schedule`](./schedu
 ### Parsed versions of your source data
 
 
-- the [`TopicGroup`](./topicGroup/) class represents the raw data in your topics file
-- the [`CalendarConfig`](./calendarConfig/) class represents the raw data in your calendrical configuration file
-
-### Content of course material
-
-
-- the [`Week`](week/) class
-
+- the [`TopicGroup`](./topicGroup/) class represents the raw data in your topics file. It can cluster individual topics into groups by [`Week`](week/).
+- the [`CalendarConfig`](./calendarConfig/) class represents the raw data in your calendrical configuration file.
 
 
 
@@ -39,4 +33,3 @@ Structures combining course material and calendrical information, from lowest le
 - the [`DatedWeekMeetings`](datedWeekMeetings/) class
 - the [`DatedWeek`](datedWeek/) class
 - the [`DatedSegment`](datedSegment/) class
-- the [`Schedule`](schedule/) class

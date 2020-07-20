@@ -36,17 +36,12 @@ sched.conf
 
 ## How it works
 
+The `TopicGroup` by itself can group topics into [`Week`s](./week/), cluster them by  labelled markdown headings.
 
-
-
-It can cluster daily topics together by labelled markdown headings in the topics file.  
-
-The result is a  `Week` even though the resulting cluster may be multiple weeks.
-
-> This needs to be changed in an API-breaking update.
+The `datedTopics` method associates each week of topics with a calendrical week.
 
 ```scala mdoc
-sched.weeklyClustered
+sched.datedTopics
 ```
 
 A list of `DatedSegment`s

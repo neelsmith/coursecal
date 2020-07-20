@@ -24,3 +24,19 @@ Non-empty lines are parsed into [entries](../topicEntry/):
 ```scala mdoc
 assert(topics.entries.size == 15)
 ```
+
+A `TopicGroup` can group daily entries together into a Vector of [`Week`s](../week/), composed of a specified number of weekly class meetings.
+
+
+```scala mdoc
+// Class meets 3 times/week:
+topics.weekly(3)
+```
+
+If you want to cluster your weeks by subheadings, use the `weeklyClustered`  method.  The result is a Vector of Vectors of `Week`s.
+
+
+```scala mdoc
+// Class meets 3 times/week:
+topics.weeklyClustered(3)
+```

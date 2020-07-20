@@ -133,7 +133,7 @@ sched.conf
 // res1: CalendarConfig = CalendarConfig(
 //   "Latin 101, F'20: course schedule",
 //   2020-09-02,
-//   edu.holycross.shot.coursecal.MWF$@500c92ee,
+//   edu.holycross.shot.coursecal.MWF$@698d1a0e,
 //   14,
 //   Vector(
 //     FixedEvent(2020-03-03, "Spring break"),
@@ -159,19 +159,14 @@ sched.conf
 
 ## How it works
 
+The `TopicGroup` by itself can group topics into [`Week`s](./week/), cluster them by  labelled markdown headings.
 
-
-
-It can cluster daily topics together by labelled markdown headings in the topics file.  
-
-The result is a  `Week` even though the resulting cluster may be multiple weeks.
-
-> This needs to be changed in an API-breaking update.
+The `datedTopics` method associates each week of topics with a calendrical week.
 
 ```scala
-sched.weeklyClustered
-// res2: Vector[Vector[Week]] = Vector(
-//   Vector(
+sched.datedTopics
+// res2: Vector[DatedWeek] = Vector(
+//   DatedWeek(
 //     Week(
 //       Vector(
 //         CourseDay("NO CLASSES", "", Vector()),
@@ -180,6 +175,10 @@ sched.weeklyClustered
 //       ),
 //       3
 //     ),
+//     MonWedFriWeek(2020-09-02),
+//     Vector()
+//   ),
+//   DatedWeek(
 //     Week(
 //       Vector(
 //         CourseDay("Adjectives", "", Vector()),
@@ -187,9 +186,11 @@ sched.weeklyClustered
 //         CourseDay("-ius adjectives", "", Vector())
 //       ),
 //       3
-//     )
+//     ),
+//     MonWedFriWeek(2020-09-09),
+//     Vector()
 //   ),
-//   Vector(
+//   DatedWeek(
 //     Week(
 //       Vector(
 //         CourseDay("Composition workshop", "", Vector()),
@@ -198,6 +199,10 @@ sched.weeklyClustered
 //       ),
 //       3
 //     ),
+//     MonWedFriWeek(2020-09-16),
+//     Vector()
+//   ),
+//   DatedWeek(
 //     Week(
 //       Vector(
 //         CourseDay("Sum, esse, fui", "", Vector()),
@@ -206,19 +211,9 @@ sched.weeklyClustered
 //       ),
 //       3
 //     ),
-//     Week(
-//       Vector(
-//         CourseDay("Review", "", Vector()),
-//         CourseDay("NO CLASS", "", Vector()),
-//         CourseDay("Composition workshop", "", Vector())
-//       ),
-//       3
-//     ),
-//     Week(
-//       Vector(
-//         CourseDay("Review", "Composition 2 due.", Vector()),
-//         CourseDay("Competency Quiz", "1", Vector()),
-//         CourseDay("Competency Quiz", "2", Vector())
+//     MonWedFriWeek(2020-09-23),
+//     Vector()
+//   ),
 // ...
 ```
 
