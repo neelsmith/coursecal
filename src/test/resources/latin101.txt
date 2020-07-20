@@ -1,5 +1,5 @@
 
-## Nouns and adjectives
+## Latin nouns and adjectives
 
 NO CLASSES#
 Introduction to course#
@@ -32,12 +32,13 @@ Review#Composition 2 due.
 Competency Quiz #1
 Competency Quiz #2
 
+## Time, purpose
 
 Expressions of place and time#Competency Quiz 3
 Gerunds and gerundives
 More gerunds and gerundives
 
-
+## More verb tense
 
 Interrogative adjectives and pronouns
 Present active and passive indicative
@@ -59,7 +60,6 @@ Verbal competency quiz 3
 Deponent verbs, indirect statement
 Personal pronouns and reflexives
 Temporal clauses
-
 
 
 Perfect and pluperfect active and passive subjunctive

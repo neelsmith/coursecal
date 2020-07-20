@@ -23,36 +23,36 @@ class LatinTopicsSpec  extends FlatSpec {
     val topics = TopicGroup(f)
 
     val seg1 = TopicGroup.nextCluster(topics.entries, Vector.empty[TopicEntry])
-    val expectedSize = 4
+    val expectedSize = 7
     assert( seg1.size == expectedSize)
     seg1(0) match {
       case  st: SectionTopic => {
         assert(st.level == 2)
-        val expectedTitle = "Section 1: introduction"
+        val expectedTitle = "Latin nouns and adjectives"
         assert(st.title == expectedTitle)
       }
       case _ => fail("Should have found a SectionTopic")
     }
   }
 
-  "A TopicGroup list" should "extract course days from the list" in pending /*{
-    val f = "src/test/resources/greek101.txt"
+  "A TopicGroup list" should "extract course days from the list" in {
+    val f = "src/test/resources/latin101.txt"
     val topics = TopicGroup(f)
-    val expectedDays = 12
+    val expectedDays = 42
     assert(topics.days.size == expectedDays)
   }
-*/
-  it should "compute the number of weeks required for a given number of meetings per week" in pending /*{
-      val f = "src/test/resources/greek101.txt"
+
+  it should "compute the number of weeks required for a given number of meetings per week" in {
+      val f = "src/test/resources/latin101.txt"
       val topics = TopicGroup(f)
-      assert (topics.weeks(3) == 4)
-      assert (topics.weeks(2) == 6)
-  }*/
+      assert (topics.weeks(3) == 14)
+      assert (topics.weeks(2) == 21)
+  }
 
 
-  it should "extract headings when they exist" in pending /*{
-    val f = "src/test/resources/greek101.txt"
+  it should "extract headings when they exist" in {
+    val f = "src/test/resources/latin101.txt"
     val topics = TopicGroup(f)
-    assert(topics.heading.get == SectionTopic(2, "Section 1: introduction"))
-  }*/
+    assert(topics.heading.get == SectionTopic(2, "Latin nouns and adjectives"))
+  }
 }
