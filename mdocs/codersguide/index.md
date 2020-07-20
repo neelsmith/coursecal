@@ -1,6 +1,8 @@
 ---
-title: "The coursecal library: programmer's guide"
+title: "Programmer's guide"
 layout: page
+nav_order: 2
+has_children: true
 ---
 
 

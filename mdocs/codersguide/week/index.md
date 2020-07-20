@@ -1,6 +1,7 @@
 ---
 title: "Week"
 layout: page
+parent: "Programmer's guide"
 ---
 
 ```scala mdoc:invisible

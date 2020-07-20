@@ -1,6 +1,7 @@
 ---
 title: "TopicGroup"
 layout: page
+parent: "Programmer's guide"
 ---
 
 ```scala mdoc:invisible

@@ -1,6 +1,7 @@
 ---
 title: "The coursecal library"
 layout: page
+nav_order: 0
 ---
 
 The `coursecal` library cleanly separates information about the content of class meetings and other course events from information about scheduling and dates.  This makes it straightforward to reuse simple text files defining course content, and reconfigure information about schedules and calendars for a particular term.
