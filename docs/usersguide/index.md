@@ -1,6 +1,7 @@
 ---
-title: "The coursecal library: user's guide"
+title: "User's guide"
 layout: page
+has_children: true
 ---
 
 
