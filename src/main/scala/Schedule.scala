@@ -1,6 +1,5 @@
 package edu.holycross.shot.coursecal
 
-
 import java.time._
 import java.time.temporal._
 import java.util.Locale
@@ -8,7 +7,6 @@ import java.time.format._
 
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
-
 
 /** A class for working with lists of topics and calendrical
 * data to create schedules for a course.
@@ -69,14 +67,6 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   * @param startWeek Week count for first week of this section of topics.
   *
   */
-
-  /*(
-,
-  calendarVector: Vector[DatedWeek],
-  startWeek: Int
-) */
-
-
   def datedTopics : Vector[DatedWeek] = {
     val calendarWeeks = conf.semesterCalendar.weeks.size
     val weeks = topics.weekly(conf.scheduleType.classes)
@@ -86,7 +76,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
     debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
     debug("total weeks in semester: " + calendarWeeks)
 
-
+    // OFF BY ONE IN HERE SOMEWHERE
     val dWeeks = for ( (wk,i) <- weeks.zipWithIndex) yield {
         val calendarWeek = conf.semesterCalendar.weeks(i)
         val fixed = fixedEventsForWeek(calendarWeek)
@@ -95,38 +85,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
         debug("YIELDS " + datedWeek)
         datedWeek
     }
-
-    //Logger.setDefaultLogLevel(LogLevel.INFO)
-
     dWeeks
-
-/*
-
-
-      val dWeeks = for (i <- startWeek until limit) yield {
-
-        val calendarWeek = conf.semesterCalendar.weeks(i)
-        val fixed = fixedEventsForWeek(calendarWeek)
-
-        val datedWeek = DatedWeek(nextSection(i), calendarWeek, fixed)
-        datedWeek
-      }
-
-      val newStart = startWeek + dWeeks.size
-      //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-      debug("NEW WEEK INDEX STARTS AT " + newStart + " after adding " + dWeeks.size + " new dated weeks.")
-      //Logger.setDefaultLogLevel(LogLevel.INFO)
-
-      if (calendarVector.isEmpty) {
-        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-        debug("Adding first section with week count " + newStart)
-        //Logger.setDefaultLogLevel(LogLevel.INFO)
-        addDatedTopics(weeks.tail, dWeeks.toVector, newStart)
-      } else {
-        addDatedTopics(weeks.tail, calendarVector ++ dWeeks.toVector, newStart)
-      }*/
-
-
   }
 
 

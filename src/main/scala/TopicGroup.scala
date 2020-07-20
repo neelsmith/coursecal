@@ -170,18 +170,8 @@ case class TopicGroup (entries : Vector[TopicEntry] ) extends LogSupport {
 /** Factory object for creating a [[TopicGroup]] from a
 * delimited-text file.
 */
-object TopicGroup {
-/*
-  def fromText(s:String): Topics = {
-    val hdr = "^#.+".r
-    val entries = s.split("\n").map( l =>
-      hdr.findFirstIn(l) match {
-        case None =>  CourseDay(l)
-        case h: Some[String] => Some(SectionTopic(l))
-      }
-    )
-    Topics(entries.map(_.get))
-  }*/
+object TopicGroup extends LogSupport {
+
 
   /** Create a [[TopicGroup]] from a delimited-text file.
   *
@@ -206,11 +196,15 @@ object TopicGroup {
       case _ => false
   }
 
-  /**  Gather all [[CourseDay]] entires from a topic list up
+  /**  Gather all [[CourseDay]] entries from a topic list up
   * until the next [[TopicEntry]], collecting a heading value with
   * the list if it begins with a heading.
   */
-  def nextCluster(src: Vector[TopicEntry], target: Vector[TopicEntry]): Vector[TopicEntry] = {
+  def nextCluster(
+    src: Vector[TopicEntry],
+    target: Vector[TopicEntry] = Vector.empty[TopicEntry]
+  ): Vector[TopicEntry] = {
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
     if (src.isEmpty) {
       target
     } else {
