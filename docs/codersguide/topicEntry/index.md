@@ -18,7 +18,7 @@ Non-empty lines are parsed into `TopicEntry`s:
 assert(topics.entries.size == 15)
 ```
 
-`TopicEntry`s can include headers and class days.  
+`TopicEntry`s can include [section headers](../sectionTopic/) and [class days](../courseDay/).  
 
 
 

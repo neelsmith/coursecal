@@ -7,14 +7,18 @@ parent: "Programmer's guide"
 
 The `Schedule` class is where the magic happens: it brings together a [collection of topics](../topics/) and a [configuration](../calendarConfig/) for a given semester-long course.
 
-Build it from text files:
+Build a `Schedule` from a pair of text files:
 
 
+## How it works
 
 
-## Some stuff it has
+Entries in the topics file are parsed into a [topic group](../topicGroup/).
 
-It can cluster topics into a series of [[Week]]s by segments labelled with headings
+
+It can cluster daily topics together by  labelled markdown headings in the topics file.  The result is unfortunately called a `Week` even though the resulting cluster may be multiple weeks.
+
+> This needs to be changed in an API-breaking update.
 
 ```scala
 sched.weeklyClustered
@@ -22,31 +26,17 @@ sched.weeklyClustered
 //   Vector(
 //     Week(
 //       Vector(
-//         CourseDay("Advising @none", "", Vector()),
-//         CourseDay("[Class 1](assignment1)", "Note on week", Vector()),
-//         CourseDay(
-//           "[Class 2](assignment2)",
-//           "Special activity this weekend",
-//           Vector()
-//         )
-//       ),
-//       3
-//     )
-//   ),
-//   Vector(
-//     Week(
-//       Vector(
-//         CourseDay("The second declension", "", Vector()),
-//         CourseDay("The first declension", "", Vector()),
-//         CourseDay("The third declension", "", Vector())
+//         CourseDay("NO CLASSES", "", Vector()),
+//         CourseDay("Introduction to course", "", Vector()),
+//         CourseDay("Nouns", "", Vector())
 //       ),
 //       3
 //     ),
 //     Week(
 //       Vector(
-//         CourseDay("Irregular third-declension nouns", "", Vector()),
-//         CourseDay("Mid term", "Exam", Vector()),
-//         CourseDay("Vacation @none", "", Vector())
+//         CourseDay("Adjectives", "", Vector()),
+//         CourseDay("Demonstratives", "", Vector()),
+//         CourseDay("-ius adjectives", "", Vector())
 //       ),
 //       3
 //     )
@@ -54,14 +44,34 @@ sched.weeklyClustered
 //   Vector(
 //     Week(
 //       Vector(
-//         CourseDay("First-second adjectives", "Quiz Friday", Vector()),
-//         CourseDay("Third-declension adjectives", "", Vector()),
-//         CourseDay("Adverbs", "", Vector())
+//         CourseDay("Composition workshop", "", Vector()),
+//         CourseDay("Verbs", "", Vector()),
+//         CourseDay("Imperfect tense", "", Vector())
 //       ),
 //       3
-//     )
-//   )
-// )
+//     ),
+//     Week(
+//       Vector(
+//         CourseDay("Sum, esse, fui", "", Vector()),
+//         CourseDay("Possum", "", Vector()),
+//         CourseDay("Reading practice", "", Vector())
+//       ),
+//       3
+//     ),
+//     Week(
+//       Vector(
+//         CourseDay("Review", "", Vector()),
+//         CourseDay("NO CLASS", "", Vector()),
+//         CourseDay("Composition workshop", "", Vector())
+//       ),
+//       3
+//     ),
+//     Week(
+//       Vector(
+//         CourseDay("Review", "Composition 2 due.", Vector()),
+//         CourseDay("Competency Quiz", "1", Vector()),
+//         CourseDay("Competency Quiz", "2", Vector())
+// ...
 ```
 
 A list of `DatedSegment`s
@@ -74,49 +84,49 @@ sched.segments
 //       DatedWeek(
 //         Week(
 //           Vector(
-//             CourseDay("Advising @none", "", Vector()),
-//             CourseDay("[Class 1](assignment1)", "Note on week", Vector()),
-//             CourseDay(
-//               "[Class 2](assignment2)",
-//               "Special activity this weekend",
-//               Vector()
-//             )
+//             CourseDay("NO CLASSES", "", Vector()),
+//             CourseDay("Introduction to course", "", Vector()),
+//             CourseDay("Nouns", "", Vector())
 //           ),
 //           3
 //         ),
-//         MonWedFriWeek(2017-08-21),
+//         MonWedFriWeek(2020-08-24),
+//         Vector()
+//       ),
+//       DatedWeek(
+//         Week(
+//           Vector(
+//             CourseDay("Adjectives", "", Vector()),
+//             CourseDay("Demonstratives", "", Vector()),
+//             CourseDay("-ius adjectives", "", Vector())
+//           ),
+//           3
+//         ),
+//         MonWedFriWeek(2020-08-31),
 //         Vector()
 //       )
 //     ),
 //     0,
-//     Some(SectionTopic(2, "Section 1: introduction"))
+//     Some(SectionTopic(2, "Latin nouns and adjectives"))
 //   ),
 //   DatedSegment(
 //     Vector(
 //       DatedWeek(
 //         Week(
 //           Vector(
-//             CourseDay("The second declension", "", Vector()),
-//             CourseDay("The first declension", "", Vector()),
-//             CourseDay("The third declension", "", Vector())
+//             CourseDay("Composition workshop", "", Vector()),
+//             CourseDay("Verbs", "", Vector()),
+//             CourseDay("Imperfect tense", "", Vector())
 //           ),
 //           3
 //         ),
-//         MonWedFriWeek(2017-08-28),
-//         Vector(FixedEvent(2017-08-28, "First-year advising."))
+//         MonWedFriWeek(2020-09-07),
+//         Vector()
 //       ),
 //       DatedWeek(
 //         Week(
 //           Vector(
-//             CourseDay("Irregular third-declension nouns", "", Vector()),
-//             CourseDay("Mid term", "Exam", Vector()),
-//             CourseDay("Vacation @none", "", Vector())
-//           ),
-//           3
-//         ),
-//         MonWedFriWeek(2017-09-04),
-//         Vector()
-//       )
+//             CourseDay("Sum, esse, fui", "", Vector()),
 // ...
 ```
 
@@ -127,43 +137,25 @@ sched.segments.map(s => s.weeks)
 //     DatedWeek(
 //       Week(
 //         Vector(
-//           CourseDay("Advising @none", "", Vector()),
-//           CourseDay("[Class 1](assignment1)", "Note on week", Vector()),
-//           CourseDay(
-//             "[Class 2](assignment2)",
-//             "Special activity this weekend",
-//             Vector()
-//           )
+//           CourseDay("NO CLASSES", "", Vector()),
+//           CourseDay("Introduction to course", "", Vector()),
+//           CourseDay("Nouns", "", Vector())
 //         ),
 //         3
 //       ),
-//       MonWedFriWeek(2017-08-21),
+//       MonWedFriWeek(2020-08-24),
 //       Vector()
-//     )
-//   ),
-//   Vector(
-//     DatedWeek(
-//       Week(
-//         Vector(
-//           CourseDay("The second declension", "", Vector()),
-//           CourseDay("The first declension", "", Vector()),
-//           CourseDay("The third declension", "", Vector())
-//         ),
-//         3
-//       ),
-//       MonWedFriWeek(2017-08-28),
-//       Vector(FixedEvent(2017-08-28, "First-year advising."))
 //     ),
 //     DatedWeek(
 //       Week(
 //         Vector(
-//           CourseDay("Irregular third-declension nouns", "", Vector()),
-//           CourseDay("Mid term", "Exam", Vector()),
-//           CourseDay("Vacation @none", "", Vector())
+//           CourseDay("Adjectives", "", Vector()),
+//           CourseDay("Demonstratives", "", Vector()),
+//           CourseDay("-ius adjectives", "", Vector())
 //         ),
 //         3
 //       ),
-//       MonWedFriWeek(2017-09-04),
+//       MonWedFriWeek(2020-08-31),
 //       Vector()
 //     )
 //   ),
@@ -171,5 +163,23 @@ sched.segments.map(s => s.weeks)
 //     DatedWeek(
 //       Week(
 //         Vector(
+//           CourseDay("Composition workshop", "", Vector()),
+//           CourseDay("Verbs", "", Vector()),
+//           CourseDay("Imperfect tense", "", Vector())
+//         ),
+//         3
+//       ),
+//       MonWedFriWeek(2020-09-07),
+//       Vector()
+//     ),
+//     DatedWeek(
+//       Week(
+//         Vector(
+//           CourseDay("Sum, esse, fui", "", Vector()),
+//           CourseDay("Possum", "", Vector()),
+//           CourseDay("Reading practice", "", Vector())
+//         ),
+//         3
+//       ),
 // ...
 ```
