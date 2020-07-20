@@ -2,6 +2,7 @@
 title: "Schedule"
 layout: page
 parent: "Programmer's guide"
+nav_order: 0
 ---
 
 
@@ -132,7 +133,7 @@ sched.conf
 // res1: CalendarConfig = CalendarConfig(
 //   "Latin 101, F'20: course schedule",
 //   2020-09-02,
-//   edu.holycross.shot.coursecal.MWF$@55c47dd2,
+//   edu.holycross.shot.coursecal.MWF$@4a660bcc,
 //   14,
 //   Vector(
 //     FixedEvent(2020-03-03, "Spring break"),

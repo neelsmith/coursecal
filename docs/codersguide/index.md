@@ -12,18 +12,24 @@ has_children: true
 import edu.holycross.shot.coursecal._
 ```
 
+### The central class: `Schedule`
 
+You should be able to do everything you want to do using a [`Schedule`](./schedule/), since it includes members of the classes listed here that provide access to all of your data.
+
+
+
+### Parsed versions of your source data
+
+
+- the [`TopicGroup`](./topicGroup/) class represents the raw data in your topics file
+- the [`CalendarConfig`](./calendarConfig/) class represents the raw data in your calendrical configuration file
 
 ### Content of course material
 
-- the [`TopicGroup`](topicGroup/) class
+
 - the [`Week`](week/) class
 
 
-
-### Calendrical information
-
-- the [`CalendarConfig`](calendarConfig/) class
 
 
 ### Scheduled course meetings
