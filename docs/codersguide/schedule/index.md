@@ -133,7 +133,7 @@ sched.conf
 // res1: CalendarConfig = CalendarConfig(
 //   "Latin 101, F'20: course schedule",
 //   2020-09-02,
-//   edu.holycross.shot.coursecal.MWF$@7cd71782,
+//   edu.holycross.shot.coursecal.MWF$@500c92ee,
 //   14,
 //   Vector(
 //     FixedEvent(2020-03-03, "Spring break"),

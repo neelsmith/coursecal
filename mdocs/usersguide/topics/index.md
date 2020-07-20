@@ -13,9 +13,9 @@ The topics file is a line-oriented file, where you can
 1. list daily topics for your semester
 2. group topics in sections.  
 
-List each daily topic on a single line;  empty lines are ignored.  You may include markdown in your topic description.  You could, for example, link a topic to an assignment. The topic description may include tags beginning with `@` that are not parsed as part of the topic label, but associate a special value with a day.  Defined tags at present are: `@none`, meaning "No class meeting this day."
+List each *daily topic* on a single line;  empty lines are ignored.  You may include markdown in your topic description.  You could, for example, link a topic to an assignment. The topic description may include tags beginning with `@` that are not parsed as part of the topic label, but associate a special value with a day.  Defined tags at present are: `@none`, meaning "No class meeting this day."
 
-To group topics into sections, add a line with a markdown header: any lines beginning with one or more `#` are treated as (sub)section headings.  
+To *group topics* into sections, add a line with a markdown header: any lines beginning with one or more `#` are treated as (sub)section headings.  
 
 ### Structure of daily topics
 
