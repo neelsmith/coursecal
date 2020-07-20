@@ -1,23 +1,8 @@
+remote_theme: pmarsceill/just-the-docs
 
+aux_links:
+  "github":
+    - "https://github.com/neelsmith/coursecal"
 
-
-# Permalinks
-permalink:        pretty
-
-# Setup
-title:            coursecal
-tagline:          'A library for building course calendars'
-description:      'Develop course calendars from simple lists in plain-text files'
-
-url: 'http://neelsmith.github.io'
-baseurl: '/coursecal/'
-
-
-author:
-  name:           'Neel Smith'
-
-
-links:
-  - title:  Github repository
-    url:  https://github.com/neelsmith/coursecal
-    external: true
+# Makes Aux links open in a new tab. Default is false
+aux_links_new_tab: true
