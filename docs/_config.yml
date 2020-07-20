@@ -1,7 +1,7 @@
 remote_theme: pmarsceill/just-the-docs
 
 aux_links:
-  "github":
+  "Source on github":
     - "https://github.com/neelsmith/coursecal"
 
 # Makes Aux links open in a new tab. Default is false
