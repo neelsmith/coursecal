@@ -16,7 +16,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 */
 case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport {
 
-  ////Logger.setDefaultLogLevel(LogLevel.DEBUG)
+
   debug("Created Schedule instance.")
   /** Find fixed events for a given week.
   *
@@ -68,11 +68,9 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   *
   */
   def datedTopics : Vector[DatedWeek] = {
-    Logger.setDefaultLogLevel(LogLevel.DEBUG)
     val calendarWeeks = conf.semesterCalendar.weeks.size
     val weeks = topics.weekly(conf.scheduleType.classes)
 
-    //Logger.setDefaultLogLevel(LogLevel.DEBUG)
     debug("adding dated topics")//: weeks = " + weeks.flatten.size)
     debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
     debug("total weeks in semester: " + calendarWeeks)
@@ -170,33 +168,28 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
     val newConf= conf.resetWeekOne(weekCount)
     // SET UP A CONFIG FOR THAT.
     debug("Segmenting " + entries.size + " TopicEntrys at week count " + weekCount )
-
     debug("->" + entries.mkString("\n->"))
-    //Logger.setDefaultLogLevel(LogLevel.INFO)
+
     entries.head match {
       case day : CourseDay => {
         debug("First entry is a CourseDay")
-
-        Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("Creating mini schedule for segment of " + entries.size + " entries")
-        Logger.setDefaultLogLevel(LogLevel.INFO)
+
 
         val datedWeeks = Schedule(TopicGroup(entries), newConf).datedTopics
         DatedSegment(datedWeeks, weekCount, None)
       }
       case topic : SectionTopic => {
-
-        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
         debug("First entry is a SectionTopic: from tail of entries, create new Schedule to get dated topics ")
 
         val entriesSchedule = Schedule(TopicGroup(entries.tail), newConf)
-        //Logger.setDefaultLogLevel(LogLevel.DEBUG)
+
         debug("Created schedule for remaining entries with " + entriesSchedule.topics.size + " topics.")
-        //Logger.setDefaultLogLevel(LogLevel.INFO)
+
         val datedWeeks = entriesSchedule.datedTopics
         val heading = Some(topic)
         debug("Heading is " + heading)
-        //Logger.setDefaultLogLevel(LogLevel.INFO)
+
         DatedSegment(datedWeeks, weekCount, heading)
       }
     }

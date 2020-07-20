@@ -33,6 +33,8 @@ case class CalendarConfig(
   fixedEvents: Vector[FixedEvent] ) {
 
 
+
+    // THIS IS FOOBAR
   /** Create a new [[CalendarConfig]] identical to this one,
   * but with a different starting date.
   *
@@ -90,7 +92,7 @@ case class CalendarConfig(
   * @param weekNumber Week index.
   */
   def calForWeek(weekNumber: Int):  DatedWeekMeetings = {
-    val referenceDate = weekOne.plusWeeks(weekNumber - 1)
+    val referenceDate = weekOne.plusWeeks(weekNumber)
     scheduleType match {
       case MWF => MonWedFriWeek(referenceDate)
       case TTh => TuThWeek(referenceDate)
