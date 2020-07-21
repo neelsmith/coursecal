@@ -1,5 +1,3 @@
-
-
 package edu.holycross.shot.coursecal
 
 import org.scalatest.FlatSpec
@@ -60,7 +58,7 @@ class CalendarConfigSpec  extends FlatSpec {
       val week1 = calconf.calForWeek(1)
       week1 match {
         case mwf: MonWedFriWeek => {
-          val expectedWed = LocalDate.parse("2017-08-30")
+          val expectedWed = LocalDate.parse("2017-09-06")
           assert(mwf.wed == expectedWed)
         }
         case _ => fail("Should have created a MonWedFriWeek")

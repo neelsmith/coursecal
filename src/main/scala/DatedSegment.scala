@@ -1,8 +1,9 @@
 package edu.holycross.shot.coursecal
 
-
+/*
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
+*/
 
 /** A segment of a full-term schedule with topics mapped on to calendar weeks.
 *
@@ -10,9 +11,9 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * @param initialWeek Count of first week of this segment within course as a whole.
 * @param heading Optional heading for this section of the course.
 */
-case class DatedSegment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic]) extends LogSupport {
+case class DatedSegment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Option[SectionTopic])  {
   //Logger.setDefaultLogLevel(LogLevel.DEBUG)
-  debug("New DatedSegment instance starts with week " + initialWeek + " of course.")
+  //debug("New DatedSegment instance starts with week " + initialWeek + " of course.")
 
   /** Compose appropriate markdown to format the schedule
   * for this segment of a course as a calendar table.

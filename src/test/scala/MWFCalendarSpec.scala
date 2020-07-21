@@ -59,7 +59,7 @@ class MWFCalendarSpec  extends FlatSpec {
     val week1 = mwfcal.calForWeek(1)
     week1 match {
       case mwf: MonWedFriWeek => {
-        val expectedWed = LocalDate.parse("2020-09-02")
+        val expectedWed = LocalDate.parse("2020-09-09")
         assert(mwf.wed == expectedWed)
       }
       case _ => fail("Should have created a MonWedFriWeek")

@@ -1,5 +1,7 @@
 # Release notes
 
+**2.0.1**:  fixes a bug when indexing into dated segments of a schedule.
+
 **2.0.0**: API-breaking changes.
 
 **1.2.8**:  Corrects a bug in indexing weeks of semester.
