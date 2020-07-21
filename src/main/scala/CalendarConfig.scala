@@ -9,6 +9,9 @@ import java.time.format._
 import scala.collection.JavaConversions.asScalaBuffer
 import scala.collection.mutable.Buffer
 
+import wvlet.log._
+import wvlet.log.LogFormatter.SourceCodeLogFormatter
+
 
 /** Configuration data needed to compute a course schedule
 * for a given course in a given semester.
@@ -30,7 +33,7 @@ case class CalendarConfig(
   weekOne: LocalDate,
   scheduleType: SchedulePattern,
   calendarWeeks: Int,
-  fixedEvents: Vector[FixedEvent] ) {
+  fixedEvents: Vector[FixedEvent] ) extends LogSupport {
 
 
 
@@ -42,7 +45,9 @@ case class CalendarConfig(
   * the new calendar.
   */
   def resetWeekOne(startDate: LocalDate): CalendarConfig  = {
-    CalendarConfig(title, startDate, scheduleType, calendarWeeks, fixedEvents)
+    val newCal = CalendarConfig(title, startDate, scheduleType, calendarWeeks, fixedEvents)
+    debug("Reset calendar using weekOne " + startDate)
+    newCal
   }
 
   /**
@@ -62,6 +67,7 @@ case class CalendarConfig(
   */
   def resetWeekOne(weekIndex: Int): CalendarConfig = {
     val newStartDate = dateForWeek(weekIndex)
+    debug("From index " + weekIndex + ", resetting cal to " + newStartDate)
     CalendarConfig(title, newStartDate, scheduleType, calendarWeeks, fixedEvents)
   }
 
@@ -93,11 +99,15 @@ case class CalendarConfig(
   */
   def calForWeek(weekNumber: Int):  DatedWeekMeetings = {
     val referenceDate = weekOne.plusWeeks(weekNumber)
-    scheduleType match {
+    debug("calForWeek: ref date " + referenceDate)
+    val newCal = scheduleType match {
       case MWF => MonWedFriWeek(referenceDate)
       case TTh => TuThWeek(referenceDate)
       case WF =>  WedFriWeek(referenceDate)
     }
+    debug("so newCal is " + newCal)
+
+    newCal
   }
 }
 

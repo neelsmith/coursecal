@@ -18,10 +18,13 @@ class CalendarResetSpec  extends FlatSpec {
     val expected = LocalDate.parse("2020-09-02")
     assert(calconf.weekOne == expected)
   }
-  it should "change nothing if week one is reset to 0" in pending /* {
-    val expected = LocalDate.parse("2020-09-02")
+  it should "choose Monday date if week one is reset to 0" in {
+    val expected = LocalDate.parse("2020-08-31")
     assert(calconf.resetWeekOne(0).weekOne == expected)
-  }*/
+  }
 
-  it should ""
+  it should "reset calendar start by week intetger" in {
+    val expected = LocalDate.parse("2020-09-07")
+    assert(calconf.resetWeekOne(1).weekOne == expected)
+  }
 }
