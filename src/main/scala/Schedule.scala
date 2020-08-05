@@ -5,10 +5,10 @@ import java.time.temporal._
 import java.util.Locale
 import java.time.format._
 
-/*
+
 import wvlet.log._
 import wvlet.log.LogFormatter.SourceCodeLogFormatter
-*/
+
 
 /** A class for working with lists of topics and calendrical
 * data to create schedules for a course.
@@ -16,7 +16,7 @@ import wvlet.log.LogFormatter.SourceCodeLogFormatter
 * @param topics List of daily topics.
 * @param conf Configuration of calendrical data.
 */
-case class Schedule(topics: TopicGroup, conf: CalendarConfig)  {
+case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport {
 
   /** Find fixed events for a given week.
   *
@@ -68,12 +68,13 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig)  {
   *
   */
   def datedTopics : Vector[DatedWeek] = {
+    Logger.setDefaultLogLevel(LogLevel.DEBUG)
     val calendarWeeks = conf.semesterCalendar.weeks.size
     val weeks = topics.weekly(conf.scheduleType.classes)
 
-    //debug("adding dated topics")//: weeks = " + weeks.flatten.size)
-    //debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
-    //debug("total weeks in semester: " + calendarWeeks)
+    debug("adding dated topics")//: weeks = " + weeks.flatten.size)
+    debug("organized in " + weeks.size + " segments of " + conf.scheduleType.classes)
+    debug("total weeks in semester: " + calendarWeeks)
 
     val dWeeks = for ( (wk,i) <- weeks.zipWithIndex) yield {
         val calendarWeek = conf.semesterCalendar.weeks(i)

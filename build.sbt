@@ -14,7 +14,7 @@ resolvers += Resolver.bintrayRepo("neelsmith", "maven")
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.1" % "test",
   // THIS IS BREAKING!
-  //"org.wvlet.airframe" %% "airframe-log" % "19.8.10",
+  "org.wvlet.airframe" %% "airframe-log" % "19.8.10",
   "org.yaml" % "snakeyaml" % "1.14"
 
 )
@@ -22,7 +22,5 @@ libraryDependencies ++= Seq(
 mdocIn := file("mdocs")
 mdocOut := file("docs")
 mdocExtraArguments += "--no-link-hygiene"
-
-
 
 enablePlugins(MdocPlugin)
