@@ -68,7 +68,7 @@ case class Schedule(topics: TopicGroup, conf: CalendarConfig) extends LogSupport
   *
   */
   def datedTopics : Vector[DatedWeek] = {
-    Logger.setDefaultLogLevel(LogLevel.DEBUG)
+    //Logger.setDefaultLogLevel(LogLevel.INFO)
     val calendarWeeks = conf.semesterCalendar.weeks.size
     val weeks = topics.weekly(conf.scheduleType.classes)
 

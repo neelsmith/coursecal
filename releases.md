@@ -1,5 +1,7 @@
 # Release notes
 
+**2.0.2*:  fixes a bug in markdown formatting when schedule heading has no following weeks.
+
 **2.0.1**:  fixes a bug when indexing into dated segments of a schedule.
 
 **2.0.0**: API-breaking changes.

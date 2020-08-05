@@ -22,10 +22,14 @@ case class DatedSegment(weeks : Vector[DatedWeek], initialWeek: Int, heading: Op
   * See values defined in the [[Schedule]] object.
   */
   def markdown(tableHeading: String): String = {
-    val rows = weeks.map(_.calendarString).mkString
     val hdg = heading.getOrElse("")
+    if (weeks.isEmpty) {
+      hdg + "\n\n"
+    } else {
+      val rows = weeks.map(_.calendarString).mkString
+      Vector(s"${hdg}\n", tableHeading, rows.mkString).mkString
+    }
 
-    Vector(s"${hdg}\n", tableHeading, rows.mkString).mkString
   }
   //Logger.setDefaultLogLevel(LogLevel.INFO)
 }
